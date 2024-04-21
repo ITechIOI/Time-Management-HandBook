@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.time_management_handbook"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.time_management_handbook"

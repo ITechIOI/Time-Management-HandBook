@@ -1,4 +1,4 @@
-package com.example.time_management_handbook;
+package com.example.time_management_handbook.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.example.time_management_handbook.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

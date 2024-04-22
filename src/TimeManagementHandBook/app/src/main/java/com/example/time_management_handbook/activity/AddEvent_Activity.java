@@ -1,4 +1,4 @@
-package com.example.time_management_handbook;
+package com.example.time_management_handbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.TimePicker;
 
+import com.example.time_management_handbook.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;

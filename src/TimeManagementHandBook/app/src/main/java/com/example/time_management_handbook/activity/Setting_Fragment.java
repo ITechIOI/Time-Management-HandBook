@@ -1,5 +1,6 @@
-package com.example.time_management_handbook;
+package com.example.time_management_handbook.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,13 +8,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.example.time_management_handbook.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Calendar_Fragment#newInstance} factory method to
+ * Use the {@link Setting_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Calendar_Fragment extends Fragment {
+public class Setting_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +30,7 @@ public class Calendar_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Calendar_Fragment() {
+    public Setting_Fragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +40,11 @@ public class Calendar_Fragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Calendar_Fragment.
+     * @return A new instance of fragment Setting_Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Calendar_Fragment newInstance(String param1, String param2) {
-        Calendar_Fragment fragment = new Calendar_Fragment();
+    public static Setting_Fragment newInstance(String param1, String param2) {
+        Setting_Fragment fragment = new Setting_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -53,12 +59,29 @@ public class Calendar_Fragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar_, container, false);
+        View view = inflater.inflate(R.layout.fragment_setting_, container, false);
+        RelativeLayout addAccount = view.findViewById(R.id.addAccount_layout);
+        TextView notification = view.findViewById(R.id.notification);
+        TextView darkmode=view.findViewById(R.id.darkmode);
+        ImageButton about = view.findViewById(R.id.about);
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mit= new Intent(getActivity(), AboutZEIT_Activity.class);
+                startActivity(mit);
+            }
+        });
+
+
+
+        return view;
     }
 }

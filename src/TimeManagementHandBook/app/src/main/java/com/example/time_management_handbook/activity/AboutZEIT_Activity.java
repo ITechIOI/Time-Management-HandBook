@@ -1,9 +1,11 @@
-package com.example.time_management_handbook;
+package com.example.time_management_handbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+
+import com.example.time_management_handbook.R;
 
 public class AboutZEIT_Activity extends AppCompatActivity {
 

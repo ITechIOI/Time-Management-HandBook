@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/addimage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Do you have any plan?"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/add_event"
+        android:layout_width="171dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_button1"
+        android:backgroundTint="@null"
+        android:drawableRight="@drawable/ic_calendar"
+        android:text="Event" />
+
+    <Button
+        android:id="@+id/add_task"
+        android:layout_width="173dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_button1"
+        android:backgroundTint="@null"
+        android:drawableRight="@drawable/ic_task"
+        android:text="Task" />
+
+</LinearLayout>

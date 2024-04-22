@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddTask_Activity"
+    android:orientation="vertical">
+
+
+    <include android:id="@+id/tToolbar"
+        layout="@layout/toolbarlayout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:text="Name" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tName_textInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/custom_textinputlayout"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="5dp"
+            android:text="Deadline" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tDeadline_textInput"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_textinputlayout"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_calendar"
+                android:id="@+id/tDeadline_dialog"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="5dp"
+            android:text="Subject" />
+
+        <Spinner
+            android:id="@+id/tSubject_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/custom_spinner"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="5dp"
+            android:text="Color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp">
+
+            <Button
+                android:id="@+id/tGreen_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/green" />
+
+            <Button
+                android:id="@+id/tRed_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/red" />
+
+            <Button
+                android:id="@+id/tPink_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/pink" />
+
+            <Button
+                android:id="@+id/tYellow_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/yellow" />
+
+            <Button
+                android:id="@+id/tPurple_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/purple1" />
+
+            <Button
+                android:id="@+id/tOrange_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/orange" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="5dp"
+            android:text="Notification" />
+
+        <LinearLayout
+            android:id="@+id/tNotification_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:orientation="horizontal" />
+
+        <Button
+            android:id="@+id/tAddNotification_button"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="34dp"
+            android:background="@drawable/custom_button2"
+            android:backgroundTint="@null"
+            android:text="Add notification" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="5dp"
+            android:text="Description" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tDescription_textInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/custom_textinputlayout"/>
+
+        <Button
+            android:id="@+id/tCreate_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/custom_button1"
+            android:text="Create" />
+
+    </LinearLayout>
+
+</LinearLayout>

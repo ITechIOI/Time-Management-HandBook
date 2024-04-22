@@ -45,16 +45,15 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tDeadline_textInput"
-                android:layout_width="300dp"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_textinputlayout"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_calendar"
-                android:id="@+id/tDeadline_dialog"/>
+                android:id="@+id/tDeadline_dialog"
+                android:layout_width="34dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_calendar" />
         </LinearLayout>
 
 

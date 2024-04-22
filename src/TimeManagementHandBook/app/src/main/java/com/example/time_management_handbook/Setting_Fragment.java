@@ -1,5 +1,6 @@
 package com.example.time_management_handbook;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,12 +59,29 @@ public class Setting_Fragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting_, container, false);
+        View view = inflater.inflate(R.layout.fragment_setting_, container, false);
+        RelativeLayout addAccount = view.findViewById(R.id.addAccount_layout);
+        TextView notification = view.findViewById(R.id.notification);
+        TextView darkmode=view.findViewById(R.id.darkmode);
+        ImageButton about = view.findViewById(R.id.about);
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mit= new Intent(getActivity(), AboutZEIT_Activity.class);
+                startActivity(mit);
+            }
+        });
+
+
+
+        return view;
     }
 }

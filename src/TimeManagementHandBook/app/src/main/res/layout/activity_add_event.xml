@@ -41,15 +41,15 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/eDate_textInput"
-                            android:layout_width="320dp"
+                            android:layout_width="310dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/custom_textinputlayout"/>
+                            android:background="@drawable/custom_textinputlayout" />
 
                         <ImageView
+                            android:id="@+id/eDate_dialog"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_calendar"
-                            android:id="@+id/eDate_dialog"/>
+                            android:src="@drawable/ic_calendar" />
                 </LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
@@ -78,11 +78,12 @@
                                     android:layout_marginStart="5dp"
                                     android:id="@+id/eStartTime_textInput"
                                     android:background="@drawable/custom_textinputlayout"/>
+
                                 <ImageView
+                                    android:id="@+id/eStartTime_Dialog"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_time"
-                                    android:id="@+id/eStartTime_Dialog"/>
+                                    android:src="@drawable/ic_time" />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="wrap_content"

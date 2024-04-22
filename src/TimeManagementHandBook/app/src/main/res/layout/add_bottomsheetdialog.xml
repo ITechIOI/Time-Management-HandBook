@@ -28,7 +28,7 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/custom_button1"
         android:backgroundTint="@null"
-        android:drawableRight="@drawable/ic_calendar"
+        android:drawableRight="@drawable/ic_calendar24"
         android:text="Event" />
 
     <Button

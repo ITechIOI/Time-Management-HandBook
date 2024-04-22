@@ -13,19 +13,25 @@
         android:theme="@style/Theme.TimeManagementHandBook"
         tools:targetApi="31">
         <activity
+            android:name=".AboutZEIT_Activity"
+            android:label="About ZEIT"
+            android:exported="false"
+            android:parentActivityName=".Home_Activity" />
+        <activity
             android:name=".AddTask_Activity"
             android:exported="false"
             android:label="Add new task"
-            android:parentActivityName=".Home_Activity"/>
+            android:parentActivityName=".Home_Activity" />
         <activity
             android:name=".AddEvent_Activity"
-            android:label="Add new event"
             android:exported="false"
-            android:parentActivityName=".Home_Activity"/>
+            android:label="Add new event"
+            android:parentActivityName=".Home_Activity" />
         <activity
             android:name=".Home_Activity"
+            android:exported="false"
             android:label="ZEIT"
-            android:exported="false" />
+            android:enableOnBackInvokedCallback="true"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

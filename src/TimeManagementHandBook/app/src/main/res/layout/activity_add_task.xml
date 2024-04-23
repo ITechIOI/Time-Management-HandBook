@@ -79,54 +79,8 @@
             android:layout_marginTop="5dp"
             android:text="Color" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
-            android:layout_marginEnd="34dp">
-
-            <Button
-                android:id="@+id/tGreen_button"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/green" />
-
-            <Button
-                android:id="@+id/tRed_button"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/red" />
-
-            <Button
-                android:id="@+id/tPink_button"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/pink" />
-
-            <Button
-                android:id="@+id/tYellow_button"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/yellow" />
-
-            <Button
-                android:id="@+id/tPurple_button"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/purple1" />
-
-            <Button
-                android:id="@+id/tOrange_button"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/orange" />
-
-        </LinearLayout>
+        <include layout="@layout/custom_radiobutton"
+            android:id="@+id/tColor_radio"/>
 
         <TextView
             android:layout_width="wrap_content"

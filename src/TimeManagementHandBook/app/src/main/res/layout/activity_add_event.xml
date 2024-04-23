@@ -127,48 +127,8 @@
                     android:text="Color"
                     android:layout_marginStart="34dp"
                     android:layout_marginTop="5dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginEnd="34dp">
-                        <Button
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/green"
-                            android:id="@+id/eGreen_button"/>
-                        <Button
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:backgroundTint="@color/red"
-                            android:id="@+id/eRed_button"/>
-                        <Button
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:backgroundTint="@color/pink"
-                            android:id="@+id/ePink_button"/>
-                        <Button
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:backgroundTint="@color/yellow"
-                            android:id="@+id/eYellow_button"/>
-                        <Button
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:backgroundTint="@color/purple1"
-                            android:id="@+id/ePurple_button"/>
-                        <Button
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:backgroundTint="@color/orange"
-                            android:id="@+id/eOrange_button"/>
-
-                </LinearLayout>
+                <include layout="@layout/custom_radiobutton"
+                    android:id="@+id/eColor_radio"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

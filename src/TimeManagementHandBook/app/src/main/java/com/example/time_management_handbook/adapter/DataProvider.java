@@ -8,11 +8,22 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataProvider {
+    public static DataProvider instance;
     private static final String DATABASE_URL = "jdbc:jtds:sqlserver://192.168.1.193:1433;databaseName=TIME_MANAGEMENT_HANDBOOK;user=sa;password=Loantuyetcute123;";
-    public DataProvider() {}
-    public static Connection getConnection() {
+    private DataProvider() {}
+
+    public static DataProvider getInstance() {
+        if (instance == null) {
+            instance = new DataProvider();
+        }
+        return instance;
+    }
+
+    public Connection getConnection() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -28,25 +39,22 @@ public class DataProvider {
         return connection;
     }
 
-    public String getListTeacher()  {
-        String dataUsingLabel = "";
-        try (Connection connection = getConnection();
+    public List<String> getListTeacher(Connection connection)  {
+
+        List<String>teachers = new ArrayList<>();
+        try (
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM _USER")) {
 
             while (resultSet.next()) {
-                // Sử dụng columnIndex
-                String dataUsingIndex = resultSet.getString(1); // Giả sử cột đầu tiên là kiểu chuỗi
-
-                //Sử dụng columnLabel
-                dataUsingLabel = resultSet.getString("FULLNAME"); // Giả sử "column_name" là tên của cột
-
+               // dataUsingLabel = resultSet.getString("FULLNAME");
+                teachers.add(resultSet.getString("FULLNAME"));
             }
-            return dataUsingLabel;
+
         } catch (SQLException e) {
             e.printStackTrace();
         };
-        return null;
+        return teachers;
     }
 
 }

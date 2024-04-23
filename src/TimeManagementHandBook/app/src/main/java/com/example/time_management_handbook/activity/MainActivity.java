@@ -12,6 +12,7 @@ import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.DataProvider;
 
 import java.sql.Connection;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         button=findViewById(R.id.button);
+        connect = findViewById(R.id.button2);
+        executorService = Executors.newSingleThreadExecutor();
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -33,30 +38,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        connect = findViewById(R.id.button2);
-
-        executorService = Executors.newSingleThreadExecutor();
-
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 executorService.execute(new Runnable() {
                     @Override
                     public void run() {
-                        DataProvider data = new DataProvider();
-                        final Connection result = DataProvider.getConnection();
+                        final Connection connectionString = DataProvider.getInstance().getConnection();
                         // Sử dụng runOnUiThread để cập nhật UI từ thread khác
-                        final String listResult = data.getListTeacher();
+                        final List<String> listResult = DataProvider.getInstance().getListTeacher(connectionString);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, listResult, Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, listResult.toString(), Toast.LENGTH_LONG).show();
                             }
                         });
                     }
                 });
             }
-
         });
 
     }

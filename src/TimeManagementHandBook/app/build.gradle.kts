@@ -40,4 +40,20 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(files("libs/connectToSSMS.jar"))
+
+    implementation ("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
+    implementation ("com.google.apis:google-api-services-calendar:v3-rev20220715-2.0.0")
+    implementation ("com.google.api-client:google-api-client-android:1.34.1")
+    implementation ("com.google.android.gms:play-services-auth:20.0.0")
+    implementation ("com.google.http-client:google-http-client-android:1.39.2")
+
+    implementation("com.google.oauth-client:google-oauth-client:1.31.5")
+
+    implementation ("com.google.api-client:google-api-client-android:1.31.5")
+    implementation ("com.google.apis:google-api-services-calendar:v3-rev411-1.25.0")
+    implementation ("com.google.api-client:google-api-client-gson:2.0.0")
+    implementation ("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
+
+    implementation ("joda-time:joda-time:2.10.10")
+
 }

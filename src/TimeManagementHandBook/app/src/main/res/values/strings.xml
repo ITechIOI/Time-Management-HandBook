@@ -2,4 +2,5 @@
     <string name="app_name">Time-Management-HandBook_ZEIT</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="YOUR_API_KEY">AIzaSyBY3doVr6PgHyOnxhCXW_6Z2p_kyEj8vzY</string>
 </resources>

@@ -4,7 +4,9 @@ import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
+import com.example.time_management_handbook.activity.MainActivity;
 import com.example.time_management_handbook.adapter.DataProvider;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,6 +41,8 @@ public class GoogleAccount {
         mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        Log.d("GetGmail", getmGoogleSignInClient().toString());
         return signInIntent;
     }
+
 }

@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activity.Account_Activity">
 
     <include android:id="@+id/eToolbar"
         layout="@layout/toolbarlayout"/>
@@ -66,13 +67,5 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"/>
-
-    <FrameLayout
-        android:layout_width="409dp"
-        android:layout_height="375dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="355dp">
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,9 +8,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,8 @@ public class Home_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar=findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
+        // Tạo logo
+        // getSupportActionBar().setLogo(R.drawable.google); // Chưa kịp kiếm hình
 
         FloatingActionButton fab = findViewById(R.id.float_button_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +87,23 @@ public class Home_Activity extends AppCompatActivity {
         });
 
     }
+
+    // 2 hàm tạo kết nối với account button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId() == R.id.item_avatar){
+            Intent mit= new Intent(Home_Activity.this, Account_Activity.class);
+            startActivity(mit);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private  void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

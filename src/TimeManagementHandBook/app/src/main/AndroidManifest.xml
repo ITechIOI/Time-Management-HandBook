@@ -46,8 +46,12 @@
         <activity
             android:name=".activity.Login_Activity"
             android:exported="false"
-            android:enableOnBackInvokedCallback="true">
-        </activity>
+            android:enableOnBackInvokedCallback="true"/>
+        <activity
+            android:name=".activity.Account_Activity"
+            android:exported="false"
+            android:label="Add new event"
+            android:parentActivityName=".activity.Home_Activity"/>
     </application>
 
 </manifest>

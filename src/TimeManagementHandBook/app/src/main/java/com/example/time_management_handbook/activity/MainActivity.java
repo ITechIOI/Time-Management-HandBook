@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,27 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcome);
+        Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
+        startActivity(intent);
+        finish();
+        //welcomeScreen();
+    }
+
+    private void welcomeScreen(){
+        int time = 1000;
+        new Handler().postDelayed(()->{
+            Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
+            startActivity(intent);
+            finish();
+        },time);
+    }
+
+    // Dưới đây là phần cũ
+    /*
     Button button;
     Button connect;
 
@@ -116,4 +138,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, Home_Activity.class);
         startActivityForResult(intent, 1000);
     }
+     */
 }

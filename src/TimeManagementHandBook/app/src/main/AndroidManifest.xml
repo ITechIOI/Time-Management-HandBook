@@ -47,9 +47,7 @@
             android:name=".activity.Login_Activity"
             android:exported="false"
             android:enableOnBackInvokedCallback="true">
-
         </activity>
-        <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
     </application>
 
 </manifest>

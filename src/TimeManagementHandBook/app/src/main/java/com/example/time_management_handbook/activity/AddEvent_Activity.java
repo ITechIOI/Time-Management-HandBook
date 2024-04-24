@@ -7,9 +7,11 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.TimePicker;
@@ -18,6 +20,7 @@ import com.example.time_management_handbook.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -52,6 +55,18 @@ public class AddEvent_Activity extends AppCompatActivity {
                 openTimeDialog(R.id.eEndTime_textInput);
             }
         });
+        Spinner subjectSpinner = findViewById(R.id.eSubject_spinner);
+        ArrayList<String> subjectList = new ArrayList<>();
+        subjectList.add("Work");
+        subjectList.add("Study");
+        subjectList.add("Entertain");
+
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, subjectList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        subjectSpinner.setAdapter(adapter);
+
+
+
     }
     private void openDateDialog()
     {

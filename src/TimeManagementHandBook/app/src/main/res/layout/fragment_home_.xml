@@ -7,48 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".activity.Home_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView_Hi"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:text="Hi, username!"
-        android:fontFamily="@font/inria_sans"
-        android:textSize="30sp"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="20dp"/>
-
-    <TextView
-        android:id="@+id/textView_CurrentDate"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:text="The current date"
-        android:fontFamily="@font/inria_sans"
-        android:textSize="20sp"
-        android:gravity="center_vertical"
-        android:layout_marginTop="45dp"
-        android:layout_marginLeft="20dp"/>
-
-    <TextView
-        android:id="@+id/textView_Notes"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:text="Event and tasks today"
-        android:fontFamily="@font/inria_sans"
-        android:textSize="25sp"
-        android:gravity="center_vertical"
-        android:layout_marginTop="90dp"
-        android:layout_marginLeft="20dp"/>
-
-    <Button
-        android:id="@+id/button_meeting"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Meeting"
-        android:background="@drawable/custom_button_meeting"
-        android:backgroundTintMode="multiply"
-        app:icon="@drawable/google"
-        app:iconTintMode="multiply"
-        android:gravity="center" />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView_Hi"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:text="Hi, username!"
+            android:fontFamily="@font/inria_sans"
+            android:textSize="30sp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/textView_CurrentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:text="The current date"
+            android:fontFamily="@font/inria_sans"
+            android:textSize="20sp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/textView_Notes"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:text="Event and tasks today"
+            android:fontFamily="@font/inria_sans"
+            android:textSize="25sp"
+            android:gravity="center_vertical"/>
+
+        <!--GridView dùng để chứa các notices
+            Tạo thêm 1 lớp layout_home_item là UI của item cho GridView-->
+        <GridView
+            android:id="@+id/gridView_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"/>
+
+    </LinearLayout>
 </FrameLayout>

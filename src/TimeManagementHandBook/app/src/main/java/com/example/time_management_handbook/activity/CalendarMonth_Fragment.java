@@ -1,21 +1,20 @@
 package com.example.time_management_handbook.activity;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.time_management_handbook.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Calendar_Fragment#newInstance} factory method to
+ * Use the {@link CalendarMonth_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Calendar_Fragment extends Fragment {
+public class CalendarMonth_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +25,7 @@ public class Calendar_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Calendar_Fragment() {
+    public CalendarMonth_Fragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +38,8 @@ public class Calendar_Fragment extends Fragment {
      * @return A new instance of fragment Calendar_Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Calendar_Fragment newInstance(String param1, String param2) {
-        Calendar_Fragment fragment = new Calendar_Fragment();
+    public static CalendarMonth_Fragment newInstance(String param1, String param2) {
+        CalendarMonth_Fragment fragment = new CalendarMonth_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +60,6 @@ public class Calendar_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar_week_, container, false);
+        return inflater.inflate(R.layout.fragment_calendar_month_, container, false);
     }
 }

@@ -22,11 +22,11 @@ public class Account_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 BottomSheetDialog bsd = new BottomSheetDialog(Account_Activity.this);
-                View view = LayoutInflater.from(Account_Activity.this).inflate(R.layout.fragment_add_account_, null);
+                View view = LayoutInflater.from(Account_Activity.this).inflate(R.layout.add_account_bottomsheetdialog, null);
                 bsd.setContentView(view);
                 bsd.show();
 
-                // Thiết lập khi nhấn các item của listView (tài khoản có sẵn)
+                // Set activity khi nhấn các item của listView (tài khoản có sẵn)
 
                 Button addNewAccount = view.findViewById(R.id.button_AddNewAccount);
                 addNewAccount.setOnClickListener(new View.OnClickListener() {

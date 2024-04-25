@@ -17,11 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.time_management_handbook.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Home_Activity extends AppCompatActivity {
 
@@ -85,7 +91,6 @@ public class Home_Activity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
     // 2 hàm tạo kết nối với account button

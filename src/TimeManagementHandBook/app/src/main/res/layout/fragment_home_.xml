@@ -40,7 +40,7 @@
             android:gravity="center_vertical"/>
 
         <!--GridView dùng để chứa các notices
-            Tạo thêm 1 lớp layout_home_item là UI của item cho GridView-->
+            -->
         <GridView
             android:id="@+id/gridView_home"
             android:layout_width="match_parent"

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_radio_date"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="Mon\n02"
+            android:textSize="16dp"
+            android:textColor="#98A2B3"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/custom_radio_date"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="Tue\n03"
+            android:textColor="#98A2B3"
+            android:textSize="16dp" />
+
+        <RadioButton
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_radio_date"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="Wed\n04"
+            android:textSize="16dp"
+            android:textColor="#98A2B3"/>
+
+        <RadioButton
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_radio_date"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="Thu\n05"
+            android:textSize="16dp"
+            android:textColor="#98A2B3"/>
+
+        <RadioButton
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_radio_date"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="Fri\n06"
+            android:textSize="16dp"
+            android:textColor="#98A2B3"/>
+
+        <RadioButton
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_radio_date"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="Sat\n07"
+            android:textSize="16dp"
+            android:textColor="#98A2B3"/>
+
+        <RadioButton
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_radio_date"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="Sun\n08"
+            android:textSize="16dp"
+            android:textColor="#98A2B3"/>
+    </RadioGroup>
+
+</LinearLayout>

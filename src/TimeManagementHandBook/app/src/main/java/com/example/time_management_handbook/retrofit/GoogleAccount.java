@@ -38,6 +38,7 @@ public class GoogleAccount {
         // Tạo GoogleSignInOptions với quyền truy cập cần thiết
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .setAccount(null)
                 .build();
 
 // Tạo GoogleSignInClient với GoogleSignInOptions

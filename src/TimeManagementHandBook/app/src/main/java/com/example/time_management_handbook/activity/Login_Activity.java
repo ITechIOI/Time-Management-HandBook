@@ -22,7 +22,7 @@ import com.google.android.gms.tasks.Task;
 
 public class Login_Activity extends AppCompatActivity {
     private Button loginButton;
-    private GoogleSignInClient mGoogleSignInClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +34,8 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Sử dụng GoogleSignIn.getClient để khởi tạo GoogleSignInClient
-                mGoogleSignInClient = GoogleSignIn.getClient(Login_Activity.this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build());
-
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, 1000);
+                Intent intent = GoogleAccount.getInstance(Login_Activity.this).SignInByGoogleAccount(Login_Activity.this);
+                startActivityForResult(intent, 1000);
             }
         });
     }

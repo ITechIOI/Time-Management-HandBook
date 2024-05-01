@@ -38,7 +38,7 @@
 
     <Button
         android:id="@+id/button_AddAccount"
-        android:text="Add Account"
+        android:text="Synchronized"
         android:layout_width="299dp"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button3"

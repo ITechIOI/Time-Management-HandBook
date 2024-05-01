@@ -18,11 +18,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.retrofit.GoogleAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -31,6 +38,9 @@ import java.util.Date;
 
 public class Home_Activity extends AppCompatActivity {
 
+    GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInAccount acc;
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +48,8 @@ public class Home_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar=findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
-        // Tạo logo
-        // getSupportActionBar().setLogo(R.drawable.google); // Chưa kịp kiếm hình
+        // Create logo
+        // getSupportActionBar().setLogo(R.drawable.google);
 
         FloatingActionButton fab = findViewById(R.id.float_button_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +83,8 @@ public class Home_Activity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
         FrameLayout frameLayout = findViewById(R.id.frame_layout);
         loadFragment(new Home_Fragment());
+
+        /// check code in this method
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -81,7 +93,7 @@ public class Home_Activity extends AppCompatActivity {
                 if (itemID == R.id.nav_home){
                     loadFragment(new Home_Fragment());
                 } else if (itemID == R.id.nav_calendar) {
-                    loadFragment(new Calendar_Fragment());
+                    loadFragment(new CalendarWeek_Fragment());
                 } else if (itemID == R.id.nav_task) {
                     loadFragment(new Task_Fragment());
                 } else if (itemID == R.id.nav_setting) {
@@ -91,6 +103,18 @@ public class Home_Activity extends AppCompatActivity {
                 return true;
             }
         });
+
+        acc = GoogleSignIn.getLastSignedInAccount(this);
+        if (acc == null) {
+            // Yêu cầu người dùng đăng nhập
+            Intent signInIntent = GoogleAccount.getInstance(Home_Activity.this).SignInByGoogleAccount(Home_Activity.this);
+            startActivityForResult(signInIntent, 1000);
+        } else {
+            // Hiển thị tài khoản người dùng hoặc hành động khác
+            String emailLogin = acc.getEmail();
+            Toast.makeText(Home_Activity.this, emailLogin, Toast.LENGTH_LONG).show();
+        }
+
     }
 
     // 2 hàm tạo kết nối với account button

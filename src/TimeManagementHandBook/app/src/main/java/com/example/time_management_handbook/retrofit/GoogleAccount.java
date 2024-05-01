@@ -14,34 +14,37 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class GoogleAccount {
     public static GoogleAccount instance;
-    private GoogleSignInClient mGoogleSignInClient;
-    private GoogleSignInOptions gso;
+    public static GoogleSignInClient mGoogleSignInClient;
+    public static GoogleSignInOptions gso;
 
-    private GoogleAccount() {}
+    private GoogleAccount(Context context) {}
 
-    public static GoogleAccount getInstance() {
+
+    public static GoogleAccount getInstance(Context context) {
         if (instance == null) {
-            instance = new GoogleAccount();
+            instance = new GoogleAccount(context);
         }
         return instance;
     }
 
-    public GoogleSignInClient getmGoogleSignInClient() {
+    public GoogleSignInClient getmGoogleSignInClient(Context context) {
+        if (mGoogleSignInClient == null) {
+            mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
+        }
         return mGoogleSignInClient;
-    }
-    public void setmGoogleSignInClient(GoogleSignInClient mGoogleSignInClient) {
-        this.mGoogleSignInClient = mGoogleSignInClient;
     }
 
     public Intent SignInByGoogleAccount(Context context) {
+        // Tạo GoogleSignInOptions với quyền truy cập cần thiết
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
+// Tạo GoogleSignInClient với GoogleSignInOptions
+         mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
 
+// Khởi động quy trình đăng nhập
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        Log.d("GetGmail", getmGoogleSignInClient().toString());
         return signInIntent;
     }
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DataProvider {
     public static DataProvider instance;
-    private static final String DATABASE_URL = "jdbc:jtds:sqlserver://192.168.1.193:1433;databaseName=TIME_MANAGEMENT_HANDBOOK;user=sa;password=Loantuyetcute123;";
+    private static final String DATABASE_URL = "jdbc:jtds:sqlserver://192.168.1.9:1433;databaseName=TIME_MANAGEMENT_HANDBOOK;user=sa;password=Loantuyetcute123;";
     private DataProvider() {}
 
     public static DataProvider getInstance() {
@@ -47,7 +47,6 @@ public class DataProvider {
              ResultSet resultSet = statement.executeQuery("SELECT * FROM _USER")) {
 
             while (resultSet.next()) {
-               // dataUsingLabel = resultSet.getString("FULLNAME");
                 teachers.add(resultSet.getString("FULLNAME"));
             }
 

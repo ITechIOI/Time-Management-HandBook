@@ -1,57 +1,26 @@
 package com.example.time_management_handbook.model;
 
-
 import com.google.api.client.util.DateTime;
 
 public class CalendarEvent {
     private String id;
-    private String title;
+    private String summary;
     private String description;
-    private DateTime startTime;
-    private DateTime endTime;
+    private DateTime start;
+    private DateTime end;
+    private String recurrenceInfo;
+    private String location; // Địa điểm
+    private String creatorEmail; // Email của người tạo sự kiện
 
-    public CalendarEvent(String id, String title, String description, DateTime startTime, DateTime endTime) {
+    public CalendarEvent(String id, String summary, String description, DateTime start, DateTime end, String recurrenceInfo, String location, String creatorEmail) {
         this.id = id;
-        this.title = title;
+        this.summary = summary;
         this.description = description;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
-    // Getters and setters
-    public String getId() {return id;}
-    public void setId() {this.id = id;}
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public DateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(DateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public DateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(DateTime endTime) {
-        this.endTime = endTime;
+        this.start = start;
+        this.end = end;
+        this.recurrenceInfo = recurrenceInfo;
+        this.location = location;
+        this.creatorEmail = creatorEmail;
     }
 }
-
 

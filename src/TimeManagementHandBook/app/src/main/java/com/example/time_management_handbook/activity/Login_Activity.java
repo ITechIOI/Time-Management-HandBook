@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.adapter.DataProvider;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -20,9 +21,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Login_Activity extends AppCompatActivity {
     private Button loginButton;
-
+    ExecutorService executorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,28 @@ public class Login_Activity extends AppCompatActivity {
                 startActivityForResult(intent, 1000);
             }
         });
+
+        executorService = Executors.newSingleThreadExecutor();
+
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+
+                List<String> users = DataProvider.getInstance().getListTeacher(DataProvider.getInstance().getConnection());
+
+                /*runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Thực hiện hoạt động UI ở đây
+                        // Ví dụ: hiển thị toast
+                        Toast.makeText(Login_Activity.this, DataProvider.getInstance().getListTeacher(DataProvider.getInstance().getConnection()).toString(), Toast.LENGTH_LONG).show();
+                        Log.d("Connect to Database", users.toString());
+                    }
+                });*/
+            }
+        });
+
+        executorService.shutdown();
     }
 
     @Override

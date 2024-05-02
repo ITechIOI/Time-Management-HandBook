@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -24,17 +23,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.model.CalendarEvent;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
-import com.example.time_management_handbook.retrofit.GoogleCalendarData;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,15 +44,12 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -72,6 +65,8 @@ public class Home_Activity extends AppCompatActivity {
     List<CalendarEvent> events;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    public static List<Event> items;
+    public static List<CalendarEvent> calendarEvents;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -164,7 +159,7 @@ public class Home_Activity extends AppCompatActivity {
                             this, Collections.singleton(CALENDAR_READONLY));
                     credential.setSelectedAccount(acc.getAccount());
 
-                    com.google.api.services.calendar.Calendar service = new Calendar.Builder(
+                    Calendar service = new Calendar.Builder(
                             new NetHttpTransport(),
                             new GsonFactory(),
                             credential)
@@ -189,34 +184,34 @@ public class Home_Activity extends AppCompatActivity {
                             .setSingleEvents(true)
                             .execute();
 
-                    List<Event> items = events.getItems();
-                    List<CalendarEvent> calendarEvents = new ArrayList<>();
+                    items = events.getItems();
+                     calendarEvents = new ArrayList<>();
 
                     Log.d("Handles event", events.toString());
 
                     for (Event event : items) {
+                        String recurrenceInfo = event.getRecurrence()!= null? event.getRecurrence().toString() : "No recurrence";
+                        String location = event.getLocation()!= null? event.getLocation().toString() : "No location";
+                        String creatorEmail = event.getCreator().getEmail();
+
                         CalendarEvent calendarEvent = new CalendarEvent(
                                 event.getId(),
                                 event.getSummary(),
                                 event.getDescription(),
                                 event.getStart().getDateTime(),
-                                event.getEnd().getDateTime()
+                                event.getEnd().getDateTime(),
+                                recurrenceInfo,
+                                location,
+                                creatorEmail
                         );
-                        /*if (event.getStart().getDateTime() == null) {
-                            // All-day events don't have start times, so just use
-                            // the start date.
-                            calendarEvent.setStartTime(event.getStart().getDate());
-                        }*/
                         calendarEvents.add(calendarEvent);
-                        eventStrings.add(
-                                String.format("%s (%s)", event.getSummary(), event.getStart().getDateTime()));
 
+                        String eventInfo = String.format("%s (%s) - %s - %s - %s - %s", event.getId(), event.getSummary(), event.getDescription(), event.getStart().getDateTime(), event.getEnd().getDateTime(), recurrenceInfo, "     ");
+                        eventStrings.add(eventInfo);
                     }
+
                     runOnUiThread(() -> {
-                        Log.d("List Events", eventStrings.toString());
-                        /*for (CalendarEvent calendarEvent : calendarEvents) {
-                            calendarView.addEvent(calendarEvent);
-                        }*/
+                        Log.d("List Event", eventStrings.toString());
                     });
                     /// fix: get token error
                 } catch (UserRecoverableAuthIOException userRecoverableException) {

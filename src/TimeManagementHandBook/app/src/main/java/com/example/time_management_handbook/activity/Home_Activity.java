@@ -142,6 +142,7 @@ public class Home_Activity extends AppCompatActivity {
             int count_account = Account.getInstance().InsertNewAccount(email);
             Log.d("Insert new account: ", String.valueOf(count_account));
         });
+        executorServiceInsertAccount.shutdown();
 
         if (acc == null) {
 

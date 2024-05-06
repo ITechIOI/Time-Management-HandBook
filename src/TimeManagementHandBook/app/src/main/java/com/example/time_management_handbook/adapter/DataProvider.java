@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DataProvider {
     public static DataProvider instance;
-    private static final String DATABASE_URL = "jdbc:jtds:sqlserver://192.168.1.9:1433;databaseName=TIME_MANAGEMENT_HANDBOOK;user=sa;password=Loantuyetcute123;";
+    private static final String DATABASE_URL = "jdbc:jtds:sqlserver://10.45.22.123;databaseName=TIME_MANAGEMENT_HANDBOOK;user=sa;password=Loantuyetcute123;";
     private DataProvider() {}
 
     public static DataProvider getInstance() {
@@ -62,13 +62,21 @@ public class DataProvider {
         ResultSet resultSet = null;
         Connection connection = DataProvider.getInstance().getConnection();
 
-        try {
-            Statement statement = connection.createStatement();
-           resultSet = statement.executeQuery(query);
-
-        }catch (SQLException e) {
-            Log.d("Execute query: ", e.getMessage());
-        };
+        if (connection!= null) { // Kiểm tra xem connection có phải là null không
+            try {
+                Statement statement = connection.createStatement();
+                resultSet = statement.executeQuery(query);
+                Log.d("ResultSet: ", resultSet.toString());
+                // Đóng Statement và ResultSet sau khi sử dụng
+                statement.close();
+                resultSet.close();
+            } catch (SQLException e) {
+                Log.d("Execute query: ", e.getMessage());
+                // Xử lý ngoại lệ, ví dụ: thông báo lỗi cho người dùng
+            }
+        } else {
+            Log.d("Connection: ", "is null");
+        }
 
         return resultSet;
     }

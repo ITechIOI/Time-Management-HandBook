@@ -24,7 +24,7 @@ public class Account {
         int rowEffects = 0;
         Log.d("Account exist: ", String.valueOf(CheckExistEmail(email)));
         if (!CheckExistEmail(email)) {
-            String insertNewAccount = "EXECUTE USP_INSERT_NEW_USER " + email;
+            String insertNewAccount = "EXEC USP_INSERT_NEW_USER '"+ email + "'";
             rowEffects = DataProvider.getInstance().executeNonQuery(insertNewAccount);
             Log.d("Insert new google account: ", String.valueOf(rowEffects));
 
@@ -35,14 +35,18 @@ public class Account {
 
     public boolean CheckExistEmail(String email) {
 
-        String query = "SELECT * FROM _USER WHERE EMAIL=" + email;
+        String query = "SELECT * FROM _USER WHERE EMAIL='" + email + "'";
 
         try {
             ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
-            Log.d("Execute query Insert: ", DataProvider.getInstance().executeQuery(query).toString());
-            while (resultSet.next()) {
-                if (resultSet.getString("EMAIL") == email) {
-                    return true;
+            Log.d("Execute query Insert: ", resultSet.toString());
+            if (resultSet!= null) {
+                while (resultSet.next()) {
+                    String emailFromDB = resultSet.getString("EMAIL");
+                    // So sánh email từ cơ sở dữ liệu với email được cung cấp
+                    if (emailFromDB!= null && emailFromDB.equals(email)) {
+                        return true;
+                    }
                 }
             }
         } catch (SQLException e) {

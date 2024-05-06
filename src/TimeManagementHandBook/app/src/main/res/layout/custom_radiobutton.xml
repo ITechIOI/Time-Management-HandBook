@@ -4,11 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginTop="10dp">
+
     <RadioGroup
+        android:id="@+id/color_radio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/green_radiobt"

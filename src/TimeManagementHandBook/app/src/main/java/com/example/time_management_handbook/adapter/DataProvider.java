@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,10 +40,11 @@ public class DataProvider {
         return connection;
     }
 
-    public List<String> getListTeacher(Connection connection)  {
+    public List<String> getListUser()  {
 
         List<String>teachers = new ArrayList<>();
         try (
+                Connection connection = DataProvider.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM _USER")) {
 
@@ -54,6 +56,48 @@ public class DataProvider {
             e.printStackTrace();
         };
         return teachers;
+    }
+
+    public ResultSet executeQuery(String query) {
+        ResultSet resultSet = null;
+        Connection connection = DataProvider.getInstance().getConnection();
+
+        try {
+            Statement statement = connection.createStatement();
+           resultSet = statement.executeQuery(query);
+
+        }catch (SQLException e) {
+            Log.d("Execute query: ", e.getMessage());
+        };
+
+        return resultSet;
+    }
+
+    public int executeNonQuery(String sql) {
+        int rowsAffected = -1;
+        try (Connection connection = DataProvider.getInstance().getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            rowsAffected = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rowsAffected;
+    }
+
+    public Object executeScalar(String sql) {
+        Object result = null;
+        try (Connection connection = DataProvider.getInstance().getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                result = rs.getObject(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

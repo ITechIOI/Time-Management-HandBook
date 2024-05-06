@@ -50,8 +50,7 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void run() {
 
-                List<String> users = DataProvider.getInstance().getListTeacher(DataProvider.getInstance().getConnection());
-
+                List<String> users = DataProvider.getInstance().getListUser();
                 /*runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -78,6 +77,7 @@ public class Login_Activity extends AppCompatActivity {
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     if (account!= null) {
                         NavigationToAnotherActivity();
+
                     } else {
                         Log.d("ErrorX", "signInResult: account is null");
                     }

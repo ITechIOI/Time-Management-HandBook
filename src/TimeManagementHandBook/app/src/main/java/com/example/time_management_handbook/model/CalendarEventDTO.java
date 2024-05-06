@@ -2,7 +2,7 @@ package com.example.time_management_handbook.model;
 
 import com.google.api.client.util.DateTime;
 
-public class CalendarEvent {
+public class CalendarEventDTO {
     private String id;
     private String summary;
     private String description;
@@ -12,7 +12,7 @@ public class CalendarEvent {
     private String location; // Địa điểm
     private String creatorEmail; // Email của người tạo sự kiện
 
-    public CalendarEvent(String id, String summary, String description, DateTime start, DateTime end, String recurrenceInfo, String location, String creatorEmail) {
+    public CalendarEventDTO(String id, String summary, String description, DateTime start, DateTime end, String recurrenceInfo, String location, String creatorEmail) {
         this.id = id;
         this.summary = summary;
         this.description = description;

@@ -26,7 +26,8 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
-import com.example.time_management_handbook.model.CalendarEvent;
+import com.example.time_management_handbook.adapter.Account;
+import com.example.time_management_handbook.model.CalendarEventDTO;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -62,11 +63,12 @@ public class Home_Activity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     GoogleSignInAccount acc;
 
-    List<CalendarEvent> events;
+    List<CalendarEventDTO> events;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();
     public static List<Event> items;
-    public static List<CalendarEvent> calendarEvents;
+    public static List<CalendarEventDTO> calendarEvents;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -134,12 +136,18 @@ public class Home_Activity extends AppCompatActivity {
         // Get google account
 
         acc = GoogleSignIn.getLastSignedInAccount(this);
+
+        final String email = acc.getEmail();
+        executorServiceInsertAccount.execute(() -> {
+            int count_account = Account.getInstance().InsertNewAccount(email);
+            Log.d("Insert new account: ", String.valueOf(count_account));
+        });
+
         if (acc == null) {
-            // Yêu cầu người dùng đăng nhập
+
             Intent signInIntent = GoogleAccount.getInstance(Home_Activity.this).SignInByGoogleAccount(Home_Activity.this);
             startActivityForResult(signInIntent, 1000);
         } else {
-            // Hiển thị tài khoản người dùng hoặc hành động khác
             String emailLogin = acc.getEmail();
             Toast.makeText(Home_Activity.this, emailLogin, Toast.LENGTH_LONG).show();
         }
@@ -194,7 +202,7 @@ public class Home_Activity extends AppCompatActivity {
                         String location = event.getLocation()!= null? event.getLocation().toString() : "No location";
                         String creatorEmail = event.getCreator().getEmail();
 
-                        CalendarEvent calendarEvent = new CalendarEvent(
+                        CalendarEventDTO calendarEvent = new CalendarEventDTO(
                                 event.getId(),
                                 event.getSummary(),
                                 event.getDescription(),

@@ -51,6 +51,7 @@ public class Login_Activity extends AppCompatActivity {
             public void run() {
 
                 List<String> users = DataProvider.getInstance().getListUser();
+                Log.d("Connect User", users.toString());
                 /*runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.AddEvent_Activity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:backgroundTint="@color/black">
+
 
 
         <include android:id="@+id/eToolbar"

@@ -23,7 +23,7 @@ public class Account {
     public int InsertNewAccount(String email) {
         int rowEffects = 0;
         Log.d("Account exist: ", String.valueOf(CheckExistEmail(email)));
-        if (!CheckExistEmail(email)) {
+        if (CheckExistEmail(email) == false) {
             String insertNewAccount = "EXEC USP_INSERT_NEW_USER '"+ email + "'";
             rowEffects = DataProvider.getInstance().executeNonQuery(insertNewAccount);
             Log.d("Insert new google account: ", String.valueOf(rowEffects));
@@ -39,10 +39,11 @@ public class Account {
 
         try {
             ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
-            Log.d("Execute query Insert: ", resultSet.toString());
+
             if (resultSet!= null) {
                 while (resultSet.next()) {
                     String emailFromDB = resultSet.getString("EMAIL");
+                    Log.d("Execute query Insert: ", emailFromDB);
                     // So sánh email từ cơ sở dữ liệu với email được cung cấp
                     if (emailFromDB!= null && emailFromDB.equals(email)) {
                         return true;

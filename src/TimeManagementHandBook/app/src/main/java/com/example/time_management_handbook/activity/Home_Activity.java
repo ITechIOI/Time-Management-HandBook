@@ -122,7 +122,7 @@ public class Home_Activity extends AppCompatActivity {
                 if (itemID == R.id.nav_home){
                     loadFragment(new Home_Fragment());
                 } else if (itemID == R.id.nav_calendar) {
-                    loadFragment(new CalendarWeek_Fragment());
+                    loadFragment(new CalendarMonth_Fragment());
                 } else if (itemID == R.id.nav_task) {
                     loadFragment(new Task_Fragment());
                 } else if (itemID == R.id.nav_setting) {

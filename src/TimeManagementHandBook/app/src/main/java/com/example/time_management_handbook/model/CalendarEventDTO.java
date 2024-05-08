@@ -22,5 +22,69 @@ public class CalendarEventDTO {
         this.location = location;
         this.creatorEmail = creatorEmail;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public DateTime getStart() {
+        return start;
+    }
+
+    public DateTime getEnd() {
+        return end;
+    }
+
+    public String getRecurrenceInfo() {
+        return recurrenceInfo;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getCreatorEmail() {
+        return creatorEmail;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStart(DateTime start) {
+        this.start = start;
+    }
+
+    public void setEnd(DateTime end) {
+        this.end = end;
+    }
+
+    public void setRecurrenceInfo(String recurrenceInfo) {
+        this.recurrenceInfo = recurrenceInfo;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setCreatorEmail(String creatorEmail) {
+        this.creatorEmail = creatorEmail;
+    }
 }
 

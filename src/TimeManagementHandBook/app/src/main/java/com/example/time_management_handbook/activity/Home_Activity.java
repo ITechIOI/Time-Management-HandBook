@@ -158,7 +158,7 @@ public class Home_Activity extends AppCompatActivity {
     }
 
     public void fetchEvents(GoogleSignInAccount acc) {
-        // Kiểm tra và yêu cầu quyền truy cập lịch
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, REQUEST_CODE_SIGN_IN);
         } else {
@@ -175,28 +175,34 @@ public class Home_Activity extends AppCompatActivity {
                             .setApplicationName("Time Management")
                             .build();
 
-                    LocalDateTime nowLocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
-
-                    // Thêm một năm vào LocalDateTime
+                    /*LocalDateTime nowLocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
                     LocalDateTime oneYearLaterLocalDateTime = nowLocalDateTime.plus(Period.ofYears(1));
 
-                    // Chuyển đổi LocalDateTime trở lại DateTime
                     DateTime now = new DateTime(nowLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                    DateTime oneYearLater = new DateTime(oneYearLaterLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+                    DateTime oneYearLater = new DateTime(oneYearLaterLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());*/
+
+                    // Tính toán thời điểm bắt đầu (timeMin) là một năm trước thời điểm hiện tại
+                    LocalDateTime nowLocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
+                    LocalDateTime oneYearAgo = nowLocalDateTime.minusYears(1);
+
+                    // Chuyển đổi LocalDateTime trở lại DateTime
+                    DateTime timeMin = new DateTime(oneYearAgo.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+                    DateTime timeMax = new DateTime(nowLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+
 
                     List<String> eventStrings = new ArrayList<String>();
                     Events events = service.events().list("primary")
                             .setMaxResults(10)
-                            .setTimeMin(now)
-                            .setTimeMax(oneYearLater)
-                            .setOrderBy("startTime")
-                            .setSingleEvents(true)
+                            .setTimeMin(timeMin)
+                            .setTimeMax(timeMax)
+                            //.setOrderBy("startTime")
+                            .setSingleEvents(false)
                             .execute();
 
                     items = events.getItems();
                      calendarEvents = new ArrayList<>();
 
-                    Log.d("Handles event", events.toString());
+                    Log.d("Handles event", items.toString());
 
                     for (Event event : items) {
                         String recurrenceInfo = event.getRecurrence()!= null? event.getRecurrence().toString() : "No recurrence";
@@ -215,14 +221,14 @@ public class Home_Activity extends AppCompatActivity {
                         );
                         calendarEvents.add(calendarEvent);
 
-                        String eventInfo = String.format("%s (%s) - %s - %s - %s - %s", event.getId(), event.getSummary(), event.getDescription(), event.getStart().getDateTime(), event.getEnd().getDateTime(), recurrenceInfo, "     ");
+                        String eventInfo = String.format("%s (%s) - %s - %s - %s - %s", event.getId(), event.getSummary(), event.getLocation(), event.getDescription(), event.getStart().getDateTime(), event.getEnd().getDateTime(), recurrenceInfo, "     ");
                         eventStrings.add(eventInfo);
                     }
 
                     runOnUiThread(() -> {
                         Log.d("List Event", eventStrings.toString());
                     });
-                    /// fix: get token error
+
                 } catch (UserRecoverableAuthIOException userRecoverableException) {
                     startActivityForResult(
                             userRecoverableException.getIntent(), this.REQUEST_AUTHORIZATION);

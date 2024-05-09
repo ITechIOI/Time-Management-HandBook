@@ -2,19 +2,18 @@ package com.example.time_management_handbook.adapter;
 
 import android.util.Log;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Account {
-    public static Account instance;
+public class AccountDAO {
+    public static AccountDAO instance;
 
-    private Account() {}
+    private AccountDAO() {}
 
-    public static Account getInstance() {
+    public static AccountDAO getInstance() {
 
         if (instance == null) {
-            instance = new Account();
+            instance = new AccountDAO();
         }
         return instance;
 
@@ -55,7 +54,21 @@ public class Account {
         };
 
         return false;
+    }
 
+    public String getUsername(String email) {
+        String query = "SELECT * FROM _USER WHERE EMAIL = '" + email + "'";
+        String username = "";
+        try {
+            ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
+            if (resultSet!= null && resultSet.next()) {
+                username = resultSet.getString("FULLNAME");
+            }
+        } catch (SQLException e) {
+            Log.d("Get username by email: ", e.getMessage());
+        };
+
+        return  username;
     }
 
 }

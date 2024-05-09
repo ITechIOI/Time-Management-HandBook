@@ -2,6 +2,8 @@ package com.example.time_management_handbook.model;
 
 import com.google.api.client.util.DateTime;
 
+import java.time.Duration;
+
 public class CalendarEventDTO {
     private String id;
     private String summary;
@@ -10,9 +12,10 @@ public class CalendarEventDTO {
     private DateTime end;
     private String recurrenceInfo;
     private String location; // Địa điểm
+    private Duration duration;
     private String creatorEmail; // Email của người tạo sự kiện
 
-    public CalendarEventDTO(String id, String summary, String description, DateTime start, DateTime end, String recurrenceInfo, String location, String creatorEmail) {
+    public CalendarEventDTO(String id, String summary, String description, DateTime start, DateTime end, String recurrenceInfo, String location, Duration duration, String creatorEmail) {
         this.id = id;
         this.summary = summary;
         this.description = description;
@@ -20,6 +23,7 @@ public class CalendarEventDTO {
         this.end = end;
         this.recurrenceInfo = recurrenceInfo;
         this.location = location;
+        this.duration = duration;
         this.creatorEmail = creatorEmail;
     }
 
@@ -85,6 +89,14 @@ public class CalendarEventDTO {
 
     public void setCreatorEmail(String creatorEmail) {
         this.creatorEmail = creatorEmail;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public Duration getDuration() {
+        return duration;
     }
 }
 

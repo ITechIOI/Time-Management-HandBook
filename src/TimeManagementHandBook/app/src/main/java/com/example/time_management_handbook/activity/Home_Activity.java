@@ -23,10 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
-import com.example.time_management_handbook.adapter.Account;
+import com.example.time_management_handbook.adapter.AccountDAO;
 import com.example.time_management_handbook.model.CalendarEventDTO;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -45,9 +46,10 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,8 +69,10 @@ public class Home_Activity extends AppCompatActivity {
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();
-    public static List<Event> items;
-    public static List<CalendarEventDTO> calendarEvents;
+    private ExecutorService executorServiceGetUsername = Executors.newSingleThreadExecutor();
+    public List<Event> items;
+    public List<CalendarEventDTO> calendarEvents;
+    private TextView hiText;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -139,7 +143,7 @@ public class Home_Activity extends AppCompatActivity {
 
         final String email = acc.getEmail();
         executorServiceInsertAccount.execute(() -> {
-            int count_account = Account.getInstance().InsertNewAccount(email);
+            int count_account = AccountDAO.getInstance().InsertNewAccount(email);
             Log.d("Insert new account: ", String.valueOf(count_account));
         });
         executorServiceInsertAccount.shutdown();
@@ -155,6 +159,49 @@ public class Home_Activity extends AppCompatActivity {
 
         // Fetch data from Google Calendar
         fetchEvents(acc);
+
+        // Change slogan sentence
+
+        hiText = findViewById(R.id.textView_Hi);
+
+        executorServiceGetUsername.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final String username = AccountDAO.getInstance().getUsername(email);
+
+                    if (username != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (hiText != null) {
+                                    Log.d("Username get: ", username);
+                                    hiText.setText(username);
+                                }
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    Log.e("Error get username", "Error fetching username", e);
+                }
+            }
+        });
+
+        executorServiceGetUsername.shutdown();
+        try {
+            if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {
+                executorServiceGetUsername.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorServiceGetUsername.shutdownNow();
+        }
+
+        // Change current date
+
+        LocalDate today = LocalDate.now();
+
+        //
+
     }
 
     public void fetchEvents(GoogleSignInAccount acc) {
@@ -181,14 +228,16 @@ public class Home_Activity extends AppCompatActivity {
                     DateTime now = new DateTime(nowLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
                     DateTime oneYearLater = new DateTime(oneYearLaterLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());*/
 
+                    LocalDateTime nowLocalDateTime = LocalDateTime.now();
+
                     // Tính toán thời điểm bắt đầu (timeMin) là một năm trước thời điểm hiện tại
-                    LocalDateTime nowLocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
                     LocalDateTime oneYearAgo = nowLocalDateTime.minusYears(1);
+                    // Tính toán thời điểm kết thúc (timeMax) là một năm sau thời điểm hiện tại
+                    LocalDateTime oneYearLater = nowLocalDateTime.plusYears(1);
 
                     // Chuyển đổi LocalDateTime trở lại DateTime
                     DateTime timeMin = new DateTime(oneYearAgo.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                    DateTime timeMax = new DateTime(nowLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-
+                    DateTime timeMax = new DateTime(oneYearLater.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
                     List<String> eventStrings = new ArrayList<String>();
                     Events events = service.events().list("primary")
@@ -196,11 +245,11 @@ public class Home_Activity extends AppCompatActivity {
                             .setTimeMin(timeMin)
                             .setTimeMax(timeMax)
                             //.setOrderBy("startTime")
-                            .setSingleEvents(false)
+                            .setSingleEvents(true)
                             .execute();
 
                     items = events.getItems();
-                     calendarEvents = new ArrayList<>();
+                    calendarEvents = new ArrayList<>();
 
                     Log.d("Handles event", items.toString());
 
@@ -208,6 +257,11 @@ public class Home_Activity extends AppCompatActivity {
                         String recurrenceInfo = event.getRecurrence()!= null? event.getRecurrence().toString() : "No recurrence";
                         String location = event.getLocation()!= null? event.getLocation().toString() : "No location";
                         String creatorEmail = event.getCreator().getEmail();
+                        Duration duration = Duration.ofDays(0).ofHours(0).ofMinutes(10).ofSeconds(0);
+                        String startTime = event.getStart().getDateTime()!= null? event.getStart().getDateTime().toString() : event.getStart().getDate().toString();
+                        String endTime = event.getEnd().getDateTime()!= null? event.getEnd().getDateTime().toString() : event.getEnd().getDate().toString();
+
+
 
                         CalendarEventDTO calendarEvent = new CalendarEventDTO(
                                 event.getId(),
@@ -217,11 +271,13 @@ public class Home_Activity extends AppCompatActivity {
                                 event.getEnd().getDateTime(),
                                 recurrenceInfo,
                                 location,
+                                duration,
                                 creatorEmail
                         );
                         calendarEvents.add(calendarEvent);
 
-                        String eventInfo = String.format("%s (%s) - %s - %s - %s - %s", event.getId(), event.getSummary(), event.getLocation(), event.getDescription(), event.getStart().getDateTime(), event.getEnd().getDateTime(), recurrenceInfo, "     ");
+                        String eventInfo = String.format("%s (%s) - %s - %s - %s - %s - %s", event.getId(), event.getSummary(), event.getLocation(), event.getDescription(), startTime,endTime, recurrenceInfo);
+
                         eventStrings.add(eventInfo);
                     }
 
@@ -236,6 +292,7 @@ public class Home_Activity extends AppCompatActivity {
                     Log.d("Fetch events calendar", "IOException: " + e.getMessage());
                 }
             });
+            //executorService.shutdown();
         }
     }
 

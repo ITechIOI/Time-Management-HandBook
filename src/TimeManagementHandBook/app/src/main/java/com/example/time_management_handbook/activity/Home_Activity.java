@@ -30,9 +30,11 @@ import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.AccountDAO;
 import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
 import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
+import com.example.time_management_handbook.adapter.TaskDAO;
 import com.example.time_management_handbook.model.CalendarEventDTO;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.Prolonged_Event_DTO;
+import com.example.time_management_handbook.model.TaskDTO;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -78,6 +80,7 @@ public class Home_Activity extends AppCompatActivity {
     private ExecutorService executorServiceGetUsername = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceGetEventOfTheDay = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceGetProlongedEvent = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
     public List<Event> items;
     public List<CalendarEventDTO> calendarEvents;
     private TextView hiText;
@@ -235,6 +238,15 @@ public class Home_Activity extends AppCompatActivity {
 
        executorServiceGetProlongedEvent.shutdown();
 
+       // Get Task
+
+        executorServiceGetTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<TaskDTO> listTask = TaskDAO.getInstance().getListTask(acc.getEmail(), roundedDateTime);
+                Log.d("List task: ", listTask.toString());
+            }
+        });
 
     }
 

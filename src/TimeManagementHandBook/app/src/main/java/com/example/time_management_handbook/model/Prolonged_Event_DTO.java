@@ -3,20 +3,21 @@ package com.example.time_management_handbook.model;
 import com.google.api.client.util.DateTime;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.util.Date;
 
 public class Prolonged_Event_DTO {
     String idEvent;
     String idUser;
     String summary;
     String location;
-    DateTime startDate;
-    DateTime endDate;
+    LocalDate startDate;
+    LocalDate endDate;
     Duration notification_period;
     String description;
     int color;
-    boolean id_deleted;
 
-    public Prolonged_Event_DTO(String idEvent, String userId, String summary, String location, DateTime startDate, DateTime endDate, Duration notification_period, String description, int color, boolean id_deleted) {
+    public Prolonged_Event_DTO(String idEvent, String userId, String summary, String location, LocalDate startDate, LocalDate endDate, Duration notification_period, String description, int color) {
         this.idEvent = idEvent;
         this.idUser = userId;
         this.summary = summary;
@@ -26,7 +27,6 @@ public class Prolonged_Event_DTO {
         this.notification_period = notification_period;
         this.description = description;
         this.color = color;
-        this.id_deleted = id_deleted;
     }
 
     public String getIdEvent() {
@@ -45,11 +45,11 @@ public class Prolonged_Event_DTO {
         return location;
     }
 
-    public DateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public DateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
@@ -65,9 +65,6 @@ public class Prolonged_Event_DTO {
         return color;
     }
 
-    public boolean isId_deleted() {
-        return id_deleted;
-    }
 
     public void setIdEvent(String idEvent) {
         this.idEvent = idEvent;
@@ -85,11 +82,11 @@ public class Prolonged_Event_DTO {
         this.location = location;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -105,7 +102,18 @@ public class Prolonged_Event_DTO {
         this.color = color;
     }
 
-    public void setId_deleted(boolean id_deleted) {
-        this.id_deleted = id_deleted;
+    @Override
+    public String toString() {
+        return "Prolonged_Event_DTO{" +
+                "idEvent='" + idEvent + '\'' +
+                ", idUser='" + idUser + '\'' +
+                ", summary='" + summary + '\'' +
+                ", location='" + location + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", notification_period=" + notification_period +
+                ", description='" + description + '\'' +
+                ", color=" + color +
+                '}';
     }
 }

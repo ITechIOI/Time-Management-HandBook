@@ -28,7 +28,11 @@ import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.AccountDAO;
+import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
+import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
 import com.example.time_management_handbook.model.CalendarEventDTO;
+import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
+import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -50,7 +54,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -70,6 +76,8 @@ public class Home_Activity extends AppCompatActivity {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceGetUsername = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceGetEventOfTheDay = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceGetProlongedEvent = Executors.newSingleThreadExecutor();
     public List<Event> items;
     public List<CalendarEventDTO> calendarEvents;
     private TextView hiText;
@@ -158,9 +166,10 @@ public class Home_Activity extends AppCompatActivity {
         }
 
         // Fetch data from Google Calendar
+
         fetchEvents(acc);
 
-        // Change slogan sentence
+        // Change welcome sentence: Hi + username !
 
         hiText = findViewById(R.id.textView_Hi);
 
@@ -199,8 +208,33 @@ public class Home_Activity extends AppCompatActivity {
         // Change current date
 
         LocalDate today = LocalDate.now();
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+        Log.d("Time now: ", roundedDateTime.toString());
 
-        //
+        // Get Event Of The Day
+        executorServiceGetEventOfTheDay.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Event_Of_The_Day_DTO> listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(acc.getEmail(), roundedDateTime);
+                Log.d("List event of the day: ", listEventOfTheDay.toString());
+
+            }
+        });
+        executorServiceGetEventOfTheDay.shutdown();
+
+        // Get Prolonged Event
+
+        executorServiceGetProlongedEvent.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Prolonged_Event_DTO> listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(acc.getEmail(), today);
+                Log.d("List prolonged event of the day: ", listProlongedEvent.toString());
+            }
+        });
+
+       executorServiceGetProlongedEvent.shutdown();
+
 
     }
 

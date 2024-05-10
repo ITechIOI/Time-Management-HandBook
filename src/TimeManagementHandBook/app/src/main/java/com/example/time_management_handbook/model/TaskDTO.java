@@ -2,28 +2,30 @@ package com.example.time_management_handbook.model;
 
 import com.google.api.client.util.DateTime;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import javax.security.auth.Subject;
 
 public class TaskDTO {
     String idTask;
     String idUser;
     String name;
-    DateTime creatingTime;
-    DateTime endTime;
+    LocalDateTime creatingTime;
+    LocalDateTime endTime;
+    Duration notification_period;
     String description;
     DateTime finishedTime;
-    boolean isDeleted;
 
-
-    public TaskDTO(String idTask, String idUser, String name, DateTime creatingTime, DateTime endTime, String description, DateTime finishedTime, boolean isDeleted) {
+    public TaskDTO(String idTask, String idUser, String name, LocalDateTime creatingTime, LocalDateTime endTime, Duration notification_period, String description, DateTime finishedTime) {
         this.idTask = idTask;
         this.idUser = idUser;
         this.name = name;
         this.creatingTime = creatingTime;
         this.endTime = endTime;
+        this.notification_period = notification_period;
         this.description = description;
         this.finishedTime = finishedTime;
-        this.isDeleted = isDeleted;
     }
 
     public String getIdTask() {
@@ -38,11 +40,11 @@ public class TaskDTO {
         return name;
     }
 
-    public DateTime getCreatingTime() {
+    public LocalDateTime getCreatingTime() {
         return creatingTime;
     }
 
-    public DateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
@@ -52,10 +54,6 @@ public class TaskDTO {
 
     public DateTime getFinishedTime() {
         return finishedTime;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
     }
 
     public void setIdTask(String idTask) {
@@ -70,11 +68,11 @@ public class TaskDTO {
         this.name = name;
     }
 
-    public void setCreatingTime(DateTime creatingTime) {
+    public void setCreatingTime(LocalDateTime creatingTime) {
         this.creatingTime = creatingTime;
     }
 
-    public void setEndTime(DateTime endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -86,7 +84,11 @@ public class TaskDTO {
         this.finishedTime = finishedTime;
     }
 
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+    public Duration getNotification_period() {
+        return notification_period;
+    }
+
+    public void setNotification_period(Duration notification_period) {
+        this.notification_period = notification_period;
     }
 }

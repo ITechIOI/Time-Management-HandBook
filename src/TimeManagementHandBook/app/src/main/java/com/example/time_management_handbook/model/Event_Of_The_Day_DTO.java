@@ -3,21 +3,21 @@ package com.example.time_management_handbook.model;
 import com.google.api.client.util.DateTime;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Event_Of_The_Day_DTO {
     String idEvent;
     String idUser;
     String summary;
     String location;
-    DateTime startTime;
-    DateTime endTime;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
     Duration notification_period;
     String description;
     int color;
-    boolean id_deleted;
 
 
-    public Event_Of_The_Day_DTO(String idEvent, String idUser, String summary, String location, DateTime startTime, DateTime endTime, Duration notification_period, String description, int color, boolean id_deleted) {
+    public Event_Of_The_Day_DTO(String idEvent, String idUser, String summary, String location, LocalDateTime startTime, LocalDateTime endTime, Duration notification_period, String description, int color) {
         this.idEvent = idEvent;
         this.idUser = idUser;
         this.summary = summary;
@@ -27,7 +27,6 @@ public class Event_Of_The_Day_DTO {
         this.notification_period = notification_period;
         this.description = description;
         this.color = color;
-        this.id_deleted = id_deleted;
     }
 
     public String getIdEvent() {
@@ -46,11 +45,11 @@ public class Event_Of_The_Day_DTO {
         return location;
     }
 
-    public DateTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public DateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
@@ -66,9 +65,6 @@ public class Event_Of_The_Day_DTO {
         return color;
     }
 
-    public boolean isId_deleted() {
-        return id_deleted;
-    }
 
     public void setIdEvent(String idEvent) {
         this.idEvent = idEvent;
@@ -86,11 +82,11 @@ public class Event_Of_The_Day_DTO {
         this.location = location;
     }
 
-    public void setStartTime(DateTime startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(DateTime endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -106,7 +102,22 @@ public class Event_Of_The_Day_DTO {
         this.color = color;
     }
 
-    public void setId_deleted(boolean id_deleted) {
-        this.id_deleted = id_deleted;
+    @Override
+    public String toString() {
+        return "Event_Of_The_Day_DTO{" +
+                "idEvent='" + idEvent + '\'' +
+                ", idUser='" + idUser + '\'' +
+                ", summary='" + summary + '\'' +
+                ", location='" + location + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", notification_period=" + notification_period +
+                ", description='" + description + '\'' +
+                ", color=" + color +
+                '}';
+    }
+
+    public String getIdUser() {
+        return idUser;
     }
 }

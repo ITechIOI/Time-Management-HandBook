@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".activity.Account_Activity">
 
-    <include android:id="@+id/eToolbar"
+    <include android:id="@+id/aToolbar"
         layout="@layout/toolbarlayout"/>
 
     <com.google.android.material.imageview.ShapeableImageView

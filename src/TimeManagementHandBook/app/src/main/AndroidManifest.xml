@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-
     <uses-permission android:name="android.permission.READ_CLIPBOARD" />
     <uses-permission android:name="android.permission.WRITE_CLIPBOARD" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -23,22 +22,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TimeManagementHandBook"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.Event_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Task_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddAccount_Activity"
+            android:exported="false"
+            android:label="Add account" />
 
         <meta-data
             android:name="com.google.android.gms.vision"
-            android:value="@integer/google_play_services_version">
-        </meta-data>
-
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/YOUR_API_KEY">
-        </meta-data>
-
+            android:value="@string/YOUR_API_KEY" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="timemanagementhandbook"/>
+            android:value="timemanagementhandbook" />
 
-        <activity android:name=".activity.MainActivity"
+        <activity
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,14 +54,14 @@
         </activity>
         <activity
             android:name=".activity.AboutZEIT_Activity"
-            android:label="About ZEIT"
             android:exported="false"
+            android:label="About ZEIT"
             android:parentActivityName=".activity.Home_Activity" />
         <activity
             android:name=".activity.AddTask_Activity"
             android:exported="false"
             android:label="Add new task"
-            android:parentActivityName=".activity.Home_Activity"/>
+            android:parentActivityName=".activity.Home_Activity" />
         <activity
             android:name=".activity.AddEvent_Activity"
             android:exported="false"
@@ -63,18 +69,17 @@
             android:parentActivityName=".activity.Home_Activity" />
         <activity
             android:name=".activity.Home_Activity"
-            android:exported="false"
-            android:label="ZEIT"
-            android:enableOnBackInvokedCallback="true"/>
+            android:enableOnBackInvokedCallback="true"
+            android:exported="false" />
         <activity
             android:name=".activity.Login_Activity"
-            android:exported="false"
-            android:enableOnBackInvokedCallback="true"/>
+            android:enableOnBackInvokedCallback="true"
+            android:exported="false" />
         <activity
             android:name=".activity.Account_Activity"
             android:exported="false"
-            android:label="Add new event"
-            android:parentActivityName=".activity.Home_Activity"/>
+            android:label="Account"
+            android:parentActivityName=".activity.Home_Activity" />
     </application>
 
 </manifest>

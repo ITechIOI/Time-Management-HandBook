@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <include android:id="@+id/home_toolbar"
-        layout="@layout/toolbarlayout"/>
+        layout="@layout/toolbarlayout1" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,38 +18,38 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/frame_layout"/>
+            android:id="@+id/frame_layout">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.bottomappbar.BottomAppBar
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/bottom_app_bar"
-                android:layout_gravity="bottom"
-                app:fabCradleMargin="10dp"
-                app:fabCradleRoundedCornerRadius="50dp"
-                app:fabAlignmentMode="center">
+                android:layout_height="match_parent">
 
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:layout_width="wrap_content"
+                <com.google.android.material.bottomappbar.BottomAppBar
+                    android:id="@+id/bottom_app_bar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/bottom_nav_view"
-                    app:labelVisibilityMode="labeled"
-                    app:menu="@menu/bottom_navigation_menu"/>
-            </com.google.android.material.bottomappbar.BottomAppBar>
+                    android:layout_gravity="bottom"
+                    app:fabAlignmentMode="center"
+                    app:fabCradleMargin="10dp"
+                    app:fabCradleRoundedCornerRadius="50dp">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/float_button_add"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/blue1"
-                android:src="@drawable/ic_add"
-                app:layout_anchor="@id/bottom_app_bar"
-                />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:id="@+id/bottom_nav_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:labelVisibilityMode="labeled"
+                        app:menu="@menu/bottom_navigation_menu" />
+                </com.google.android.material.bottomappbar.BottomAppBar>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/float_button_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/blue1"
+                    android:src="@drawable/ic_add"
+                    app:layout_anchor="@id/bottom_app_bar" />
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </FrameLayout>
 
     </RelativeLayout>
 

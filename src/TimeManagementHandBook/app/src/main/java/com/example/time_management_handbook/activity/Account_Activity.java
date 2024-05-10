@@ -7,19 +7,38 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class Account_Activity extends AppCompatActivity {
+    private int backStackEntryIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+        Toolbar toolbar = findViewById(R.id.aToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        Bundle extras = getIntent().getExtras();
+        if (extras!= null) {
+            backStackEntryIndex = extras.getInt("backStackEntryIndex");
+        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         Button addAccount = findViewById(R.id.button_AddAccount);
         addAccount.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
                 BottomSheetDialog bsd = new BottomSheetDialog(Account_Activity.this);
@@ -48,5 +67,15 @@ public class Account_Activity extends AppCompatActivity {
                 startActivity(mit);
             }
         });
+    }
+    @Override
+    public void onBackPressed(){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+        {
+            getSupportFragmentManager().popBackStack();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }

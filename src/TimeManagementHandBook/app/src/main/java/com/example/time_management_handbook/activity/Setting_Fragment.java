@@ -68,14 +68,21 @@ public class Setting_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting_, container, false);
-        RelativeLayout addAccount = view.findViewById(R.id.addAccount_layout);
         TextView notification = view.findViewById(R.id.notification);
         TextView darkmode=view.findViewById(R.id.darkmode);
         ImageButton about = view.findViewById(R.id.about);
+        ImageButton addAccount = view.findViewById(R.id.addAccountButton);
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mit= new Intent(getActivity(), AboutZEIT_Activity.class);
+                startActivity(mit);
+            }
+        });
+        addAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mit= new Intent(getActivity(), AddAccount_Activity.class);
                 startActivity(mit);
             }
         });

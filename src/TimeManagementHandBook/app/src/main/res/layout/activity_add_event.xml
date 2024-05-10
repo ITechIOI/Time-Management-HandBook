@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.AddEvent_Activity"
-    android:orientation="vertical"
-    android:backgroundTint="@color/black">
+    android:orientation="vertical">
 
 
 
@@ -109,20 +108,6 @@
                                     android:id="@+id/eEndTime_dialog"/>
                         </LinearLayout>
                 </RelativeLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Subject"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginTop="5dp"/>
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginEnd="34dp"
-                    android:id="@+id/eSubject_spinner"
-                    android:background="@drawable/custom_spinner"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -151,19 +136,6 @@
                     android:text="Add notification"
                     android:id="@+id/eAddNotification_button"
                     android:background="@drawable/custom_button2"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Repeat"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginTop="5dp"/>
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginEnd="34dp"
-                    android:id="@+id/eRepeat_spinner"
-                    android:background="@drawable/custom_spinner"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

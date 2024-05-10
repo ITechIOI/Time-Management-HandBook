@@ -84,6 +84,8 @@ public class Home_Activity extends AppCompatActivity {
     public List<Event> items;
     public List<CalendarEventDTO> calendarEvents;
     private TextView hiText;
+    private FragmentManager fragmentManager;
+    private Home_Fragment homeFragment = new Home_Fragment();
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -91,7 +93,9 @@ public class Home_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar=findViewById(R.id.home_toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        fragmentManager = getSupportFragmentManager();
         // Create logo
         // getSupportActionBar().setLogo(R.drawable.google);
 
@@ -126,7 +130,7 @@ public class Home_Activity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
         FrameLayout frameLayout = findViewById(R.id.frame_layout);
-        loadFragment(new Home_Fragment());
+        loadFragment(homeFragment);
 
         /// check code in this method
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -135,7 +139,7 @@ public class Home_Activity extends AppCompatActivity {
 
                 int itemID = item.getItemId();
                 if (itemID == R.id.nav_home){
-                    loadFragment(new Home_Fragment());
+                    loadFragment(homeFragment);
                 } else if (itemID == R.id.nav_calendar) {
                     loadFragment(new CalendarMonth_Fragment());
                 } else if (itemID == R.id.nav_task) {
@@ -182,14 +186,12 @@ public class Home_Activity extends AppCompatActivity {
                 try {
                     final String username = AccountDAO.getInstance().getUsername(email);
 
-                    if (username != null) {
+                    if (username != "") {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (hiText != null) {
                                     Log.d("Username get: ", username);
-                                    hiText.setText(username);
-                                }
+                                    homeFragment.setHiTextView(username);
                             }
                         });
                     }
@@ -221,7 +223,6 @@ public class Home_Activity extends AppCompatActivity {
             public void run() {
                 List<Event_Of_The_Day_DTO> listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(acc.getEmail(), roundedDateTime);
                 Log.d("List event of the day: ", listEventOfTheDay.toString());
-
             }
         });
         executorServiceGetEventOfTheDay.shutdown();

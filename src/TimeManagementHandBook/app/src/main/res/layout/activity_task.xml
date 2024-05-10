@@ -4,11 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AddTask_Activity"
+    tools:context=".activity.Task_Activity"
     android:orientation="vertical">
-
-
-    <include android:id="@+id/tToolbar"
+    <include android:id="@+id/taToolbar"
         layout="@layout/toolbarlayout"/>
 
     <LinearLayout
@@ -23,7 +21,7 @@
             android:text="Name" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tName_textInput"
+            android:id="@+id/taName_textInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
@@ -44,17 +42,19 @@
             android:layout_marginEnd="34dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tDeadline_textInput"
+                android:id="@+id/taDeadline_textInput"
                 android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_textinputlayout"/>
 
             <ImageView
-                android:id="@+id/tDeadline_dialog"
+                android:id="@+id/taDeadline_dialog"
                 android:layout_width="34dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_calendar" />
         </LinearLayout>
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             android:text="Color" />
 
         <include layout="@layout/custom_radiobutton"
-            android:id="@+id/tColor_radio"/>
+            android:id="@+id/taColor_radio"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
             android:text="Notification" />
 
         <LinearLayout
-            android:id="@+id/tNotification_Layout"
+            android:id="@+id/taNotification_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
@@ -81,7 +81,7 @@
             android:orientation="horizontal" />
 
         <Button
-            android:id="@+id/tAddNotification_button"
+            android:id="@+id/taAddNotification_button"
             android:layout_width="150dp"
             android:layout_height="38dp"
             android:layout_marginStart="34dp"
@@ -97,7 +97,7 @@
             android:text="Description" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tDescription_textInput"
+            android:id="@+id/taDescription_textInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
@@ -105,15 +105,16 @@
             android:background="@drawable/custom_textinputlayout"/>
 
         <Button
-            android:id="@+id/tCreate_button"
+            android:id="@+id/taSave_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="34dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="34dp"
             android:background="@drawable/custom_button1"
-            android:text="Create" />
+            android:text="Save" />
 
     </LinearLayout>
+
 
 </LinearLayout>

@@ -38,15 +38,7 @@ public class AddTask_Activity extends AppCompatActivity {
                 openDateTimeDialog();
             }
         });
-        Spinner subjectSpinner = findViewById(R.id.tSubject_spinner);
-        ArrayList<String> subjectList = new ArrayList<>();
-        subjectList.add("Work");
-        subjectList.add("Study");
-        subjectList.add("Entertain");
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, subjectList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        subjectSpinner.setAdapter(adapter);
+        
     }
     private void openDateTimeDialog()
     {

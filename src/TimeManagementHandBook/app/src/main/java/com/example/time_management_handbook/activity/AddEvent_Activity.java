@@ -55,18 +55,6 @@ public class AddEvent_Activity extends AppCompatActivity {
                 openTimeDialog(R.id.eEndTime_textInput);
             }
         });
-        Spinner subjectSpinner = findViewById(R.id.eSubject_spinner);
-        ArrayList<String> subjectList = new ArrayList<>();
-        subjectList.add("Work");
-        subjectList.add("Study");
-        subjectList.add("Entertain");
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, subjectList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        subjectSpinner.setAdapter(adapter);
-
-
-
     }
     private void openDateDialog()
     {

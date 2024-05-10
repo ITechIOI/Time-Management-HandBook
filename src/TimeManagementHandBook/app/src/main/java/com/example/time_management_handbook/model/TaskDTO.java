@@ -11,22 +11,27 @@ public class TaskDTO {
     String idTask;
     String idUser;
     String name;
+    String location;
     LocalDateTime creatingTime;
     LocalDateTime endTime;
     Duration notification_period;
     String description;
-    DateTime finishedTime;
+    LocalDateTime finishedTime;
+    int color;
 
-    public TaskDTO(String idTask, String idUser, String name, LocalDateTime creatingTime, LocalDateTime endTime, Duration notification_period, String description, DateTime finishedTime) {
+    public TaskDTO(String idTask, String idUser, String name, String location, LocalDateTime creatingTime, LocalDateTime endTime, Duration notification_period, String description, LocalDateTime finishedTime, int color) {
         this.idTask = idTask;
         this.idUser = idUser;
         this.name = name;
+        this.location = location;
         this.creatingTime = creatingTime;
         this.endTime = endTime;
         this.notification_period = notification_period;
         this.description = description;
         this.finishedTime = finishedTime;
+        this.color = color;
     }
+
 
     public String getIdTask() {
         return idTask;
@@ -52,7 +57,7 @@ public class TaskDTO {
         return description;
     }
 
-    public DateTime getFinishedTime() {
+    public LocalDateTime getFinishedTime() {
         return finishedTime;
     }
 
@@ -80,7 +85,7 @@ public class TaskDTO {
         this.description = description;
     }
 
-    public void setFinishedTime(DateTime finishedTime) {
+    public void setFinishedTime(LocalDateTime finishedTime) {
         this.finishedTime = finishedTime;
     }
 
@@ -90,5 +95,37 @@ public class TaskDTO {
 
     public void setNotification_period(Duration notification_period) {
         this.notification_period = notification_period;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskDTO{" +
+                "idTask='" + idTask + '\'' +
+                ", idUser='" + idUser + '\'' +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", creatingTime=" + creatingTime +
+                ", endTime=" + endTime +
+                ", notification_period=" + notification_period +
+                ", description='" + description + '\'' +
+                ", finishedTime=" + finishedTime +
+                ", color=" + color +
+                '}';
     }
 }

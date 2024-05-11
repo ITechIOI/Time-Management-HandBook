@@ -70,6 +70,8 @@ public class Home_Activity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_SIGN_IN = 1000;
     private static final int REQUEST_AUTHORIZATION = 1001;
+    public static String username;
+    public static LocalDate today;
     GoogleSignInClient mGoogleSignInClient;
     GoogleSignInAccount acc;
 
@@ -81,6 +83,7 @@ public class Home_Activity extends AppCompatActivity {
     private ExecutorService executorServiceGetEventOfTheDay = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceGetProlongedEvent = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
     public List<Event> items;
     public List<CalendarEventDTO> calendarEvents;
     private TextView hiText;
@@ -88,6 +91,7 @@ public class Home_Activity extends AppCompatActivity {
     private Home_Fragment homeFragment = new Home_Fragment();
 
     @SuppressLint("NonConstantResourceId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,6 +161,7 @@ public class Home_Activity extends AppCompatActivity {
         acc = GoogleSignIn.getLastSignedInAccount(this);
 
         final String email = acc.getEmail();
+        username = acc.getDisplayName();
         executorServiceInsertAccount.execute(() -> {
             int count_account = AccountDAO.getInstance().InsertNewAccount(email);
             Log.d("Insert new account: ", String.valueOf(count_account));
@@ -180,28 +185,28 @@ public class Home_Activity extends AppCompatActivity {
 
         hiText = findViewById(R.id.textView_Hi);
 
-        executorServiceGetUsername.execute(new Runnable() {
+        executorServiceHandle.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    final String username = AccountDAO.getInstance().getUsername(email);
-
-                    if (username != "") {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                    Log.d("Username get: ", username);
-                                    homeFragment.setHiTextView(username);
-                            }
-                        });
-                    }
-                } catch (Exception e) {
-                    Log.e("Error get username", "Error fetching username", e);
-                }
+                LocalDateTime start = LocalDateTime.now();
+                LocalDateTime end = LocalDateTime.now();
+                Event_Of_The_Day_DTO event = new Event_Of_The_Day_DTO(null,
+                        null, "Khong co gi", "Truong", start, end,
+                        Duration.parse("P1D"), "Khong co gi", 1
+                        );
+                int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(acc.getEmail(), event);
+                Log.d("Insert new Event", String.valueOf(rowEffect));
             }
         });
 
-        executorServiceGetUsername.shutdown();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        homeFragment.setHiTextView(username + "!");
+
         try {
             if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {
                 executorServiceGetUsername.shutdownNow();
@@ -212,7 +217,7 @@ public class Home_Activity extends AppCompatActivity {
 
         // Change current date
 
-        LocalDate today = LocalDate.now();
+        today = LocalDate.now();
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
         Log.d("Time now: ", roundedDateTime.toString());
@@ -237,9 +242,9 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
 
-       executorServiceGetProlongedEvent.shutdown();
+        executorServiceGetProlongedEvent.shutdown();
 
-       // Get Task
+        // Get Task
 
         executorServiceGetTask.execute(new Runnable() {
             @Override
@@ -248,7 +253,6 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List task: ", listTask.toString());
             }
         });
-
     }
 
     public void fetchEvents(GoogleSignInAccount acc) {

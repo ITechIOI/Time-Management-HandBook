@@ -6,12 +6,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.time_management_handbook.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +38,8 @@ public class Home_Fragment extends Fragment {
     private String mParam2;
     TextView hi_textview;
     TextView currentDate_textview;
+    String formattedDate;
+    DayOfWeek dayOfWeek;
 
     public Home_Fragment() {
         // Required empty public constructor
@@ -67,8 +77,20 @@ public class Home_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
+
+        LocalDate today =  LocalDate.now();
+        String formattedDate = reformatDate(today.toString(), "yyyy-MM-dd", "dd-MM-yyyy");
+
+        dayOfWeek = today.getDayOfWeek();
+
         hi_textview=view.findViewById(R.id.textView_Hi);
         currentDate_textview = view.findViewById(R.id.textView_CurrentDate);
+        try {
+            currentDate_textview.setText( dayOfWeek.toString() + ", " + formattedDate);
+        } catch (Exception e) {
+            Log.d("Get today: ", e.getMessage());
+        }
+
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, this);
@@ -76,6 +98,19 @@ public class Home_Fragment extends Fragment {
         transaction.commit();
         return view;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        hi_textview.setText("Hi, " + Home_Activity.username + "!");
+        try {
+            currentDate_textview.setText(dayOfWeek.toString() + ", " + formattedDate.toString());
+        } catch(Exception e) {
+            Log.d("Get today: ", e.getMessage());
+        }
+    }
+
     public void setHiTextView(String username)
     {
         hi_textview.setText("Hi, "+username);
@@ -84,5 +119,12 @@ public class Home_Fragment extends Fragment {
     public void setCurrentDateTextView(String currentDate)
     {
         currentDate_textview.setText(currentDate);
+    }
+
+    public static String reformatDate(String date, String originalFormat, String targetFormat) {
+        DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern(originalFormat);
+        DateTimeFormatter targetFormatter = DateTimeFormatter.ofPattern(targetFormat);
+        LocalDate dateObj = LocalDate.parse(date, originalFormatter);
+        return dateObj.format(targetFormatter);
     }
 }

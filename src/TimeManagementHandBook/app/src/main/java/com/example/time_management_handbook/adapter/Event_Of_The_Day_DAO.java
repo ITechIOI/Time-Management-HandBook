@@ -90,15 +90,18 @@ public class Event_Of_The_Day_DAO {
         String description = event.getDescription();
         int color = event.getColor();
 
-        LocalDate startDate = start.toLocalDate();
-        LocalTime startTime = start.toLocalTime();
+        LocalDateTime startRoundedDateTime = start.with(LocalTime.from(start.toLocalTime().withSecond(start.getSecond()).withNano(0)));
+        LocalDate startDate = startRoundedDateTime.toLocalDate();
+        LocalTime startTime = startRoundedDateTime.toLocalTime();
         String start_String = startDate.toString() + " " + startTime.toString();
 
-        LocalDate endDate = end.toLocalDate();
-        LocalTime endTime = end.toLocalTime();
+        LocalDateTime endRoundedDateTime = end.with(LocalTime.from(end.toLocalTime().withSecond(end.getSecond()).withNano(0)));
+        LocalDate endDate = endRoundedDateTime.toLocalDate();
+        LocalTime endTime = endRoundedDateTime.toLocalTime();
         String end_String = endDate.toString() + " " + endTime.toString();
+        Log.d("Time Locate: ", start_String + "       " + end_String);
 
-        String query = "INSERT_NEW_EVENT_OF_THE_DAY '" + email + "','" +
+        String query = "EXEC INSERT_NEW_EVENT_OF_THE_DAY '" + email + "','" +
                 summary + "','" + location + "','" + start_String + "','" + end_String + "','" +
                 duration + "','" + description + "'," + color ;
         try {

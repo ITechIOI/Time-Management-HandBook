@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.DataProvider;
+import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -21,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +30,8 @@ import java.util.concurrent.Executors;
 public class Login_Activity extends AppCompatActivity {
     private Button loginButton;
     ExecutorService executorService;
+    private ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
+    public static LocalDate today;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +45,12 @@ public class Login_Activity extends AppCompatActivity {
                 // Sử dụng GoogleSignIn.getClient để khởi tạo GoogleSignInClient
                 Intent intent = GoogleAccount.getInstance(Login_Activity.this).SignInByGoogleAccount(Login_Activity.this);
                 startActivityForResult(intent, 1000);
+
+
             }
         });
+
+        today = LocalDate.now();
 
         executorService = Executors.newSingleThreadExecutor();
 

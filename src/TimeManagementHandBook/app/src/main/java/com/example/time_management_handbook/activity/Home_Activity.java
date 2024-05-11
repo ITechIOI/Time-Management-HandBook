@@ -75,8 +75,6 @@ public class Home_Activity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     GoogleSignInAccount acc;
 
-    List<CalendarEventDTO> events;
-
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceGetUsername = Executors.newSingleThreadExecutor();
@@ -89,6 +87,9 @@ public class Home_Activity extends AppCompatActivity {
     private TextView hiText;
     private FragmentManager fragmentManager;
     private Home_Fragment homeFragment = new Home_Fragment();
+    public static List<Event_Of_The_Day_DTO> listEventOfTheDay;
+    public static List<Prolonged_Event_DTO> listProlongedEvent;
+    public static List<TaskDTO> listTask;
 
     @SuppressLint("NonConstantResourceId")
 
@@ -226,7 +227,7 @@ public class Home_Activity extends AppCompatActivity {
         executorServiceGetEventOfTheDay.execute(new Runnable() {
             @Override
             public void run() {
-                List<Event_Of_The_Day_DTO> listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(acc.getEmail(), roundedDateTime);
+                listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(acc.getEmail(), roundedDateTime);
                 Log.d("List event of the day: ", listEventOfTheDay.toString());
             }
         });
@@ -237,7 +238,7 @@ public class Home_Activity extends AppCompatActivity {
         executorServiceGetProlongedEvent.execute(new Runnable() {
             @Override
             public void run() {
-                List<Prolonged_Event_DTO> listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(acc.getEmail(), today);
+                listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(acc.getEmail(), today);
                 Log.d("List prolonged event of the day: ", listProlongedEvent.toString());
             }
         });
@@ -249,7 +250,7 @@ public class Home_Activity extends AppCompatActivity {
         executorServiceGetTask.execute(new Runnable() {
             @Override
             public void run() {
-                List<TaskDTO> listTask = TaskDAO.getInstance().getListTask(acc.getEmail(), roundedDateTime);
+                listTask = TaskDAO.getInstance().getListTask(acc.getEmail(), roundedDateTime);
                 Log.d("List task: ", listTask.toString());
             }
         });

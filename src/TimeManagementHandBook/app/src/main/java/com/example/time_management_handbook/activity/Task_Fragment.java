@@ -1,5 +1,6 @@
 package com.example.time_management_handbook.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -45,6 +46,7 @@ public class Task_Fragment extends Fragment {
     SearchView searchView;
     private List<TaskDTO> listTaskByCurrentDate;
 
+
     ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
     ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
 
@@ -84,11 +86,14 @@ public class Task_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task_, container, false);
-        taskAdapter = new TaskDAO(Home_Activity.listTask,getContext());
         rcv = view.findViewById(R.id.task_rcv);
+        searchView = view.findViewById(R.id.task_searchview);
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+        listTaskByCurrentDate = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail(), roundedDateTime);
+        taskAdapter = new TaskDAO(listTaskByCurrentDate,getContext());
         rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv.setAdapter(taskAdapter);
-        searchView = view.findViewById(R.id.task_searchview);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -104,10 +109,9 @@ public class Task_Fragment extends Fragment {
         });
         return view;
     }
-
     private void filterTask(String newText) {
         List<TaskDTO> filterTask = new ArrayList<>();
-        for (TaskDTO item : Home_Activity.listTask){
+        for (TaskDTO item : listTaskByCurrentDate){
             if (item.getName().toLowerCase().contains(newText.toLowerCase())){
                 filterTask.add(item);
             }

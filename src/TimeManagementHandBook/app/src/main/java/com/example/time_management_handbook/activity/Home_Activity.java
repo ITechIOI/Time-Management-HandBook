@@ -73,7 +73,7 @@ public class Home_Activity extends AppCompatActivity {
     public static String username;
     public static LocalDate today;
     GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInAccount acc;
+    public static GoogleSignInAccount acc;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();

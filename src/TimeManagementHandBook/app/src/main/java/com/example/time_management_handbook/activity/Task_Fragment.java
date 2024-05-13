@@ -2,13 +2,23 @@ package com.example.time_management_handbook.activity;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.adapter.TaskDAO;
+import com.example.time_management_handbook.model.TaskDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +35,9 @@ public class Task_Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    TaskDAO taskAdapter;
+    RecyclerView rcv;
+    SearchView searchView;
 
     public Task_Fragment() {
         // Required empty public constructor
@@ -61,6 +74,40 @@ public class Task_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task_, container, false);
+        View view = inflater.inflate(R.layout.fragment_task_, container, false);
+        taskAdapter = new TaskDAO(Home_Activity.listTask,getContext());
+        rcv = view.findViewById(R.id.task_rcv);
+        rcv.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcv.setAdapter(taskAdapter);
+        searchView = view.findViewById(R.id.task_searchview);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterTask(newText);
+                return true;
+            }
+        });
+        return view;
+    }
+
+    private void filterTask(String newText) {
+        List<TaskDTO> filterTask = new ArrayList<>();
+        for (TaskDTO item : Home_Activity.listTask){
+            if (item.getName().toLowerCase().contains(newText.toLowerCase())){
+                filterTask.add(item);
+            }
+        }
+        if (filterTask.isEmpty()){
+            Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            taskAdapter.setFilterList(filterTask);
+        }
     }
 }

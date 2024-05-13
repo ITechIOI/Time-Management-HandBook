@@ -58,6 +58,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Location"
+            android:layout_marginStart="34dp"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:id="@+id/tLocation_textInput"
+            android:background="@drawable/custom_textinputlayout"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginTop="5dp"
             android:text="Color" />

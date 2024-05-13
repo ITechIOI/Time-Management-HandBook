@@ -2,6 +2,7 @@ package com.example.time_management_handbook.adapter;
 
 import android.util.Log;
 
+import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.google.api.client.util.DateTime;
 
@@ -62,15 +63,81 @@ public class Prolonged_Event_DAO {
 
         return listEvents;
     }
-}
 
-    /*String idEvent;
-    String idUser;
-    String summary;
-    String location;
-    Date startDate;
-    Date endDate;
-    Duration notification_period;
-    String description;
-    int color;
-    boolean id_deleted;*/
+    public int InsertNewProlongedEvent(String email, Prolonged_Event_DTO event) {
+        int rowEffect = -1;
+
+        String summary = event.getSummary();
+        String location = event.getLocation();
+        LocalDate start = event.getStartDate();
+        LocalDate end = event.getEndDate();
+        Duration duration = event.getNotification_period();
+        String description = event.getDescription();
+        int color = event.getColor();
+
+        String query = "EXEC USP_INSERT_NEW_PROLONGED_OF_THE_DAY '" + email + "','" +
+                summary + "','" + location + "','" + start + "','" + end + "','" +
+                duration + "','" + description + "'," + color ;
+
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            Log.d("Insert new prolonged event: ", String.valueOf(rowEffect));
+        }catch (Exception e) {
+            Log.d("Insert new prolonged event: ", e.getMessage());
+        }
+
+        return rowEffect;
+    }
+
+    public int deleteProlongedEvent(String email, Prolonged_Event_DTO event) {
+        int rowEffect = -1;
+
+        String summary = event.getSummary();
+        LocalDate start = event.getStartDate();
+        LocalDate end = event.getEndDate();
+
+        String query = "EXEC USP_DELETE_PROLONGED_EVENT '" + email +
+                "','" + summary + "','" + start + "','" + end + "'" ;
+
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            // Log.d("Delete event of the day: ", query);
+            Log.d("Delete prolonged event: ", String.valueOf(rowEffect));
+        }catch (Exception e) {
+            Log.d("Delete prolonged event: ", e.getMessage());
+        }
+
+        return rowEffect;
+    }
+
+    public int UpdateProlongedEvent(Prolonged_Event_DTO  event) {
+        int rowEffect = -1 ;
+
+        String idEvent = event.getIdEvent();
+        String summary = event.getSummary();
+        String location = event.getLocation();
+        LocalDate start = event.getStartDate();
+        LocalDate end = event.getEndDate();
+        Duration notification = event.getNotification_period();
+        String description = event.getDescription();
+        int color = event.getColor();
+
+        String query = "EXEC USP_UPDATE_PROLONGED_EVENT '" + idEvent + "','" +
+                summary + "','" + location + "','" + start + "','" +
+                end + "','" + notification.toString() + "','" +
+                description +  "'," + color;
+
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            Log.d("Update event of the day: ", String.valueOf(rowEffect));
+            //Log.d("Update event of the day: ", query);
+        }catch (Exception e) {
+            Log.d("Update event of the day: ", e.getMessage());
+        }
+
+        return rowEffect;
+    }
+
+
+
+}

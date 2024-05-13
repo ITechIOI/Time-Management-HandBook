@@ -105,13 +105,70 @@ public class Event_Of_The_Day_DAO {
                 summary + "','" + location + "','" + start_String + "','" + end_String + "','" +
                 duration + "','" + description + "'," + color ;
         try {
-            int rowEffect = DataProvider.getInstance().executeNonQuery(query);
-            Log.d("Insert new event of the day: ", String.valueOf(rowEffect));
+            count = DataProvider.getInstance().executeNonQuery(query);
+            Log.d("Insert new event of the day: ", String.valueOf(count));
         }catch (Exception e) {
             Log.d("Insert new event of the day: ", e.getMessage());
         }
 
         return count;
+    }
+
+    public int deleteEventOfTheDay(String email, Event_Of_The_Day_DTO event) {
+        int rowEffect = -1;
+
+        String summary = event.getSummary();
+        LocalDateTime start = event.getStartTime();
+        LocalDateTime end = event.getEndTime();
+
+        String start_String = start.toString().replace("T", " ");
+        String end_String = end.toString().replace("T", " ");
+
+        String query = "EXEC USP_DELETE_EVENT_OF_THE_DAY '" + email +
+                "','" + summary + "','" + start_String + "','" + end_String + "'" ;
+
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            //Log.d("Delete event of the day: ", String.valueOf(rowEffect));
+            Log.d("Delete event of the day: ", String.valueOf(rowEffect));
+        }catch (Exception e) {
+            Log.d("Delete event of the day: ", e.getMessage());
+        }
+
+        return rowEffect;
+    }
+
+    public int UpdateEventOfTheDay(Event_Of_The_Day_DTO event) {
+        int rowEffect = -1;
+
+        String idEvent = event.getIdEvent();
+        String summary = event.getSummary();
+        String location = event.getLocation();
+        LocalDateTime start = event.getStartTime();
+        LocalDateTime end = event.getEndTime();
+        Duration notification = event.getNotification_period();
+        String description = event.getDescription();
+        int color = event.getColor();
+
+        LocalDateTime startRoundedDateTime = start.with(LocalTime.from(start.toLocalTime().withSecond(start.getSecond()).withNano(0)));
+        String startTime = startRoundedDateTime.toString().replace("T", " ");
+        LocalDateTime endRoundedDateTime = end.with(LocalTime.from(end.toLocalTime().withSecond(end.getSecond()).withNano(0)));
+        String endTime = endRoundedDateTime.toString().replace("T", " ");
+
+        String query = "EXEC USP_UPDATE_EVENT_OF_THE_DAY '" + idEvent + "','" +
+                summary + "','" + location + "','" + startTime + "','" +
+                endTime + "','" + notification.toString() + "','" +
+                description +  "'," + color;
+
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            //Log.d("Update event of the day: ", String.valueOf(rowEffect));
+            Log.d("Update event of the day: ", query);
+        }catch (Exception e) {
+            Log.d("Update event of the day: ", e.getMessage());
+        }
+
+        return rowEffect;
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,12 @@ import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.TaskDAO;
 import com.example.time_management_handbook.model.TaskDTO;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +43,10 @@ public class Task_Fragment extends Fragment {
     TaskDAO taskAdapter;
     RecyclerView rcv;
     SearchView searchView;
+    private List<TaskDTO> listTaskByCurrentDate;
+
+    ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
+    ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
 
     public Task_Fragment() {
         // Required empty public constructor
@@ -109,5 +118,35 @@ public class Task_Fragment extends Fragment {
         else {
             taskAdapter.setFilterList(filterTask);
         }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+
+        // Get list task by name of task and current date
+        executorServiceHandle.execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                List<TaskDTO> listTaskByName = TaskDAO.getInstance().getListTaskByName(Home_Activity.acc.getEmail().toString(), "tESt Dữ", roundedDateTime);
+                Log.d("List task by name: ", listTaskByName.toString());
+
+            }
+        });
+
+        // Get list task by current date
+
+        executorServiceGetTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                listTaskByCurrentDate = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail(), roundedDateTime);
+                Log.d("List task: ", listTaskByCurrentDate.toString());
+            }
+        });
+
     }
 }

@@ -177,6 +177,60 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder>{
 
         return  listTasks;
     }
+
+    // Tìm kiếm Task thông qua tên: không phân biệt hoa thường
+    public List<TaskDTO> getListTaskByName(String email, String nameTask, LocalDateTime timeNow) {
+        List<TaskDTO> listTask = new ArrayList<>();
+
+        List<TaskDTO> listTasks = new ArrayList<>();
+        LocalDate date = timeNow.toLocalDate();
+        LocalTime time = timeNow.toLocalTime();
+        String dateTimeNow = date.toString() + " " + time.toString();
+
+        String query = "EXEC GET_LIST_TASK_BY_NAME '" + email + "', N'" + nameTask + "','" + dateTimeNow + "'";
+        Log.d("Get list task by name: ", query);
+        try {
+            ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
+            if (resultSet != null) {
+                while (resultSet.next()) {
+
+                    String idTask = resultSet.getString(1);
+                    String idUser = resultSet.getString(2);
+                    String name = resultSet.getString(3);
+                    String location = resultSet.getString(4);
+
+                    Timestamp creatingTime = resultSet.getTimestamp(5);
+                    ZonedDateTime zonedDateTimeStart = creatingTime.toInstant().atZone(ZoneId.systemDefault());
+                    LocalDateTime creating = zonedDateTimeStart.toLocalDateTime();
+
+                    Timestamp endTime = resultSet.getTimestamp(6);
+                    ZonedDateTime zonedDateTimeEnd = endTime.toInstant().atZone(ZoneId.systemDefault());
+                    LocalDateTime end = zonedDateTimeEnd.toLocalDateTime();
+
+                    Duration notification_period = Duration.parse(resultSet.getString(7));
+                    String description = resultSet.getString(8);
+
+                    Timestamp finishTime = resultSet.getTimestamp(5);
+                    ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
+                    LocalDateTime finish = zonedDateTimeFinish.toLocalDateTime();
+
+                    int color = resultSet.getInt(10);
+
+                    TaskDTO task = new TaskDTO(idTask, idUser, name, location, creating, end,
+                            notification_period, description, finish, color);
+                    listTask.add(task);
+
+                    Log.d("Each task: ", task.toString());
+
+                }
+            }
+        } catch ( Exception e) {
+            Log.d("Get list task: ", e.getMessage());
+        }
+
+        return listTask;
+    }
+
     public int InsertNewTask (String email, TaskDTO event) {
         int rowEffect = -1;
 
@@ -273,7 +327,6 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder>{
 
         return rowEffect;
     }
-
 
 }
 

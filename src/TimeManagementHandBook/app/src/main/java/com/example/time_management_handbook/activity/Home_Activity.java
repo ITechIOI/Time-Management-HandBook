@@ -260,6 +260,8 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List task: ", listTask.toString());
             }
         });
+
+
     }
 
     public void fetchEvents(GoogleSignInAccount acc) {

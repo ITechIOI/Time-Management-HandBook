@@ -1,8 +1,12 @@
 package com.example.time_management_handbook.activity;
 
+import static com.example.time_management_handbook.activity.Home_Activity.listEventOfTheDay;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -10,16 +14,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.model.CustomGridAdapter;
+import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,6 +89,21 @@ public class Home_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
 
+
+        List<Event_Of_The_Day_DTO> events = listEventOfTheDay;
+        final GridView gridView = (GridView) view.findViewById(R.id.gridView_home);
+        gridView.setAdapter(new CustomGridAdapter(events, getActivity().getApplicationContext()));
+
+        // When user clicks on Griditem
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
+                Intent mit= new Intent(getActivity(), Event_Activity.class);
+                startActivity(mit);
+            }
+        });
+
+
         LocalDate today =  LocalDate.now();
         String formattedDate = reformatDate(today.toString(), "yyyy-MM-dd", "dd-MM-yyyy");
 
@@ -113,7 +139,7 @@ public class Home_Fragment extends Fragment {
 
     public void setHiTextView(String username)
     {
-        hi_textview.setText("Hi, "+username);
+        hi_textview.setText("Hi, " + username + "!");
     }
 
     public void setCurrentDateTextView(String currentDate)

@@ -2,12 +2,13 @@ package com.example.time_management_handbook.model;
 
 import com.google.api.client.util.DateTime;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 import javax.security.auth.Subject;
 
-public class TaskDTO {
+public class TaskDTO implements Serializable {
     String idTask;
     String idUser;
     String name;

@@ -4,10 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
+import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
+import com.example.time_management_handbook.adapter.TaskDAO;
+import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
+import com.example.time_management_handbook.model.Prolonged_Event_DTO;
+import com.example.time_management_handbook.model.TaskDTO;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,4 +76,27 @@ public class CalendarMonth_Fragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_calendar_month_, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        CalendarView calendarView = view.findViewById(R.id.calendarView);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                // Xử lý sự kiện click vào một ngày
+                Toast.makeText(getContext(), "Ngày được chọn: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
+
+                LocalDate todayDate = LocalDate.of(year, month, dayOfMonth);
+                LocalDateTime localTime = todayDate.atStartOfDay();
+
+                List<TaskDTO> lisTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), localTime);
+                List<Event_Of_The_Day_DTO> eventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), localTime);
+                List<Prolonged_Event_DTO> prolongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), todayDate);
+
+            }
+        });
+    }
+
 }

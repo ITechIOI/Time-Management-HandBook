@@ -27,7 +27,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.Task_Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".activity.Home_Activity"/>
         <activity
             android:name=".activity.AddAccount_Activity"
             android:exported="false"

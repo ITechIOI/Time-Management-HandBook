@@ -58,6 +58,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,7 +75,7 @@ public class Home_Activity extends AppCompatActivity {
     public static String username;
     public static LocalDate today;
     GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInAccount acc;
+    public static GoogleSignInAccount acc;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();
@@ -82,6 +84,9 @@ public class Home_Activity extends AppCompatActivity {
     private ExecutorService executorServiceGetProlongedEvent = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
+    private ExecutorService executeServiceInsertEventOfTheDayFetchData = Executors.newSingleThreadExecutor();
+    private ExecutorService executeServiceInsertProlongedEventFetchData = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceFetchData = Executors.newSingleThreadExecutor();
     public List<Event> items;
     public List<CalendarEventDTO> calendarEvents;
     private TextView hiText;
@@ -169,6 +174,21 @@ public class Home_Activity extends AppCompatActivity {
         });
         executorServiceInsertAccount.shutdown();
 
+        // Fetch data from google calendar
+
+        if ( ! AccountDAO.getInstance().CheckExistEmail(acc.getEmail().toString())) {
+            // Fetch data from Google Calendar
+
+            executorServiceFetchData.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchEvents(acc);
+                }
+            });
+
+            executorServiceFetchData.shutdown();
+        }
+
         if (acc == null) {
 
             Intent signInIntent = GoogleAccount.getInstance(Home_Activity.this).SignInByGoogleAccount(Home_Activity.this);
@@ -185,20 +205,6 @@ public class Home_Activity extends AppCompatActivity {
         // Change welcome sentence: Hi + username !
 
         hiText = findViewById(R.id.textView_Hi);
-
-        executorServiceHandle.execute(new Runnable() {
-            @Override
-            public void run() {
-                LocalDateTime start = LocalDateTime.now();
-                LocalDateTime end = LocalDateTime.now();
-                Event_Of_The_Day_DTO event = new Event_Of_The_Day_DTO(null,
-                        null, "Khong co gi", "Truong", start, end,
-                        Duration.parse("P1D"), "Khong co gi", 1
-                        );
-                int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(acc.getEmail(), event);
-                Log.d("Insert new Event", String.valueOf(rowEffect));
-            }
-        });
 
     }
 
@@ -254,11 +260,12 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List task: ", listTask.toString());
             }
         });
+
+
     }
 
     public void fetchEvents(GoogleSignInAccount acc) {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR)!= PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR}, REQUEST_CODE_SIGN_IN);
         } else {
             executorService.execute(() -> {
@@ -273,12 +280,6 @@ public class Home_Activity extends AppCompatActivity {
                             credential)
                             .setApplicationName("Time Management")
                             .build();
-
-                    /*LocalDateTime nowLocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
-                    LocalDateTime oneYearLaterLocalDateTime = nowLocalDateTime.plus(Period.ofYears(1));
-
-                    DateTime now = new DateTime(nowLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                    DateTime oneYearLater = new DateTime(oneYearLaterLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());*/
 
                     LocalDateTime nowLocalDateTime = LocalDateTime.now();
 
@@ -312,8 +313,8 @@ public class Home_Activity extends AppCompatActivity {
                         Duration duration = Duration.ofDays(0).ofHours(0).ofMinutes(10).ofSeconds(0);
                         String startTime = event.getStart().getDateTime()!= null? event.getStart().getDateTime().toString() : event.getStart().getDate().toString();
                         String endTime = event.getEnd().getDateTime()!= null? event.getEnd().getDateTime().toString() : event.getEnd().getDate().toString();
-
-
+                        String description = event.getDescription();
+                        String summary = event.getSummary();
 
                         CalendarEventDTO calendarEvent = new CalendarEventDTO(
                                 event.getId(),
@@ -326,25 +327,75 @@ public class Home_Activity extends AppCompatActivity {
                                 duration,
                                 creatorEmail
                         );
+
+                        if (startTime.length() > 10) {
+                            Log.d("Start time calendar: ", startTime + "  " + endTime);
+
+                            LocalDateTime start = null, end = null;
+                            try {
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                                start = LocalDateTime.parse(startTime, formatter);
+                                end = LocalDateTime.parse(endTime, formatter);
+                            } catch (DateTimeParseException e) {
+                                Log.d("Parse date: ", e.getMessage());
+                            }
+                            Log.d("Calendar Date: ", start.toString() + " " + end.toString());
+
+                            Event_Of_The_Day_DTO eventOfTheDay = new Event_Of_The_Day_DTO(null,
+                                    null, summary, location, start, end, duration, description, 1);
+
+                            executeServiceInsertEventOfTheDayFetchData.execute(() -> {
+                                try {
+                                    int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(acc.getEmail().toString(), eventOfTheDay);
+                                    if (rowEffect > 0) {
+                                        Log.d("Insert event of the day from google calendar", "success");
+                                    } else {
+                                        Log.d("Insert event of the day from google calendar", "failed");
+                                    }
+                                } catch (Exception e) {
+                                    Log.d("Insert event of the day from google calendar", e.getMessage());
+                                }
+                            });
+                        } else {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                            LocalDate start = LocalDate.parse(startTime, formatter);
+                            LocalDate end = LocalDate.parse(endTime, formatter);
+
+                            Prolonged_Event_DTO prolongedEvent = new Prolonged_Event_DTO(null, null,
+                                    summary, location, start, end, duration, description, 2);
+
+                            executeServiceInsertProlongedEventFetchData.execute(() -> {
+                                try {
+                                    int rowEffect = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(acc.getEmail().toString(), prolongedEvent);
+                                    if (rowEffect > 0) {
+                                        Log.d("Insert prolonged event from google calendar", "success");
+                                    } else {
+                                        Log.d("Insert prolonged event from google calendar", "failed");
+                                    }
+                                } catch (Exception e) {
+                                    Log.d("Insert prolonged event from google calendar", e.getMessage());
+                                }
+                            });
+                        }
+
                         calendarEvents.add(calendarEvent);
 
-                        String eventInfo = String.format("%s (%s) - %s - %s - %s - %s - %s", event.getId(), event.getSummary(), event.getLocation(), event.getDescription(), startTime,endTime, recurrenceInfo);
+                        String eventInfo = String.format("%s (%s) - %s - %s - %s - %s - %s", event.getId(), event.getSummary(), event.getLocation(), event.getDescription(), startTime, endTime, recurrenceInfo);
 
                         eventStrings.add(eventInfo);
                     }
 
                     runOnUiThread(() -> {
-                        Log.d("List Event", eventStrings.toString());
+                        Log.d("List Event Calendar", eventStrings.toString());
                     });
 
                 } catch (UserRecoverableAuthIOException userRecoverableException) {
                     startActivityForResult(
                             userRecoverableException.getIntent(), this.REQUEST_AUTHORIZATION);
-                }catch (IOException e) {
+                } catch (IOException e) {
                     Log.d("Fetch events calendar", "IOException: " + e.getMessage());
                 }
             });
-            //executorService.shutdown();
         }
     }
 

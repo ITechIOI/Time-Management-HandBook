@@ -15,6 +15,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -73,6 +76,7 @@ public class Home_Activity extends AppCompatActivity {
     private static final int REQUEST_CODE_SIGN_IN = 1000;
     private static final int REQUEST_AUTHORIZATION = 1001;
     public static String username;
+    public static Uri avatar;
     public static LocalDate today;
     GoogleSignInClient mGoogleSignInClient;
     public static GoogleSignInAccount acc;
@@ -106,8 +110,6 @@ public class Home_Activity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
-        // Create logo
-        // getSupportActionBar().setLogo(R.drawable.google);
 
         FloatingActionButton fab = findViewById(R.id.float_button_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +170,8 @@ public class Home_Activity extends AppCompatActivity {
 
         final String email = acc.getEmail();
         username = acc.getDisplayName();
+        avatar = acc.getPhotoUrl();
+
         executorServiceInsertAccount.execute(() -> {
             int count_account = AccountDAO.getInstance().InsertNewAccount(email);
             Log.d("Insert new account: ", String.valueOf(count_account));
@@ -212,7 +216,10 @@ public class Home_Activity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        homeFragment.setHiTextView(username + "!");
+        homeFragment.setHiTextView(username);
+        ImageView item_avatar = findViewById(R.id.item_avatar);
+        Picasso.get().load(avatar).into(item_avatar);
+
 
         try {
             if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {

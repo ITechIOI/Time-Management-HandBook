@@ -63,7 +63,7 @@ dependencies {
 
     implementation ("com.google.apis:google-api-services-calendar:v3-rev310-1.25.0")
 
-
     implementation ("joda-time:joda-time:2.10.10")
 
+    implementation ("com.squareup.picasso:picasso:2.8")
 }

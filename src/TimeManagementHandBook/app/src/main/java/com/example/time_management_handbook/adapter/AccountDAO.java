@@ -50,7 +50,7 @@ public class AccountDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.d("Check email exist: ", e.getMessage());
         };
 
         return false;

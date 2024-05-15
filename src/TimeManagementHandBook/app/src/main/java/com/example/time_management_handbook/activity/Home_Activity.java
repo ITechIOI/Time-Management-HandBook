@@ -181,8 +181,9 @@ public class Home_Activity extends AppCompatActivity {
 
         // Fetch data from google calendar
 
-        if ( ! AccountDAO.getInstance().CheckExistEmail(acc.getEmail())) {
+        if ( ! AccountDAO.getInstance().CheckExistEmail(acc.getEmail().toString())) {
             // Fetch data from Google Calendar
+             Log.d("Check mail exist ", String.valueOf( AccountDAO.getInstance().CheckExistEmail(acc.getEmail())));
 
             executorServiceFetchData.execute(new Runnable() {
                 @Override
@@ -203,9 +204,6 @@ public class Home_Activity extends AppCompatActivity {
             Toast.makeText(Home_Activity.this, emailLogin, Toast.LENGTH_LONG).show();
         }
 
-        // Fetch data from Google Calendar
-
-        fetchEvents(acc);
 
         // Change welcome sentence: Hi + username !
 

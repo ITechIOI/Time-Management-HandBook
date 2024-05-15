@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,20 +16,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
-import com.example.time_management_handbook.model.CustomGridAdapter;
+import com.example.time_management_handbook.adapter.CustomGridAdapter;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -112,9 +107,9 @@ public class Home_Fragment extends Fragment {
         hi_textview=view.findViewById(R.id.textView_Hi);
         currentDate_textview = view.findViewById(R.id.textView_CurrentDate);
         try {
-            currentDate_textview.setText( dayOfWeek.toString() + ", " + formattedDate);
+            currentDate_textview.setText(String.format("%s, %s", dayOfWeek.toString(), formattedDate));
         } catch (Exception e) {
-            Log.d("Get today: ", e.getMessage());
+            Log.d("Get today: ", Objects.requireNonNull(e.getMessage()));
         }
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -129,9 +124,9 @@ public class Home_Fragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        hi_textview.setText("Hi, " + Home_Activity.username + "!");
+        hi_textview.setText(String.format("Hi, %s!", Home_Activity.username));
         try {
-            currentDate_textview.setText(dayOfWeek.toString() + ", " + formattedDate.toString());
+            currentDate_textview.setText(String.format("%s, %s", dayOfWeek.toString(), formattedDate.toString()));
         } catch(Exception e) {
             Log.d("Get today: ", e.getMessage());
         }

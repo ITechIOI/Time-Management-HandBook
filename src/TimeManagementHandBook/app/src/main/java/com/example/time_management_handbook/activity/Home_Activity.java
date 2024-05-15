@@ -1,6 +1,7 @@
 package com.example.time_management_handbook.activity;
 
 import static com.google.api.services.calendar.CalendarScopes.CALENDAR_READONLY;
+import static com.squareup.picasso.Picasso.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,21 +82,21 @@ public class Home_Activity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     public static GoogleSignInAccount acc;
 
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();
-    private ExecutorService executorServiceGetUsername = Executors.newSingleThreadExecutor();
-    private ExecutorService executorServiceGetEventOfTheDay = Executors.newSingleThreadExecutor();
-    private ExecutorService executorServiceGetProlongedEvent = Executors.newSingleThreadExecutor();
-    private ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
-    private ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
-    private ExecutorService executeServiceInsertEventOfTheDayFetchData = Executors.newSingleThreadExecutor();
-    private ExecutorService executeServiceInsertProlongedEventFetchData = Executors.newSingleThreadExecutor();
-    private ExecutorService executorServiceFetchData = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceGetUsername = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceGetEventOfTheDay = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceGetProlongedEvent = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
+    private final ExecutorService executeServiceInsertEventOfTheDayFetchData = Executors.newSingleThreadExecutor();
+    private final ExecutorService executeServiceInsertProlongedEventFetchData = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceFetchData = Executors.newSingleThreadExecutor();
     public List<Event> items;
     public List<CalendarEventDTO> calendarEvents;
     private TextView hiText;
     private FragmentManager fragmentManager;
-    private Home_Fragment homeFragment = new Home_Fragment();
+    private final Home_Fragment homeFragment = new Home_Fragment();
     public static List<Event_Of_The_Day_DTO> listEventOfTheDay;
     public static List<Prolonged_Event_DTO> listProlongedEvent;
     public static List<TaskDTO> listTask;
@@ -180,7 +181,7 @@ public class Home_Activity extends AppCompatActivity {
 
         // Fetch data from google calendar
 
-        if ( ! AccountDAO.getInstance().CheckExistEmail(acc.getEmail().toString())) {
+        if ( ! AccountDAO.getInstance().CheckExistEmail(acc.getEmail())) {
             // Fetch data from Google Calendar
 
             executorServiceFetchData.execute(new Runnable() {
@@ -218,8 +219,10 @@ public class Home_Activity extends AppCompatActivity {
 
         homeFragment.setHiTextView(username);
         ImageView item_avatar = findViewById(R.id.item_avatar);
-        Picasso.get().load(avatar).into(item_avatar);
 
+        if (item_avatar != null) {
+            Picasso.get().load(avatar).into(item_avatar);
+        }
 
         try {
             if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {
@@ -315,7 +318,7 @@ public class Home_Activity extends AppCompatActivity {
 
                     for (Event event : items) {
                         String recurrenceInfo = event.getRecurrence()!= null? event.getRecurrence().toString() : "No recurrence";
-                        String location = event.getLocation()!= null? event.getLocation().toString() : "No location";
+                        String location = event.getLocation()!= null? event.getLocation() : "No location";
                         String creatorEmail = event.getCreator().getEmail();
                         Duration duration = Duration.ofDays(0).ofHours(0).ofMinutes(10).ofSeconds(0);
                         String startTime = event.getStart().getDateTime()!= null? event.getStart().getDateTime().toString() : event.getStart().getDate().toString();
@@ -353,7 +356,7 @@ public class Home_Activity extends AppCompatActivity {
 
                             executeServiceInsertEventOfTheDayFetchData.execute(() -> {
                                 try {
-                                    int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(acc.getEmail().toString(), eventOfTheDay);
+                                    int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(acc.getEmail(), eventOfTheDay);
                                     if (rowEffect > 0) {
                                         Log.d("Insert event of the day from google calendar", "success");
                                     } else {
@@ -373,7 +376,7 @@ public class Home_Activity extends AppCompatActivity {
 
                             executeServiceInsertProlongedEventFetchData.execute(() -> {
                                 try {
-                                    int rowEffect = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(acc.getEmail().toString(), prolongedEvent);
+                                    int rowEffect = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(acc.getEmail(), prolongedEvent);
                                     if (rowEffect > 0) {
                                         Log.d("Insert prolonged event from google calendar", "success");
                                     } else {
@@ -398,7 +401,7 @@ public class Home_Activity extends AppCompatActivity {
 
                 } catch (UserRecoverableAuthIOException userRecoverableException) {
                     startActivityForResult(
-                            userRecoverableException.getIntent(), this.REQUEST_AUTHORIZATION);
+                            userRecoverableException.getIntent(), REQUEST_AUTHORIZATION);
                 } catch (IOException e) {
                     Log.d("Fetch events calendar", "IOException: " + e.getMessage());
                 }

@@ -42,6 +42,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.mediarouter:mediarouter:1.7.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -54,7 +55,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:20.0.0")
     implementation ("com.google.http-client:google-http-client-android:1.39.2")
 
-    implementation("com.google.oauth-client:google-oauth-client:1.31.5")
+    implementation ("com.google.oauth-client:google-oauth-client:1.31.5")
 
     implementation ("com.google.api-client:google-api-client-android:1.31.5")
     implementation ("com.google.apis:google-api-services-calendar:v3-rev411-1.25.0")

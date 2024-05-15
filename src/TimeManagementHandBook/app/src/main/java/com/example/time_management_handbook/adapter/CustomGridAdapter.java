@@ -1,4 +1,4 @@
-package com.example.time_management_handbook.model;
+package com.example.time_management_handbook.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -11,13 +11,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomGridAdapter extends BaseAdapter {
-    private List<Event_Of_The_Day_DTO> lData;
+    private final List<Event_Of_The_Day_DTO> lData;
     private LayoutInflater layoutInflater;
     private Context context;
+    public CustomGridAdapter(List<Event_Of_The_Day_DTO> lData) {
+        this.lData = lData != null ? lData : new ArrayList<>(); // Khởi tạo danh sách rỗng nếu null
+    }
 
     public CustomGridAdapter(List<Event_Of_The_Day_DTO> listData, Context aContext) {
         context = aContext;
@@ -27,7 +32,11 @@ public class CustomGridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return lData.size();
+        if (lData != null) {
+            return lData.size();
+        } else {
+            return 0; // Trả về 0 nếu danh sách rỗng
+        }
     }
 
     @Override
@@ -46,8 +55,8 @@ public class CustomGridAdapter extends BaseAdapter {
         if (convertView == null){
             convertView = layoutInflater.inflate(R.layout.layout_home_item, null);
             holder = new ViewHolder();
-            holder.eventButton = (Button) convertView.findViewById(R.id.button_note);
-            holder.timeView = (TextView) convertView.findViewById(R.id.textView_time);
+            holder.eventButton = convertView.findViewById(R.id.button_note);
+            holder.timeView = convertView.findViewById(R.id.textView_time);
             convertView.setTag(holder);
         }
         else {

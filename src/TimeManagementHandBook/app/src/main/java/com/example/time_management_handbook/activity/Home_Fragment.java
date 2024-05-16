@@ -1,6 +1,8 @@
 package com.example.time_management_handbook.activity;
 
 import static com.example.time_management_handbook.activity.Home_Activity.listEventOfTheDay;
+import static com.example.time_management_handbook.activity.Home_Activity.listTask;
+import static com.example.time_management_handbook.activity.Home_Activity.username;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +18,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
-import com.example.time_management_handbook.adapter.CustomGridAdapter;
+import com.example.time_management_handbook.adapter.HomeEventAdapter;
+import com.example.time_management_handbook.adapter.HomeTaskAdapter;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
+import com.example.time_management_handbook.model.TaskDTO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -44,6 +49,8 @@ public class Home_Fragment extends Fragment {
     private String mParam2;
     TextView hi_textview;
     TextView currentDate_textview;
+    GridView eventView;
+    GridView taskView;
     String formattedDate;
     DayOfWeek dayOfWeek;
 
@@ -84,20 +91,8 @@ public class Home_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
 
-
-        List<Event_Of_The_Day_DTO> events = listEventOfTheDay;
-        final GridView gridView = (GridView) view.findViewById(R.id.gridView_home);
-        gridView.setAdapter(new CustomGridAdapter(events, getActivity().getApplicationContext()));
-
-        // When user clicks on Griditem
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
-                Intent mit= new Intent(getActivity(), Event_Activity.class);
-                startActivity(mit);
-            }
-        });
-
+        eventView = (GridView) view.findViewById(R.id.gridView_event);
+        taskView = (GridView) view.findViewById(R.id.gridView_task);
 
         LocalDate today =  LocalDate.now();
         String formattedDate = reformatDate(today.toString(), "yyyy-MM-dd", "dd-MM-yyyy");
@@ -124,12 +119,35 @@ public class Home_Fragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        hi_textview.setText(String.format("Hi, %s!", Home_Activity.username));
+        setHiTextView(username);
         try {
             currentDate_textview.setText(String.format("%s, %s", dayOfWeek.toString(), formattedDate.toString()));
         } catch(Exception e) {
             Log.d("Get today: ", e.getMessage());
         }
+
+
+        eventView.setAdapter(new HomeEventAdapter(listEventOfTheDay, getActivity().getApplicationContext()));
+        eventView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
+                // Tam thong bao da nhan vao o
+                Toast.makeText(getContext(), "Clicked at event " + (position + 1), Toast.LENGTH_SHORT).show();
+                Intent mit = new Intent(getActivity(), Event_Activity.class);
+                startActivity(mit);
+            }
+        });
+        taskView.setAdapter(new HomeTaskAdapter(listTask, getActivity().getApplicationContext()));
+
+        taskView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
+                // Tam thong bao da nhan vao o
+                Toast.makeText(getContext(), "Clicked at task " + (position + 1), Toast.LENGTH_SHORT).show();
+                Intent mit = new Intent(getActivity(), Task_Activity.class);
+                startActivity(mit);
+            }
+        });
     }
 
     public void setHiTextView(String username)
@@ -140,6 +158,32 @@ public class Home_Fragment extends Fragment {
     public void setCurrentDateTextView(String currentDate)
     {
         currentDate_textview.setText(currentDate);
+    }
+
+    public void setEventView(List<Event_Of_The_Day_DTO> events){
+        eventView.setAdapter(new HomeEventAdapter(events, getActivity().getApplicationContext()));
+        eventView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
+                // Tam thong bao da nhan vao o
+                Toast.makeText(getContext(), "Clicked at event " + (position + 1), Toast.LENGTH_SHORT).show();
+                Intent mit = new Intent(getActivity(), Event_Activity.class);
+                startActivity(mit);
+            }
+        });
+    }
+
+    public void setTaskView(List<TaskDTO> tasks){
+        taskView.setAdapter(new HomeTaskAdapter(tasks, getActivity().getApplicationContext()));
+        taskView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
+                // Tam thong bao da nhan vao o
+                Toast.makeText(getContext(), "Clicked at task " + (position + 1), Toast.LENGTH_SHORT).show();
+                Intent mit = new Intent(getActivity(), Task_Activity.class);
+                startActivity(mit);
+            }
+        });
     }
 
     public static String reformatDate(String date, String originalFormat, String targetFormat) {

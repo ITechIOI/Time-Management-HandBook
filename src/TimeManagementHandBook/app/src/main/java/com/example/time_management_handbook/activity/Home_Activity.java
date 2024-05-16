@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,6 +17,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,7 +81,7 @@ public class Home_Activity extends AppCompatActivity {
     private static final int REQUEST_CODE_SIGN_IN = 1000;
     private static final int REQUEST_AUTHORIZATION = 1001;
     public static String username;
-    public static Uri avatar;
+    public static Uri avatar_uri;
     public static LocalDate today;
     GoogleSignInClient mGoogleSignInClient;
     public static GoogleSignInAccount acc;
@@ -97,6 +101,7 @@ public class Home_Activity extends AppCompatActivity {
     private TextView hiText;
     private FragmentManager fragmentManager;
     private final Home_Fragment homeFragment = new Home_Fragment();
+    private ImageButton avatarButton;
     public static List<Event_Of_The_Day_DTO> listEventOfTheDay;
     public static List<Prolonged_Event_DTO> listProlongedEvent;
     public static List<TaskDTO> listTask;
@@ -171,7 +176,7 @@ public class Home_Activity extends AppCompatActivity {
 
         final String email = acc.getEmail();
         username = acc.getDisplayName();
-        avatar = acc.getPhotoUrl();
+        avatar_uri = acc.getPhotoUrl();
 
         executorServiceInsertAccount.execute(() -> {
             int count_account = AccountDAO.getInstance().InsertNewAccount(email);
@@ -204,11 +209,17 @@ public class Home_Activity extends AppCompatActivity {
             Toast.makeText(Home_Activity.this, emailLogin, Toast.LENGTH_LONG).show();
         }
 
-
-        // Change welcome sentence: Hi + username !
-
-        hiText = findViewById(R.id.textView_Hi);
-
+        avatarButton = findViewById(R.id.imageButton_avatar);
+        if (avatar_uri != null){
+            avatarButton.setBackground(Icon.createWithContentUri(avatar_uri).loadDrawable(this));
+        }
+        avatarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mit= new Intent(Home_Activity.this, Account_Activity.class);
+                startActivity(mit);
+            }
+        });
     }
 
     @Override
@@ -216,11 +227,8 @@ public class Home_Activity extends AppCompatActivity {
         super.onStart();
 
         homeFragment.setHiTextView(username);
-        ImageView item_avatar = findViewById(R.id.item_avatar);
-
-        if (item_avatar != null) {
-            Picasso.get().load(avatar).into(item_avatar);
-        }
+        homeFragment.setEventView(listEventOfTheDay);
+        homeFragment.setTaskView(listTask);
 
         try {
             if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {
@@ -420,22 +428,6 @@ public class Home_Activity extends AppCompatActivity {
                 executorService.shutdownNow();
             }
         }
-    }
-
-    // 2 hàm tạo kết nối với account button
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.home_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if (item.getItemId() == R.id.item_avatar){
-            Intent mit= new Intent(Home_Activity.this, Account_Activity.class);
-            startActivity(mit);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private  void loadFragment(Fragment fragment) {

@@ -1,42 +1,35 @@
 package com.example.time_management_handbook.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomGridAdapter extends BaseAdapter {
+public class HomeEventAdapter extends BaseAdapter {
     private final List<Event_Of_The_Day_DTO> lData;
     private LayoutInflater layoutInflater;
     private Context context;
-    public CustomGridAdapter(List<Event_Of_The_Day_DTO> lData) {
-        this.lData = lData != null ? lData : new ArrayList<>(); // Khởi tạo danh sách rỗng nếu null
-    }
 
-    public CustomGridAdapter(List<Event_Of_The_Day_DTO> listData, Context aContext) {
+    public HomeEventAdapter(List<Event_Of_The_Day_DTO> listData, Context aContext) {
         context = aContext;
-        lData = listData;
+        lData = listData != null ? listData : new ArrayList<>();
         layoutInflater = LayoutInflater.from(aContext);
     }
 
     @Override
     public int getCount() {
-        if (lData != null) {
-            return lData.size();
-        } else {
-            return 0; // Trả về 0 nếu danh sách rỗng
-        }
+        return (lData != null) ? lData.size() : 0;
     }
 
     @Override
@@ -56,6 +49,7 @@ public class CustomGridAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.layout_home_item, null);
             holder = new ViewHolder();
             holder.eventButton = convertView.findViewById(R.id.button_note);
+            holder.summaryView = convertView.findViewById(R.id.textView_summary);
             holder.timeView = convertView.findViewById(R.id.textView_time);
             convertView.setTag(holder);
         }
@@ -63,15 +57,19 @@ public class CustomGridAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Event_Of_The_Day_DTO events = lData.get(position);
+        Event_Of_The_Day_DTO datas = lData.get(position);
+        holder.summaryView.setText(datas.getSummary());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        holder.timeView.setText(datas.getStartTime().format(formatter) + " - " + datas.getEndTime().format(formatter));
         holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_event,0,0);
-        holder.eventButton.setText(events.getSummary());
-        holder.timeView.setText(events.getStartTime() + " - " + events.getEndTime());
+        holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F09495")));
+
         return convertView;
     }
 
     static class ViewHolder{
         Button eventButton;
+        TextView summaryView;
         TextView timeView;
     }
 

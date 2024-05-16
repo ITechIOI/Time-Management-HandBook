@@ -92,7 +92,9 @@ public class Home_Activity extends AppCompatActivity {
     private final ExecutorService executorServiceGetEventOfTheDay = Executors.newSingleThreadExecutor();
     private final ExecutorService executorServiceGetProlongedEvent = Executors.newSingleThreadExecutor();
     private final ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
-    private final ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceHandleEventOfTheDay = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceHandleProlongedEvent = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorServiceHandleTask = Executors.newSingleThreadExecutor();
     private final ExecutorService executeServiceInsertEventOfTheDayFetchData = Executors.newSingleThreadExecutor();
     private final ExecutorService executeServiceInsertProlongedEventFetchData = Executors.newSingleThreadExecutor();
     private final ExecutorService executorServiceFetchData = Executors.newSingleThreadExecutor();
@@ -220,6 +222,43 @@ public class Home_Activity extends AppCompatActivity {
                 startActivity(mit);
             }
         });
+
+
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+        Log.d("Time now: ", roundedDateTime.toString());
+        executorServiceHandleEventOfTheDay.execute(new Runnable() {
+            @Override
+            public void run() {
+                listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(acc.getEmail(), roundedDateTime);
+                Log.d("List event of the day: ", listEventOfTheDay.toString());
+            }
+        });
+        executorServiceHandleEventOfTheDay.shutdown();
+
+        // Get Prolonged Event
+
+        executorServiceHandleProlongedEvent.execute(new Runnable() {
+            @Override
+            public void run() {
+                listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(acc.getEmail(), today);
+                Log.d("List prolonged event of the day: ", listProlongedEvent.toString());
+            }
+        });
+
+        executorServiceHandleProlongedEvent.shutdown();
+
+        // Get Task
+
+        executorServiceHandleTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                listTask = TaskDAO.getInstance().getListTask(acc.getEmail(), roundedDateTime);
+                Log.d("List task: ", listTask.toString());
+            }
+        });
+        executorServiceHandleTask.shutdown();
+
     }
 
     @Override

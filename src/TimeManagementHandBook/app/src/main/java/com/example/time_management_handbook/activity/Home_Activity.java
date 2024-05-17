@@ -1,7 +1,6 @@
 package com.example.time_management_handbook.activity;
 
 import static com.google.api.services.calendar.CalendarScopes.CALENDAR_READONLY;
-import static com.squareup.picasso.Picasso.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,7 +56,6 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -266,8 +264,7 @@ public class Home_Activity extends AppCompatActivity {
         super.onStart();
 
         homeFragment.setHiTextView(username);
-        homeFragment.setEventView(listEventOfTheDay);
-        homeFragment.setTaskView(listTask);
+        homeFragment.setEventandTaskView(listEventOfTheDay, listTask);
 
         try {
             if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {

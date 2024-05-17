@@ -1,6 +1,7 @@
 package com.example.time_management_handbook.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.activity.Event_Activity;
+import com.example.time_management_handbook.activity.Task_Activity;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 
@@ -61,10 +65,38 @@ public class HomeTaskAdapter extends BaseAdapter {
 
         TaskDTO datas = lData.get(position);
         holder.summaryView.setText(datas.getName());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        holder.timeView.setText(datas.getCreatingTime().format(formatter) + " - " + datas.getEndTime().format(formatter));
+        // Dinh dang thoi gian deadline
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM HH:mm");
+        holder.timeView.setText(datas.getCreatingTime().format(formatter) + "\n - " + datas.getEndTime().format(formatter));
         holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_task_book,0,0);
-        holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D3EDC6")));
+        switch (datas.getColor())
+        {
+            case 1:
+                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CEEDC7")));
+                break;
+            case 2:
+                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF9494")));
+                break;
+            case 3:
+                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFC8DD")));
+                break;
+            case 4:
+                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D7E3FC")));
+                break;
+            case 5:
+                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFF6BD")));
+                break;
+            case 6:
+                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD4B2")));
+                break;
+        }
+        holder.eventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mit = new Intent(context, Task_Activity.class);
+                context.startActivity(mit);
+            }
+        });
 
         return convertView;
     }

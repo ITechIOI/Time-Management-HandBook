@@ -126,28 +126,7 @@ public class Home_Fragment extends Fragment {
             Log.d("Get today: ", e.getMessage());
         }
 
-
-        eventView.setAdapter(new HomeEventAdapter(listEventOfTheDay, getActivity().getApplicationContext()));
-        eventView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
-                // Tam thong bao da nhan vao o
-                Toast.makeText(getContext(), "Clicked at event " + (position + 1), Toast.LENGTH_SHORT).show();
-                Intent mit = new Intent(getActivity(), Event_Activity.class);
-                startActivity(mit);
-            }
-        });
-        taskView.setAdapter(new HomeTaskAdapter(listTask, getActivity().getApplicationContext()));
-
-        taskView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
-                // Tam thong bao da nhan vao o
-                Toast.makeText(getContext(), "Clicked at task " + (position + 1), Toast.LENGTH_SHORT).show();
-                Intent mit = new Intent(getActivity(), Task_Activity.class);
-                startActivity(mit);
-            }
-        });
+        setEventandTaskView(listEventOfTheDay, listTask);
     }
 
     public void setHiTextView(String username)
@@ -160,30 +139,10 @@ public class Home_Fragment extends Fragment {
         currentDate_textview.setText(currentDate);
     }
 
-    public void setEventView(List<Event_Of_The_Day_DTO> events){
+    public void setEventandTaskView(List<Event_Of_The_Day_DTO> events, List<TaskDTO> tasks){
         eventView.setAdapter(new HomeEventAdapter(events, getActivity().getApplicationContext()));
-        eventView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
-                // Tam thong bao da nhan vao o
-                Toast.makeText(getContext(), "Clicked at event " + (position + 1), Toast.LENGTH_SHORT).show();
-                Intent mit = new Intent(getActivity(), Event_Activity.class);
-                startActivity(mit);
-            }
-        });
-    }
-
-    public void setTaskView(List<TaskDTO> tasks){
         taskView.setAdapter(new HomeTaskAdapter(tasks, getActivity().getApplicationContext()));
-        taskView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> arg, View v, int position, long id){
-                // Tam thong bao da nhan vao o
-                Toast.makeText(getContext(), "Clicked at task " + (position + 1), Toast.LENGTH_SHORT).show();
-                Intent mit = new Intent(getActivity(), Task_Activity.class);
-                startActivity(mit);
-            }
-        });
+
     }
 
     public static String reformatDate(String date, String originalFormat, String targetFormat) {

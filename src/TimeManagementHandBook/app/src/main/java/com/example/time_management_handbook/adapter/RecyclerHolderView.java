@@ -22,13 +22,17 @@ class EventViewHolder extends RecyclerView.ViewHolder {
 
 class TaskViewHolder extends RecyclerView.ViewHolder{
     RelativeLayout itemLayout;
-    TextView taskTextview;
+    TextView nameTask;
+    TextView deadlineTask;
+    TextView timeleftTask;
     CheckBox taskCheckbox;
     public TaskViewHolder(@NonNull View itemView)
     {
         super(itemView);
         itemLayout = itemView.findViewById(R.id.item);
-        taskTextview = itemView.findViewById(R.id.task);
+        nameTask = itemView.findViewById(R.id.tname_textView);
+        deadlineTask = itemView.findViewById(R.id.tDeadline_textView);
+        timeleftTask = itemView.findViewById(R.id.tTimeleft_textView);
         taskCheckbox = itemView.findViewById(R.id.an);
     }
 }

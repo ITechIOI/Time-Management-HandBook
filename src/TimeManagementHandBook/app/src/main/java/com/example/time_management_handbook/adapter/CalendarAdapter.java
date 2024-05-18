@@ -116,7 +116,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
 
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                taskViewHolder.taskTextview.setText("Task: " + task.getName() + "\nDeadline: " + task.getEndTime().format(formatter));
+                taskViewHolder.nameTask.setText(task.getName());
+                taskViewHolder.deadlineTask.setText(task.getEndTime().toLocalTime().toString());
+
 
                 if (task.getFinishedTime()!=null)
                     taskViewHolder.taskCheckbox.setChecked(true);

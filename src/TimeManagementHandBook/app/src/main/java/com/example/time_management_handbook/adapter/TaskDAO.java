@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -68,11 +69,11 @@ public class TaskDAO extends RecyclerView.Adapter<TaskViewHolder>{
         Duration duration = Duration.between(today, task.getEndTime());
         String remainingTime  = "";
         if (duration.toDays() > 1) {
-            remainingTime = "Remaining time: " + String.valueOf(duration.toDays()) + "days " +
+            remainingTime =  String.valueOf(duration.toDays()) + "days " +
                     String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
                     "m " + String.valueOf(duration.getSeconds() % 60) + "s";
         } else {
-            remainingTime = "Remaining time: " + String.valueOf(duration.toDays()) + "day " +
+            remainingTime = String.valueOf(duration.toDays()) + "day " +
                 String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
                 "m " + String.valueOf(duration.getSeconds() % 60) + "s";
         }
@@ -84,34 +85,36 @@ public class TaskDAO extends RecyclerView.Adapter<TaskViewHolder>{
         String deadlineString = String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" +
                 String.valueOf(year);
 
-        holder.taskTextview.setText(task.getName()+"\n"+ "Deadline:" +
-                deadlineString + " " + task.getEndTime().toLocalTime().toString()
-                + "\n" + remainingTime );
-
+        holder.nameTask.setText(task.getName());
+        holder.deadlineTask.setText(task.getEndTime().toString());
+        holder.timeleftTask.setText(remainingTime);
         if (task.getFinishedTime()!=null)
             holder.taskCheckbox.setChecked(true);
         else holder.taskCheckbox.setChecked(false);
+        Drawable itemBackGround = holder.itemView.getResources().getDrawable(R.drawable.background_taskitem);
+
         switch (task.getColor())
         {
             case 1:
-                holder.itemLayout.setBackgroundColor(Color.parseColor("#CEEDC7"));
+                itemBackGround.setTint(Color.parseColor("#CEEDC7"));
                 break;
             case 2:
-                holder.itemLayout.setBackgroundColor(Color.parseColor("#FF9494"));
+                itemBackGround.setTint(Color.parseColor("#FF9494"));
                 break;
             case 3:
-                holder.itemLayout.setBackgroundColor(Color.parseColor("#FFC8DD"));
+                itemBackGround.setTint(Color.parseColor("#FFC8DD"));
                 break;
             case 4:
-                holder.itemLayout.setBackgroundColor(Color.parseColor("#D7E3FC"));
+                itemBackGround.setTint(Color.parseColor("#D7E3FC"));
                 break;
             case 5:
-                holder.itemLayout.setBackgroundColor(Color.parseColor("#FFF6BD"));
+                itemBackGround.setTint(Color.parseColor("#FFF6BD"));
                 break;
             case 6:
-                holder.itemLayout.setBackgroundColor(Color.parseColor("#FFD4B2"));
+                itemBackGround.setTint(Color.parseColor("#FFD4B2"));
                 break;
         }
+        holder.itemLayout.setBackground(itemBackGround);
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

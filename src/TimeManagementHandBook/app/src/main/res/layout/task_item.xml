@@ -11,12 +11,53 @@
     android:padding="15dp"
     android:background="@drawable/background_taskitem">
 
-    <TextView
-        android:id="@+id/task"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name \nDeadline \nTimeleft"
-        android:textSize="15sp" />
+        android:padding="8dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="17sp"
+            android:fontFamily="@font/inriasans_bold"
+            android:id="@+id/tname_textView"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deadline: "
+                android:textSize="15sp"
+                android:fontFamily="@font/inriasans_bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:fontFamily="@font/inria_sans"
+                android:id="@+id/tDeadline_textView"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remaining time: "
+                android:textSize="15sp"
+                android:fontFamily="@font/inriasans_bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:fontFamily="@font/inria_sans"
+                android:id="@+id/tTimeleft_textView"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <CheckBox
         android:id="@+id/an"

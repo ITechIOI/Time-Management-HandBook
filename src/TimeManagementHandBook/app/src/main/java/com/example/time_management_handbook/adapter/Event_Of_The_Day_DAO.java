@@ -157,6 +157,42 @@ public class Event_Of_The_Day_DAO {
         return count;
     }
 
+    public int InsertNewEventFromCalendar(String email, Event_Of_The_Day_DTO event) {
+        int count = 0;
+
+        String summary = event.getSummary();
+        String location = event.getLocation();
+        LocalDateTime start = event.getStartTime();
+        LocalDateTime end = event.getEndTime();
+        Duration duration = event.getNotification_period();
+        String description = event.getDescription();
+        int color = event.getColor();
+
+        LocalDateTime startRoundedDateTime = start.with(LocalTime.from(start.toLocalTime().withSecond(start.getSecond()).withNano(0)));
+        LocalDate startDate = startRoundedDateTime.toLocalDate();
+        LocalTime startTime = startRoundedDateTime.toLocalTime();
+        String start_String = startDate.toString() + " " + startTime.toString();
+
+        LocalDateTime endRoundedDateTime = end.with(LocalTime.from(end.toLocalTime().withSecond(end.getSecond()).withNano(0)));
+        LocalDate endDate = endRoundedDateTime.toLocalDate();
+        LocalTime endTime = endRoundedDateTime.toLocalTime();
+        String end_String = endDate.toString() + " " + endTime.toString();
+        Log.d("Time Locate: ", start_String + "       " + end_String);
+
+        String query = "EXEC USP_INSERT_EVENT_OF_THE_DAY_FROM_CALENDAR '" + email + "', N'" +
+                summary + "', N'" + location + "', '" + start_String + "', '" + end_String + "', '" +
+                duration + "', N'" + description + "'," + color ;
+        try {
+            count = DataProvider.getInstance().executeNonQuery(query);
+            Log.d("Insert new event of the day: ", String.valueOf(count));
+            Log.d("Insert new event of the day: ", query.toString());
+        }catch (Exception e) {
+            Log.d("Insert new event of the day: ", e.getMessage());
+        }
+
+        return count;
+    }
+
     public int deleteEventOfTheDay(String email, Event_Of_The_Day_DTO event) {
         int rowEffect = -1;
 

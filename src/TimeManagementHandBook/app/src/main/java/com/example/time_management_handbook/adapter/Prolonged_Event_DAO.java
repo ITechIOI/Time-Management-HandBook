@@ -89,6 +89,31 @@ public class Prolonged_Event_DAO {
         return rowEffect;
     }
 
+    public int InsertNewProlongedEventFromCalendar(String email, Prolonged_Event_DTO event) {
+        int rowEffect = -1;
+
+        String summary = event.getSummary();
+        String location = event.getLocation();
+        LocalDate start = event.getStartDate();
+        LocalDate end = event.getEndDate();
+        Duration duration = event.getNotification_period();
+        String description = event.getDescription();
+        int color = event.getColor();
+
+        String query = "EXEC USP_INSERT_PROLONGED_EVENT_FROM_CALENDAR '" + email + "','" +
+                summary + "','" + location + "','" + start + "','" + end + "','" +
+                duration + "','" + description + "'," + color ;
+
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            Log.d("Insert new prolonged event: ", String.valueOf(rowEffect));
+        }catch (Exception e) {
+            Log.d("Insert new prolonged event: ", e.getMessage());
+        }
+
+        return rowEffect;
+    }
+
     public int deleteProlongedEvent(String email, Prolonged_Event_DTO event) {
         int rowEffect = -1;
 

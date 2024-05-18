@@ -17,7 +17,9 @@ public class Event_Of_The_Day_DTO {
     int color;
 
 
-    public Event_Of_The_Day_DTO(String idEvent, String idUser, String summary, String location, LocalDateTime startTime, LocalDateTime endTime, Duration notification_period, String description, int color) {
+    public Event_Of_The_Day_DTO(String idEvent, String idUser, String summary,
+                                String location, LocalDateTime startTime, LocalDateTime endTime,
+                                Duration notification_period, String description, int color) {
         this.idEvent = idEvent;
         this.idUser = idUser;
         this.summary = summary;

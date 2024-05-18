@@ -202,7 +202,7 @@ public class Home_Activity extends AppCompatActivity {
         });
         // executorServiceInsertAccount.shutdown();
 
-        // Fetch data from google calendar
+        /*// Fetch data from google calendar
 
         if ( ! AccountDAO.getInstance().CheckExistEmail(acc.getEmail().toString())) {
             // Fetch data from Google Calendar
@@ -216,7 +216,15 @@ public class Home_Activity extends AppCompatActivity {
             });
 
             // executorServiceFetchData.shutdown();
-        }
+        }*/
+
+        // Fetch data from calendar
+        executorServiceFetchData.execute(new Runnable() {
+            @Override
+            public void run() {
+                fetchEvents(acc);
+            }
+        });
 
         if (acc == null) {
 
@@ -491,9 +499,10 @@ public class Home_Activity extends AppCompatActivity {
                             Event_Of_The_Day_DTO eventOfTheDay = new Event_Of_The_Day_DTO(null,
                                     null, summary, location, start, end, duration, description, 1);
 
+                            Log.d("List Event of the day from google calendar", eventOfTheDay.toString());
                             executeServiceInsertEventOfTheDayFetchData.execute(() -> {
                                 try {
-                                    int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(acc.getEmail(), eventOfTheDay);
+                                    int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEventFromCalendar(acc.getEmail(), eventOfTheDay);
                                     if (rowEffect > 0) {
                                         Log.d("Insert event of the day from google calendar", "success");
                                     } else {
@@ -510,10 +519,10 @@ public class Home_Activity extends AppCompatActivity {
 
                             Prolonged_Event_DTO prolongedEvent = new Prolonged_Event_DTO(null, null,
                                     summary, location, start, end, duration, description, 2);
-
+                            Log.d("List Prolonged event from google calendar", prolongedEvent.toString());
                             executeServiceInsertProlongedEventFetchData.execute(() -> {
                                 try {
-                                    int rowEffect = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(acc.getEmail(), prolongedEvent);
+                                    int rowEffect = Prolonged_Event_DAO.getInstance().InsertNewProlongedEventFromCalendar(acc.getEmail(), prolongedEvent);
                                     if (rowEffect > 0) {
                                         Log.d("Insert prolonged event from google calendar", "success");
                                     } else {

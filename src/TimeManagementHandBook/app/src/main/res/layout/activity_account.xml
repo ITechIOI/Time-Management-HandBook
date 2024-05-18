@@ -9,19 +9,21 @@
     tools:context=".activity.Account_Activity">
 
     <include android:id="@+id/aToolbar"
-        layout="@layout/toolbarlayout"/>
+        layout="@layout/toolbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ImageView_avatar"
+        android:id="@+id/imageView_avatar"
         android:layout_width="64dp"
         android:layout_height="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/eToolbar"
+        app:layout_constraintTop_toBottomOf="@id/aToolbar"
         android:layout_marginTop="15dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/ic_user"/>
 
     <TextView
         android:id="@+id/textView_username"
@@ -31,14 +33,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@id/ImageView_avatar"
+        app:layout_constraintTop_toBottomOf="@id/imageView_avatar"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif"
         android:textSize="20sp"/>
 
     <Button
         android:id="@+id/button_AddAccount"
-        android:text="Synchronized"
+        android:text="Add Account"
         android:layout_width="299dp"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button3"

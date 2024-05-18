@@ -1,11 +1,17 @@
 package com.example.time_management_handbook.activity;
 
+import static com.example.time_management_handbook.activity.Home_Activity.avatar_uri;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +24,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.Shapeable;
 
 public class Account_Activity extends AppCompatActivity {
     private int backStackEntryIndex;
@@ -41,27 +49,22 @@ public class Account_Activity extends AppCompatActivity {
             }
         });
 
+        ShapeableImageView avatar = findViewById(R.id.imageView_avatar);
+        if (avatar_uri != null){
+            avatar.setImageURI(avatar_uri);
+        }
+        else avatar.setImageResource(R.drawable.ic_user);
+
+        TextView userName = findViewById(R.id.textView_username);
+        userName.setText(GoogleSignIn.getLastSignedInAccount(this).getDisplayName());
+
         Button addAccount = findViewById(R.id.button_AddAccount);
         addAccount.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View v) {
-                BottomSheetDialog bsd = new BottomSheetDialog(Account_Activity.this);
-                View view = LayoutInflater.from(Account_Activity.this).inflate(R.layout.add_account_bottomsheetdialog, null);
-                bsd.setContentView(view);
-                bsd.show();
-
-                // Set activity khi nhấn các item của listView (tài khoản có sẵn)
-
-                Button addNewAccount = view.findViewById(R.id.button_AddNewAccount);
-                addNewAccount.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent mit= new Intent(Account_Activity.this, Login_Activity.class);
-                        startActivity(mit);
-                    }
-                });
+                Intent mit= new Intent(Account_Activity.this, AddAccount_Activity.class);
+                Home_Activity.acc = null;
+                startActivity(mit);
             }
         });
 
@@ -75,6 +78,7 @@ public class Account_Activity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public void onBackPressed(){
         if (getSupportFragmentManager().getBackStackEntryCount() > 0)
@@ -86,4 +90,15 @@ public class Account_Activity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

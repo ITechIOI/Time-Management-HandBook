@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ImageView_avatar"
+        android:id="@+id/imageView_avatar"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="10dp"
@@ -23,6 +23,6 @@
         android:text="username"
         android:textSize="20sp"
         tools:layout_editor_absoluteY="20dp"
-        app:layout_constraintStart_toEndOf="@id/ImageView_avatar"
+        app:layout_constraintStart_toEndOf="@id/imageView_avatar"
         android:layout_marginStart="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

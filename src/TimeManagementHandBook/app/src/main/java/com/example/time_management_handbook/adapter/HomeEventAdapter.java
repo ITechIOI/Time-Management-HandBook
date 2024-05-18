@@ -4,6 +4,7 @@ import static android.app.PendingIntent.getActivity;
 import static androidx.core.content.ContextCompat.startActivity;
 import static java.security.AccessController.getContext;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -25,14 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeEventAdapter extends BaseAdapter {
-    private final List<Event_Of_The_Day_DTO> lData;
+    private List<Event_Of_The_Day_DTO> lData;
     private LayoutInflater layoutInflater;
     private Context context;
 
     public HomeEventAdapter(List<Event_Of_The_Day_DTO> listData, Context aContext) {
         context = aContext;
         lData = listData != null ? listData : new ArrayList<>();
-        layoutInflater = LayoutInflater.from(aContext);
+        layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -94,8 +95,13 @@ public class HomeEventAdapter extends BaseAdapter {
         holder.eventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mit = new Intent(context, Event_Activity.class);
-                context.startActivity(mit);
+                Intent intent = new Intent(context, Event_Activity.class);
+                if (context instanceof Activity) {
+                    context.startActivity(intent);
+                } else {
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
 

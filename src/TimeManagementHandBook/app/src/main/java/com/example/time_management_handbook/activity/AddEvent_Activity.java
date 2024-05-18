@@ -25,7 +25,9 @@ import android.widget.TimePicker;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
+import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
+import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -54,36 +56,27 @@ public class AddEvent_Activity extends AppCompatActivity {
 
         //Cac thanh phan cua layout
         TextInputEditText eName = findViewById(R.id.eName_textInput);
-        TextInputEditText eDate = findViewById(R.id.eDate_textInput);
-        TextInputEditText eStartTime = findViewById(R.id.eStartTime_textInput);
-        TextInputEditText eEndTime = findViewById(R.id.eEndTime_textInput);
+        TextInputEditText eStartTime = findViewById(R.id.eDateStart_textInput);
+        TextInputEditText eEndTime = findViewById(R.id.eDateEnd_textInput);
         TextInputEditText eLocation = findViewById(R.id.eLocation_textInput);
         LinearLayout linearLayout = findViewById(R.id.eColor_radio);
         RadioGroup customRadioGroup = findViewById(R.id.color_radio);
         TextInputEditText eDescription = findViewById(R.id.eDescription_textInput);
 
-
-        ImageView eDateDialog = findViewById(R.id.eDate_dialog);
-        ImageView eStartTimeDialog = findViewById(R.id.eStartTime_Dialog);
-        ImageView eEndTimeDialog = findViewById(R.id.eEndTime_dialog);
+        ImageView eStartTimeDialog = findViewById(R.id.eDateStart_dialog);
+        ImageView eEndTimeDialog = findViewById(R.id.eDateEnd_dialog);
         Button btnSave = findViewById(R.id.eCreate_button);
 
-        eDateDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDateDialog();
-            }
-        });
         eStartTimeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openTimeDialog(R.id.eStartTime_textInput);
+                openDateTimeDialog(R.id.eDateStart_textInput);
             }
         });
         eEndTimeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openTimeDialog(R.id.eEndTime_textInput);
+                openDateTimeDialog(R.id.eDateEnd_textInput);
             }
         });
 
@@ -110,7 +103,6 @@ public class AddEvent_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String dateString = eDate.getText().toString();
                 String timeStart = eStartTime.getText().toString();
                 String timeEnd = eEndTime.getText().toString();
 
@@ -120,33 +112,50 @@ public class AddEvent_Activity extends AppCompatActivity {
                 // DateTimeFormatter for parsing time in format "HH:mm"
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:m");
 
-                LocalDate date = LocalDate.parse(dateString, dateFormatter);
+                LocalDate dateStartLD = LocalDate.parse(timeStart, dateFormatter);
+                LocalDate dateEndLD = LocalDate.parse(timeEnd, dateFormatter);
                 LocalTime timeStartLT = LocalTime.parse(timeStart, timeFormatter);
                 LocalTime timeEndLT = LocalTime.parse(timeEnd, timeFormatter);
 
-                LocalDateTime eTimeStartL = LocalDateTime.of(date, timeStartLT);
-                LocalDateTime eTimeEndL = LocalDateTime.of(date, timeEndLT);
+                LocalDateTime eTimeStartL = LocalDateTime.of(dateStartLD, timeStartLT);
+                LocalDateTime eTimeEndL = LocalDateTime.of(dateEndLD, timeEndLT);
 
+                int result = -1;
+                if (dateStartLD == dateEndLD){
+                    Event_Of_The_Day_DTO newEvent = new Event_Of_The_Day_DTO(
+                            null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
+                            null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
+                            eName.getText().toString(),
+                            eLocation.getText().toString(),
+                            eTimeStartL,
+                            eTimeEndL,
+                            Duration.ofMinutes(15), // Chu kỳ thông báo
+                            eDescription.getText().toString(), // Mô tả
+                            selectedIndex // Màu sắc (vd: màu mặc định)
+                    );
 
-                Event_Of_The_Day_DTO newEvent = new Event_Of_The_Day_DTO(
-                        null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
-                        null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
-                        eName.getText().toString(),
-                        eLocation.getText().toString(),
-                        eTimeStartL,
-                        eTimeEndL,
-                        Duration.ofMinutes(15), // Chu kỳ thông báo
-                        eDescription.getText().toString(), // Mô tả
-                        selectedIndex // Màu sắc (vd: màu mặc định)
-                );
+                    result = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(email, newEvent);
+                }
+                else {
+                    Prolonged_Event_DTO newEvent = new Prolonged_Event_DTO(
+                            null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
+                            null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
+                            eName.getText().toString(),
+                            eLocation.getText().toString(),
+                            dateStartLD,
+                            dateEndLD,
+                            Duration.ofMinutes(15), // Chu kỳ thông báo
+                            eDescription.getText().toString(), // Mô tả
+                            selectedIndex // Màu sắc (vd: màu mặc định)
+                    );
 
-                int result = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(email, newEvent);
+                    result = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(email, newEvent);
+                }
                 if (result != -1)
                 {
                     Toast.makeText(getApplicationContext(), "Submit thành công", Toast.LENGTH_SHORT).show();
                     Log.d("Insert event", eName.getText().toString());
                     eName.setText("");
-                    eDate.setText("");
                     eStartTime.setText("");
                     eEndTime.setText("");
                     eLocation.setText("");
@@ -172,8 +181,6 @@ public class AddEvent_Activity extends AppCompatActivity {
                 Calendar selectedDateTime = Calendar.getInstance();
                 selectedDateTime.set(year, month, dayOfMonth);
                 String formattedDateTime = sdf.format(selectedDateTime.getTime());
-                TextInputEditText editText = findViewById(R.id.eDate_textInput);
-                editText.setText(formattedDateTime);
             }
         }, year, month, day);
         datePickerDialog.show();
@@ -193,4 +200,31 @@ public class AddEvent_Activity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    private void openDateTimeDialog(int id)
+    {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddEvent_Activity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                        Calendar selectedDateTime = Calendar.getInstance();
+                        selectedDateTime.set(year, month, dayOfMonth, hourOfDay, minute);
+                        String formattedDateTime = sdf.format(selectedDateTime.getTime());
+                        TextInputEditText editText = findViewById(id);
+                        editText.setText(formattedDateTime);
+                    }
+                }, hour, minute, true);
+                timePickerDialog.show();
+            }
+        }, year, month, day);
+        datePickerDialog.show();
+    }
 }

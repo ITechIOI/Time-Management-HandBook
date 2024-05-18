@@ -2,11 +2,12 @@ package com.example.time_management_handbook.model;
 
 import com.google.api.client.util.DateTime;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Prolonged_Event_DTO {
+public class Prolonged_Event_DTO implements Serializable {
     String idEvent;
     String idUser;
     String summary;

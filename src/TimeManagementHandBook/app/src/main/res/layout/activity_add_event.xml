@@ -7,8 +7,6 @@
     tools:context=".activity.AddEvent_Activity"
     android:orientation="vertical">
 
-
-
         <include android:id="@+id/eToolbar"
             layout="@layout/toolbarlayout"/>
         <LinearLayout
@@ -31,31 +29,36 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date"
-                    android:layout_marginStart="34dp"
-                    android:layout_marginTop="5dp"/>
-                <LinearLayout
+                    android:text="Start time"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="34dp"/>
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="34dp"
-                    android:layout_marginEnd="34dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/eDate_textInput"
-                            android:layout_width="310dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/custom_textinputlayout" />
-
-                        <ImageView
-                            android:id="@+id/eDate_dialog"
+                    android:layout_marginEnd="34dp"
+                    android:orientation="horizontal">
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_calendar" />
-                </LinearLayout>
+                            android:orientation="horizontal">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/eDateStart_textInput"
+                                    android:layout_width="295dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/custom_textinputlayout"
+                                    android:padding="5dp"/>
+                                <ImageView
+                                    android:id="@+id/eDateStart_dialog"
+                                    android:layout_width="30dp"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_calendar" />
+                        </LinearLayout>
+                </RelativeLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Set time"
+                    android:text="End time"
                     android:layout_marginStart="34dp"
                     android:layout_marginTop="5dp"/>
                 <RelativeLayout
@@ -68,45 +71,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Start"
-                                    android:layout_marginTop="5dp"/>
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="100dp"
+                                    android:id="@+id/eDateEnd_textInput"
+                                    android:layout_width="295dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
-                                    android:id="@+id/eStartTime_textInput"
-                                    android:background="@drawable/custom_textinputlayout"/>
-
+                                    android:background="@drawable/custom_textinputlayout"
+                                    android:padding="5dp" />
                                 <ImageView
-                                    android:id="@+id/eStartTime_Dialog"
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/eDateEnd_dialog"
+                                    android:layout_width="30dp"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_time" />
+                                    android:src="@drawable/ic_calendar" />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_alignParentEnd="true">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="End" />
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="100dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
-                                    android:id="@+id/eEndTime_textInput"
-                                    android:background="@drawable/custom_textinputlayout"/>
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_time"
-                                    android:id="@+id/eEndTime_dialog"/>
-                        </LinearLayout>
+                            android:layout_alignParentEnd="true"/>
                 </RelativeLayout>
                 <TextView
                     android:layout_width="wrap_content"

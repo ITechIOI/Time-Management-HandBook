@@ -32,10 +32,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CalendarMonth_Fragment#newInstance} factory method to
+ * Use the {@link Calendar_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalendarMonth_Fragment extends Fragment {
+public class Calendar_Fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,7 +50,7 @@ public class CalendarMonth_Fragment extends Fragment {
     private List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
     private List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
     private List<TaskDTO> listTask = new ArrayList<>();
-    public CalendarMonth_Fragment() {
+    public Calendar_Fragment() {
         // Required empty public constructor
     }
 
@@ -63,8 +63,8 @@ public class CalendarMonth_Fragment extends Fragment {
      * @return A new instance of fragment Calendar_Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CalendarMonth_Fragment newInstance(String param1, String param2) {
-        CalendarMonth_Fragment fragment = new CalendarMonth_Fragment();
+    public static Calendar_Fragment newInstance(String param1, String param2) {
+        Calendar_Fragment fragment = new Calendar_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

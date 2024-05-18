@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,32 +28,36 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="5dp"/>
-        <LinearLayout
+            android:text="Start time"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="34dp"/>
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
-            android:layout_marginEnd="34dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/eaDate_textInput"
-                android:layout_width="310dp"
-                android:padding="5dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_textinputlayout" />
-
-            <ImageView
-                android:id="@+id/eaDate_dialog"
+            android:layout_marginEnd="34dp"
+            android:orientation="horizontal">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_calendar" />
-        </LinearLayout>
+                android:orientation="horizontal">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eaDateStart_textInput"
+                    android:layout_width="295dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_textinputlayout"
+                    android:padding="5dp"/>
+                <ImageView
+                    android:id="@+id/eaDateStart_dialog"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_calendar" />
+            </LinearLayout>
+        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set time"
+            android:text="End time"
             android:layout_marginStart="34dp"
             android:layout_marginTop="5dp"/>
         <RelativeLayout
@@ -67,47 +70,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Start"
-                    android:layout_marginTop="5dp"/>
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="100dp"
-                    android:padding="5dp"
+                    android:id="@+id/eaDateEnd_textInput"
+                    android:layout_width="295dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:id="@+id/eaStartTime_textInput"
-                    android:background="@drawable/custom_textinputlayout"/>
-
+                    android:background="@drawable/custom_textinputlayout"
+                    android:padding="5dp" />
                 <ImageView
-                    android:id="@+id/eaStartTime_Dialog"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/eaDateEnd_dialog"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_time" />
+                    android:src="@drawable/ic_calendar" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_alignParentEnd="true">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="End" />
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:padding="5dp"
-                    android:id="@+id/eaEndTime_textInput"
-                    android:background="@drawable/custom_textinputlayout"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_time"
-                    android:id="@+id/eaEndTime_dialog"/>
-            </LinearLayout>
+                android:layout_alignParentEnd="true"/>
         </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
@@ -136,21 +115,14 @@
             android:text="Notification"
             android:layout_marginStart="34dp"
             android:layout_marginTop="5dp"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
-            android:layout_marginEnd="34dp"
-            android:id="@+id/eaNotification_Layout"
-            android:orientation="horizontal"/>
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
-            android:text="Add notification"
-            android:id="@+id/eaAddNotification_button"
-            android:background="@drawable/custom_button2"/>
 
+        <Button
+            android:id="@+id/eaAddNotification_button"
+            android:layout_width="181dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:background="@drawable/custom_button2"
+            android:text="Add notification" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -175,5 +147,5 @@
             android:layout_marginEnd="34dp"
             android:background="@drawable/custom_button1"
             android:text="Save" />
-</LinearLayout>
+    </LinearLayout>
 </LinearLayout>

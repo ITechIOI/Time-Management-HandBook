@@ -7,8 +7,10 @@
     tools:context=".activity.Home_Activity"
     android:orientation="vertical">
 
-    <include android:id="@+id/home_toolbar"
+    <include
+        android:id="@+id/home_toolbar"
         layout="@layout/toolbarlayout1" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -16,6 +16,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -35,6 +36,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.AccountDAO;
 import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
@@ -62,6 +65,9 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -220,11 +226,35 @@ public class Home_Activity extends AppCompatActivity {
             String emailLogin = acc.getEmail();
             Toast.makeText(Home_Activity.this, emailLogin, Toast.LENGTH_LONG).show();
         }
+      //  Log.d("Uri of photo: ", avatar_uri.toString());
+
+        /*avatarButton = findViewById(R.id.imageButton_avatar);
+        if (avatar_uri != null){
+            avatarButton.setBackground(Icon.createWithContentUri(avatar_uri).loadDrawable(this));
+        }*/
 
         avatarButton = findViewById(R.id.imageButton_avatar);
+
         if (avatar_uri != null){
             avatarButton.setBackground(Icon.createWithContentUri(avatar_uri).loadDrawable(this));
         }
+
+        if (avatar_uri!= null){
+            Glide.with(this)
+                    .asBitmap()
+                    .load(avatar_uri.toString())
+                    .into(new BitmapImageViewTarget(avatarButton) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            avatarButton.setImageBitmap(resource);
+                        }
+                    });
+        } else {
+            // Thiết lập hình ảnh mặc định nếu avatar_uri là null
+            avatarButton.setImageResource(R.drawable.ic_user); // Đảm bảo bạn có drawable này
+        }
+
+
         avatarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

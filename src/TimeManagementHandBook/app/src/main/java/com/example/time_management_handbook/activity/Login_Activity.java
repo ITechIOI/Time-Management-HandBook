@@ -52,7 +52,6 @@ public class Login_Activity extends AppCompatActivity {
                /* Intent intent = GoogleAccount.getInstance(Login_Activity.this).SignInByGoogleAccount(Login_Activity.this);
                 startActivityForResult(intent, 1000);*/
                 signOutAndChooseAccount();
-
             }
         });
 
@@ -106,6 +105,15 @@ public class Login_Activity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (executorService!= null &&!executorService.isShutdown()) {
+            executorService.shutdown(); // Đảm bảo rằng executorService được tắt đúng cách
+        }
+    }
+
 
     public void NavigationToAnotherActivity() {
         Intent intent = new Intent(Login_Activity.this, Home_Activity.class);

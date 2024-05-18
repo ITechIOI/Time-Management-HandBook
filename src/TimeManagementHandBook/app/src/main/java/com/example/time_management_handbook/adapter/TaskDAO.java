@@ -119,7 +119,8 @@ public class TaskDAO extends RecyclerView.Adapter<TaskViewHolder>{
             @Override
             public void onClick(View v) {
                 Intent mit= new Intent(tContext, Task_Activity.class);
-                //mit.putExtra("mytast", (Serializable) task);
+                mit.putExtra("mytask", (Serializable) task);
+                Log.d("EXTRA", mit.getExtras().toString());
                 tContext.startActivity(mit);
             }
         });

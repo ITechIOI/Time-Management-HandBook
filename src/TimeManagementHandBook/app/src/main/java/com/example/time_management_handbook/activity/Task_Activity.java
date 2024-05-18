@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -26,10 +27,10 @@ public class Task_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        //toolbar.setNavigationOnClickListener(v -> finish());
 
 
-
-        /*TaskDTO task = null;
+        TaskDTO task = null;
         Intent intent = getIntent();
         task = (TaskDTO) intent.getSerializableExtra("mytask");
         Log.d("TAG", "Received data: " + task);
@@ -41,11 +42,43 @@ public class Task_Activity extends AppCompatActivity {
         LinearLayout notificationLayout = findViewById(R.id.taNotification_Layout);
         TextView descriptionTextView = findViewById(R.id.taDescription_textInput);
         Button saveButton = findViewById(R.id.taSave_button);
-
         nameTextView.setText(task.getName());
         deadlineTextView.setText(task.getEndTime().toString());
         locationTextView.setText(task.getLocation());
-        descriptionTextView.setText(task.getDescription());*/
+        switch(task.getColor())
+        {
+            case 1:
+                RadioButton green = findViewById(R.id.green_radiobt);
+                green.setChecked(true);
+                break;
+            case 2:
+                RadioButton red = findViewById(R.id.red_radiobt);
+                red.setChecked(true);
+                break;
+            case 3:
+                RadioButton pink = findViewById(R.id.pink_radiobt);
+                pink.setChecked(true);
+                break;
+            case 4:
+                RadioButton blue = findViewById(R.id.blue_radiobt);
+                blue.setChecked(true);
+                break;
+            case 5:
+                RadioButton yellow = findViewById(R.id.yellow_radiobt);
+                yellow.setChecked(true);
+                break;
+            case 6:
+                RadioButton orange = findViewById(R.id.orange_radiobt);
+                orange.setChecked(true);
+                break;
+        }
+        descriptionTextView.setText(task.getDescription());
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 }

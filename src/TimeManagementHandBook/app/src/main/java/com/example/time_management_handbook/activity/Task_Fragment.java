@@ -91,7 +91,7 @@ public class Task_Fragment extends Fragment {
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
         listTaskByCurrentDate = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail(), roundedDateTime);
-        taskAdapter = new TaskDAO(listTaskByCurrentDate,getContext());
+        taskAdapter = new TaskDAO(listTaskByCurrentDate,getActivity());
         rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv.setAdapter(taskAdapter);
         searchView.clearFocus();

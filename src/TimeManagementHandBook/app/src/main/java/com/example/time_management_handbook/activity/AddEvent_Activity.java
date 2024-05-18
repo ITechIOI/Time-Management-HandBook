@@ -59,7 +59,7 @@ public class AddEvent_Activity extends AppCompatActivity {
         TextInputEditText eEndTime = findViewById(R.id.eEndTime_textInput);
         TextInputEditText eLocation = findViewById(R.id.eLocation_textInput);
         LinearLayout linearLayout = findViewById(R.id.eColor_radio);
-        RadioGroup customRadioGroup = linearLayout.findViewById(R.id.color_radio);
+        RadioGroup customRadioGroup = findViewById(R.id.color_radio);
         TextInputEditText eDescription = findViewById(R.id.eDescription_textInput);
 
 

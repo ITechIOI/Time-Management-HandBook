@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.example.time_management_handbook.activity.Task_Activity;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,13 +96,10 @@ public class HomeTaskAdapter extends BaseAdapter {
         holder.eventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Task_Activity.class);
-                if (context instanceof Activity) {
-                    context.startActivity(intent);
-                } else {
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
+                Intent mit= new Intent(context, Task_Activity.class);
+                mit.putExtra("mytask", (Serializable) datas);
+                Log.d("EXTRA", mit.getExtras().toString());
+                context.startActivity(mit);
             }
         });
 

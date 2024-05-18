@@ -2,10 +2,11 @@ package com.example.time_management_handbook.model;
 
 import com.google.api.client.util.DateTime;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class Event_Of_The_Day_DTO {
+public class Event_Of_The_Day_DTO implements Serializable {
     String idEvent;
     String idUser;
     String summary;

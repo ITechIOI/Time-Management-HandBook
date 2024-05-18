@@ -1,5 +1,6 @@
 package com.example.time_management_handbook.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -23,14 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeTaskAdapter extends BaseAdapter {
-    private final List<TaskDTO> lData;
+    private List<TaskDTO> lData;
     private LayoutInflater layoutInflater;
     private Context context;
 
     public HomeTaskAdapter(List<TaskDTO> listData, Context aContext) {
         context = aContext;
         lData = listData != null ? listData : new ArrayList<>();
-        layoutInflater = LayoutInflater.from(aContext);
+        layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -93,8 +94,13 @@ public class HomeTaskAdapter extends BaseAdapter {
         holder.eventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mit = new Intent(context, Task_Activity.class);
-                context.startActivity(mit);
+                Intent intent = new Intent(context, Task_Activity.class);
+                if (context instanceof Activity) {
+                    context.startActivity(intent);
+                } else {
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
 

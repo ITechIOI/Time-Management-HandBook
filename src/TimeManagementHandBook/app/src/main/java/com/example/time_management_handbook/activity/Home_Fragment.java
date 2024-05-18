@@ -140,9 +140,8 @@ public class Home_Fragment extends Fragment {
     }
 
     public void setEventandTaskView(List<Event_Of_The_Day_DTO> events, List<TaskDTO> tasks){
-        eventView.setAdapter(new HomeEventAdapter(events, getActivity().getApplicationContext()));
-        taskView.setAdapter(new HomeTaskAdapter(tasks, getActivity().getApplicationContext()));
-
+        eventView.setAdapter(new HomeEventAdapter(events, getActivity() ) );
+        taskView.setAdapter(new HomeTaskAdapter(tasks, getActivity()));
     }
 
     public static String reformatDate(String date, String originalFormat, String targetFormat) {

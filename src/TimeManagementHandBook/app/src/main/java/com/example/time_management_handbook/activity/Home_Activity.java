@@ -289,7 +289,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List event of the day: ", listEventOfTheDay.toString());
             }
         });
-        executorServiceGetEventOfTheDay.shutdown();
+//        executorServiceGetEventOfTheDay.shutdown();
 
         // Get Prolonged Event
 
@@ -301,7 +301,7 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
 
-        executorServiceGetProlongedEvent.shutdown();
+//        executorServiceGetProlongedEvent.shutdown();
 
         // Get Task
 

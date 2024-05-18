@@ -79,6 +79,49 @@ public class Event_Of_The_Day_DAO {
         return listEvents;
     }
 
+    public List<Event_Of_The_Day_DTO> getListEventOfTheDayForNotification(String email, LocalDateTime timeNow) {
+        List<Event_Of_The_Day_DTO> listEventsForNotification = new ArrayList<>();
+
+        LocalDate date = timeNow.toLocalDate();
+        LocalTime time = timeNow.toLocalTime();
+        String dateTime = date.toString() + " " + time.toString();
+
+        String query = "EXEC USP_GET_EVENT_OF_THE_DAY_BY_ID_FOR_NOTIFICATION '" + email + "', '" + dateTime + "'";
+
+        try {
+            ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    String idEvent = resultSet.getString(1);
+                    String idUser = resultSet.getString(2);
+                    String summary = resultSet.getString(3);
+                    String location = resultSet.getString(4);
+
+                    Timestamp startTime = resultSet.getTimestamp(5);
+                    ZonedDateTime zonedDateTimeStart = startTime.toInstant().atZone(ZoneId.systemDefault());
+                    LocalDateTime start = zonedDateTimeStart.toLocalDateTime();
+
+                    Timestamp endTime = resultSet.getTimestamp(6);
+                    ZonedDateTime zonedDateTimeEnd = endTime.toInstant().atZone(ZoneId.systemDefault());
+                    LocalDateTime end = zonedDateTimeEnd.toLocalDateTime();
+
+                    Duration notification_period = Duration.parse(resultSet.getString(7));
+                    String description = resultSet.getString(8);
+                    int color = resultSet.getInt(9);
+
+                    Event_Of_The_Day_DTO event = new Event_Of_The_Day_DTO(idEvent, idUser, summary, location,
+                            start, end, notification_period, description, color);
+                    listEventsForNotification.add(event);
+                    Log.d("Each event for notification: ", event.toString());
+                }
+            }
+        } catch (SQLException e) {
+            Log.d("Get list event of the day: ", e.getMessage());
+        };
+
+        return listEventsForNotification;
+    }
+
     public int InsertNewEvent(String email, Event_Of_The_Day_DTO event) {
         int count = 0;
 

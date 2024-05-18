@@ -2,7 +2,10 @@ package com.example.time_management_handbook.activity;
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +13,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.DataProvider;
@@ -50,8 +55,16 @@ public class Login_Activity extends AppCompatActivity {
             }
         });
 
-        today = LocalDate.now();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            if (ContextCompat.checkSelfPermission(Login_Activity.this,
+                    Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(Login_Activity.this,
+                        new String[] {Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
 
+
+        today = LocalDate.now();
         executorService = Executors.newSingleThreadExecutor();
 
         executorService.submit(new Runnable() {

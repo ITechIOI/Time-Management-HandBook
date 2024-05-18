@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.READ_CLIPBOARD" />
@@ -13,7 +14,7 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.gms.permission.ACCESS_FINE_LOCATION" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -84,6 +85,17 @@
             android:exported="false"
             android:label="Account"
             android:parentActivityName=".activity.Home_Activity" />
+
+
+        <service
+            android:name=".model.MyForegroundService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.time_management_handbook.model.MyForegroundService"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

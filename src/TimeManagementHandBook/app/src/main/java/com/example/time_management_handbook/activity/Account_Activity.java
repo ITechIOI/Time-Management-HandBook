@@ -2,15 +2,21 @@ package com.example.time_management_handbook.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class Account_Activity extends AppCompatActivity {
@@ -64,6 +70,7 @@ public class Account_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent mit= new Intent(Account_Activity.this, Login_Activity.class);
+                Home_Activity.acc = null;
                 startActivity(mit);
             }
         });
@@ -78,4 +85,5 @@ public class Account_Activity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

@@ -18,5 +18,7 @@ public class Event_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 }

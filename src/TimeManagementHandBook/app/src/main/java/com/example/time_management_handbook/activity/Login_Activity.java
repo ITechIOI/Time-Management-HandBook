@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -25,6 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.time.LocalDate;
@@ -47,10 +49,9 @@ public class Login_Activity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Sử dụng GoogleSignIn.getClient để khởi tạo GoogleSignInClient
-                Intent intent = GoogleAccount.getInstance(Login_Activity.this).SignInByGoogleAccount(Login_Activity.this);
-                startActivityForResult(intent, 1000);
-
+               /* Intent intent = GoogleAccount.getInstance(Login_Activity.this).SignInByGoogleAccount(Login_Activity.this);
+                startActivityForResult(intent, 1000);*/
+                signOutAndChooseAccount();
 
             }
         });
@@ -73,19 +74,11 @@ public class Login_Activity extends AppCompatActivity {
 
                 List<String> users = DataProvider.getInstance().getListUser();
                 Log.d("Connect User", users.toString());
-                /*runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Thực hiện hoạt động UI ở đây
-                        // Ví dụ: hiển thị toast
-                        Toast.makeText(Login_Activity.this, DataProvider.getInstance().getListTeacher(DataProvider.getInstance().getConnection()).toString(), Toast.LENGTH_LONG).show();
-                        Log.d("Connect to Database", users.toString());
-                    }
-                });*/
+
             }
         });
 
-        executorService.shutdown();
+       // executorService.shutdown();
     }
 
     @Override
@@ -117,5 +110,30 @@ public class Login_Activity extends AppCompatActivity {
     public void NavigationToAnotherActivity() {
         Intent intent = new Intent(Login_Activity.this, Home_Activity.class);
         startActivity(intent);
+    }
+    private void signOutAndChooseAccount() {
+        // Xóa thông tin tài khoản hiện tại
+        GoogleSignIn.getClient(this, getGoogleSignInOptions()).signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Người dùng đã đăng xuất thành công, khởi tạo quá trình đăng nhập mới
+                            Intent intent = GoogleSignIn.getClient(Login_Activity.this, getGoogleSignInOptions())
+                                    .getSignInIntent();
+                            int RC_SIGN_IN = 1000;
+                            startActivityForResult(intent, RC_SIGN_IN);
+                        } else {
+
+                            Log.d("Fail to sign out: ", task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    private GoogleSignInOptions getGoogleSignInOptions() {
+        return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
     }
 }

@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.time_management_handbook.activity.Home_Activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyForegroundService extends Service {
@@ -44,9 +45,13 @@ public class MyForegroundService extends Service {
 
         // Tạo danh sách các thông báo
 
+        listEventOfTheDay = new ArrayList<>();
+        listProlongedEvent = new ArrayList<>();
+        listTask = new ArrayList<>();
+
         listEventOfTheDay = Home_Activity.listEventOfTheDayForNotification;
         listProlongedEvent = Home_Activity.listProlongedEvent;
-        listTask= Home_Activity.listTaskForNotification;
+        listTask = Home_Activity.listTaskForNotification;
 
     }
 

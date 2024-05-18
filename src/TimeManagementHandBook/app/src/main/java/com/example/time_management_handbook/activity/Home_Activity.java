@@ -100,22 +100,22 @@ public class Home_Activity extends AppCompatActivity {
     private final ExecutorService executeServiceInsertEventOfTheDayFetchData = Executors.newSingleThreadExecutor();
     private final ExecutorService executeServiceInsertProlongedEventFetchData = Executors.newSingleThreadExecutor();
     private final ExecutorService executorServiceFetchData = Executors.newSingleThreadExecutor();
-    public List<Event> items;
-    public List<CalendarEventDTO> calendarEvents;
+    public List<Event> items = new ArrayList<>();
+    public List<CalendarEventDTO> calendarEvents = new ArrayList<>();
     private TextView hiText;
     private FragmentManager fragmentManager;
     private final Home_Fragment homeFragment = new Home_Fragment();
     private ImageButton avatarButton;
-    public static List<Event_Of_The_Day_DTO> listEventOfTheDay;
-    public static List<Prolonged_Event_DTO> listProlongedEvent;
-    public static List<TaskDTO> listTask;
+    public static List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
+    public static List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
+    public static List<TaskDTO> listTask = new ArrayList<>();
 
     private ExecutorService executorServiceEventOfTheDayForNotificationCreate = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceTaskForNotificationCreate = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceEventOfTheDayForNotificationStart = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceTaskForNotificationStart = Executors.newSingleThreadExecutor();
-    public static List<Event_Of_The_Day_DTO> listEventOfTheDayForNotification;
-    public static List<TaskDTO> listTaskForNotification;
+    public static List<Event_Of_The_Day_DTO> listEventOfTheDayForNotification = new ArrayList<>();
+    public static List<TaskDTO> listTaskForNotification = new ArrayList<>();
 
 
     @SuppressLint("NonConstantResourceId")
@@ -194,7 +194,7 @@ public class Home_Activity extends AppCompatActivity {
             int count_account = AccountDAO.getInstance().InsertNewAccount(email);
             Log.d("Insert new account: ", String.valueOf(count_account));
         });
-        executorServiceInsertAccount.shutdown();
+        // executorServiceInsertAccount.shutdown();
 
         // Fetch data from google calendar
 
@@ -209,7 +209,7 @@ public class Home_Activity extends AppCompatActivity {
                 }
             });
 
-            executorServiceFetchData.shutdown();
+            // executorServiceFetchData.shutdown();
         }
 
         if (acc == null) {
@@ -244,7 +244,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List event of the day: ", listEventOfTheDay.toString());
             }
         });
-        executorServiceHandleEventOfTheDay.shutdown();
+       // executorServiceHandleEventOfTheDay.shutdown();
 
         // Get Prolonged Event
 
@@ -256,7 +256,7 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
 
-        executorServiceHandleProlongedEvent.shutdown();
+       // executorServiceHandleProlongedEvent.shutdown();
 
         // Get Task
 
@@ -267,7 +267,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List task: ", listTask.toString());
             }
         });
-        executorServiceHandleTask.shutdown();
+       // executorServiceHandleTask.shutdown();
 
         executorServiceEventOfTheDayForNotificationCreate.execute(new Runnable() {
             @Override
@@ -276,7 +276,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List event for notification: ", listEventOfTheDayForNotification.toString());
             }
         });
-        executorServiceEventOfTheDayForNotificationCreate.shutdown();
+       // executorServiceEventOfTheDayForNotificationCreate.shutdown();
 
         executorServiceTaskForNotificationCreate.execute(new Runnable() {
             @Override
@@ -285,7 +285,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List task for notification: ", listTaskForNotification.toString());
             }
         });
-        executorServiceTaskForNotificationCreate.shutdown();
+       // executorServiceTaskForNotificationCreate.shutdown();
 
         Runnable runnableCode = new Runnable() {
             @Override
@@ -315,10 +315,10 @@ public class Home_Activity extends AppCompatActivity {
 
         try {
             if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {
-                executorServiceGetUsername.shutdownNow();
+                // executorServiceGetUsername.shutdownNow();
             }
         } catch (InterruptedException e) {
-            executorServiceGetUsername.shutdownNow();
+            // executorServiceGetUsername.shutdownNow();
         }
 
         // Change current date
@@ -368,7 +368,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List event for notification: ", listEventOfTheDayForNotification.toString());
             }
         });
-        executorServiceEventOfTheDayForNotificationStart.shutdown();
+        // executorServiceEventOfTheDayForNotificationStart.shutdown();
 
         executorServiceTaskForNotificationStart.execute(new Runnable() {
             @Override
@@ -377,7 +377,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List task for notification: ", listTaskForNotification.toString());
             }
         });
-       executorServiceTaskForNotificationStart.shutdown();
+        // executorServiceTaskForNotificationStart.shutdown();
 
     }
 
@@ -520,13 +520,13 @@ public class Home_Activity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (executorService != null) {
-            executorService.shutdown();
+           // executorService.shutdown();
             try {
                 if (!executorService.awaitTermination(1, TimeUnit.SECONDS)) {
-                    executorService.shutdownNow();
+                   // executorService.shutdownNow();
                 }
             } catch (InterruptedException e) {
-                executorService.shutdownNow();
+              //  executorService.shutdownNow();
             }
         }
     }

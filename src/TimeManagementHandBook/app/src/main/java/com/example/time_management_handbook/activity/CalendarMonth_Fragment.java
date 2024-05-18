@@ -10,8 +10,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.adapter.CalendarAdapter;
 import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
 import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
 import com.example.time_management_handbook.adapter.TaskDAO;
@@ -21,6 +24,8 @@ import com.example.time_management_handbook.model.TaskDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +43,10 @@ public class CalendarMonth_Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private List<Object> lObject = new ArrayList<>();
+    private List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
+    private List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
+    private List<TaskDTO> listTask = new ArrayList<>();
     public CalendarMonth_Fragment() {
         // Required empty public constructor
     }
@@ -81,6 +89,14 @@ public class CalendarMonth_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        LocalDate today = LocalDate.now();
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+
+        listTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), roundedDateTime);
+        listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), roundedDateTime);
+        listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
+
         CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -91,12 +107,20 @@ public class CalendarMonth_Fragment extends Fragment {
                 LocalDate todayDate = LocalDate.of(year, month, dayOfMonth);
                 LocalDateTime localTime = todayDate.atStartOfDay();
 
-                List<TaskDTO> lisTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), localTime);
-                List<Event_Of_The_Day_DTO> eventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), localTime);
-                List<Prolonged_Event_DTO> prolongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), todayDate);
-
+                listTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), localTime);
+                listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), localTime);
+                listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), todayDate);
             }
         });
-    }
 
+        RecyclerView notes = view.findViewById(R.id.recyclerView_notes);
+        lObject = new ArrayList<>();
+
+        //Lay du lieu theo ngay duoc chon
+        lObject.addAll(listEventOfTheDay);
+        lObject.addAll(listProlongedEvent);
+        lObject.addAll(listTask);
+        notes.setAdapter(new CalendarAdapter(getActivity().getApplicationContext(), lObject));
+        notes.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
 }

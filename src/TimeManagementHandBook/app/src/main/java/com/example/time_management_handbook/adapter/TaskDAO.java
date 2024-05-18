@@ -40,7 +40,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder>{
+public class TaskDAO extends RecyclerView.Adapter<TaskViewHolder>{
 
 
     public static TaskDAO instance;
@@ -131,19 +131,6 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder>{
 
     public void setFilterList(List<TaskDTO> filterTask) {
         this.list = filterTask;
-    }
-
-    public class TaskViewHolder extends RecyclerView.ViewHolder{
-        RelativeLayout itemLayout;
-        TextView taskTextview;
-        CheckBox taskCheckbox;
-        public TaskViewHolder(@NonNull View itemView)
-        {
-            super(itemView);
-            itemLayout = itemView.findViewById(R.id.item);
-            taskTextview = itemView.findViewById(R.id.task);
-            taskCheckbox = itemView.findViewById(R.id.an);
-        }
     }
 
     public static TaskDAO getInstance() {

@@ -67,8 +67,8 @@ public class HomeTaskAdapter extends BaseAdapter {
         TaskDTO datas = lData.get(position);
         holder.summaryView.setText(datas.getName());
         // Dinh dang thoi gian deadline
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM HH:mm");
-        holder.timeView.setText(datas.getCreatingTime().format(formatter) + "\n - " + datas.getEndTime().format(formatter));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        holder.timeView.setText("Start: " + datas.getCreatingTime().format(formatter) + "\nEnd: " + datas.getEndTime().format(formatter));
         holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_task_book,0,0);
         switch (datas.getColor())
         {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.example.time_management_handbook.model.TaskDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class CalendarMonth_Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    TextView dateView;
     private List<Object> lObject = new ArrayList<>();
     private List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
     private List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
@@ -97,6 +100,10 @@ public class CalendarMonth_Fragment extends Fragment {
         listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), roundedDateTime);
         listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
 
+        dateView = view.findViewById(R.id.textView_date);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        dateView.setText(today.format(formatter));
+
         CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -104,8 +111,9 @@ public class CalendarMonth_Fragment extends Fragment {
                 // Xử lý sự kiện click vào một ngày
                 Toast.makeText(getContext(), "Ngày được chọn: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
 
-                LocalDate todayDate = LocalDate.of(year, month, dayOfMonth);
+                LocalDate todayDate = LocalDate.of(year, month + 1, dayOfMonth);
                 LocalDateTime localTime = todayDate.atStartOfDay();
+                dateView.setText(todayDate.format(formatter));
 
                 listTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), localTime);
                 listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), localTime);

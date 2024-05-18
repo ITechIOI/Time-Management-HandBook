@@ -3,10 +3,7 @@ package com.example.time_management_handbook.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.time_management_handbook.R;
-import com.example.time_management_handbook.activity.AboutZEIT_Activity;
-import com.example.time_management_handbook.activity.Home_Activity;
 import com.example.time_management_handbook.activity.Task_Activity;
-import com.example.time_management_handbook.activity.Task_Fragment;
 import com.example.time_management_handbook.model.TaskDTO;
-import com.google.api.client.util.DateTime;
 
 import java.io.Serializable;
 import java.sql.ResultSet;
@@ -32,18 +25,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TaskDAO extends RecyclerView.Adapter<TaskViewHolder>{
-
-
+public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
     public static TaskDAO instance;
     private List<TaskDTO> list;
     private Context tContext;
@@ -126,8 +114,6 @@ public class TaskDAO extends RecyclerView.Adapter<TaskViewHolder>{
         });
     }
 
-
-
     @Override
     public int getItemCount() {
         return list.size();
@@ -135,6 +121,23 @@ public class TaskDAO extends RecyclerView.Adapter<TaskViewHolder>{
 
     public void setFilterList(List<TaskDTO> filterTask) {
         this.list = filterTask;
+    }
+
+    public static class TaskViewHolder extends RecyclerView.ViewHolder{
+        RelativeLayout itemLayout;
+        TextView nameTask;
+        TextView deadlineTask;
+        TextView timeleftTask;
+        CheckBox taskCheckbox;
+        public TaskViewHolder(@NonNull View itemView)
+        {
+            super(itemView);
+            itemLayout = itemView.findViewById(R.id.item);
+            nameTask = itemView.findViewById(R.id.tname_textView);
+            deadlineTask = itemView.findViewById(R.id.tDeadline_textView);
+            timeleftTask = itemView.findViewById(R.id.tTimeleft_textView);
+            taskCheckbox = itemView.findViewById(R.id.an);
+        }
     }
 
     public static TaskDAO getInstance() {

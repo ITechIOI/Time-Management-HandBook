@@ -98,7 +98,7 @@ public class HomeEventAdapter extends BaseAdapter {
         holder.eventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mit= new Intent(context, Task_Activity.class);
+                Intent mit= new Intent(context, Event_Activity.class);
                 //gửi dữ liệu
                 mit.putExtra("myevent", (Serializable) datas);
                 Log.d("EXTRA", mit.getExtras().toString());

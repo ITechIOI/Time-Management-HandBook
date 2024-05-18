@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.time_management_handbook.R;
@@ -19,8 +21,7 @@ import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return new EventViewHolder(itemView);
             case TASK:
                 itemView = inflater.inflate(R.layout.task_item, parent, false);
-                return new TaskViewHolder(itemView);
+                return new TaskDAO.TaskViewHolder(itemView);
             default:
                 break;
         }
@@ -89,6 +90,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public void onClick(View v) {
                         Intent mit= new Intent(context, Event_Activity.class);
+                        mit.putExtra("mytask", (Serializable) eventOfTheDay);
+                        Log.d("EXTRA", mit.getExtras().toString());
                         context.startActivity(mit);
                     }
                 });
@@ -106,6 +109,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public void onClick(View v) {
                         Intent mit= new Intent(context, Event_Activity.class);
+                        mit.putExtra("mytask", (Serializable) prolongedEvent);
+                        Log.d("EXTRA", mit.getExtras().toString());
                         context.startActivity(mit);
                     }
                 });
@@ -113,7 +118,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             case TASK:
                 TaskDTO task = (TaskDTO) (lData.get(position));
-                TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
+                TaskDAO.TaskViewHolder taskViewHolder = (TaskDAO.TaskViewHolder) holder;
 
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 taskViewHolder.nameTask.setText(task.getName());
@@ -129,6 +134,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public void onClick(View v) {
                         Intent mit= new Intent(context, Task_Activity.class);
+                        mit.putExtra("mytask", (Serializable) task);
+                        Log.d("EXTRA", mit.getExtras().toString());
                         context.startActivity(mit);
                     }
                 });
@@ -164,6 +171,16 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case 6:
                 itemLayout.setBackgroundColor(Color.parseColor("#FFD4B2"));
                 break;
+        }
+    }
+
+    public static class EventViewHolder extends RecyclerView.ViewHolder {
+        public RelativeLayout itemLayout;
+        public TextView eventTextView;
+        public EventViewHolder(@NonNull View itemView) {
+            super(itemView);
+            itemLayout = itemView.findViewById(R.id.item_event);
+            eventTextView = itemView.findViewById(R.id.textView_event);
         }
     }
 }

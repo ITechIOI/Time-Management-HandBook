@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,31 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         TaskDTO task = list.get(position);
-        holder.taskTextview.setText(task.getName()+"\n"+task.getEndTime().toString());
+
+        LocalDateTime today = LocalDateTime.now();
+        Duration duration = Duration.between(today, task.getEndTime());
+        String remainingTime  = "";
+        if (duration.toDays() > 1) {
+            remainingTime = "Remaining time: " + String.valueOf(duration.toDays()) + "days " +
+                    String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                    "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+        } else {
+            remainingTime = "Remaining time: " + String.valueOf(duration.toDays()) + "day " +
+                String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+        }
+
+        int year = task.getEndTime().getYear();
+        int month = task.getEndTime().getMonthValue();
+        int dayOfMonth = task.getEndTime().getDayOfMonth();
+
+        String deadlineString = String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" +
+                String.valueOf(year);
+
+        holder.taskTextview.setText(task.getName()+"\n"+ "Deadline:" +
+                deadlineString + " " + task.getEndTime().toLocalTime().toString()
+                + "\n" + remainingTime );
+
         if (task.getFinishedTime()!=null)
             holder.taskCheckbox.setChecked(true);
         else holder.taskCheckbox.setChecked(false);
@@ -86,7 +111,6 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder>{
             case 6:
                 holder.itemLayout.setBackgroundColor(Color.parseColor("#FFD4B2"));
                 break;
-
         }
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override

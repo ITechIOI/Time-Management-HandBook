@@ -19,7 +19,10 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +42,7 @@ import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
 import com.example.time_management_handbook.adapter.TaskDAO;
 import com.example.time_management_handbook.model.CalendarEventDTO;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
+import com.example.time_management_handbook.model.MyForegroundService;
 import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 import com.example.time_management_handbook.retrofit.GoogleAccount;
@@ -105,6 +109,14 @@ public class Home_Activity extends AppCompatActivity {
     public static List<Event_Of_The_Day_DTO> listEventOfTheDay;
     public static List<Prolonged_Event_DTO> listProlongedEvent;
     public static List<TaskDTO> listTask;
+
+    private ExecutorService executorServiceEventOfTheDayForNotificationCreate = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceTaskForNotificationCreate = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceEventOfTheDayForNotificationStart = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceTaskForNotificationStart = Executors.newSingleThreadExecutor();
+    public static List<Event_Of_The_Day_DTO> listEventOfTheDayForNotification;
+    public static List<TaskDTO> listTaskForNotification;
+
 
     @SuppressLint("NonConstantResourceId")
 
@@ -257,6 +269,41 @@ public class Home_Activity extends AppCompatActivity {
         });
         executorServiceHandleTask.shutdown();
 
+        executorServiceEventOfTheDayForNotificationCreate.execute(new Runnable() {
+            @Override
+            public void run() {
+                listEventOfTheDayForNotification = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDayForNotification(acc.getEmail(), roundedDateTime);
+                Log.d("List event for notification: ", listEventOfTheDayForNotification.toString());
+            }
+        });
+        executorServiceEventOfTheDayForNotificationCreate.shutdown();
+
+        executorServiceTaskForNotificationCreate.execute(new Runnable() {
+            @Override
+            public void run() {
+                listTaskForNotification = TaskDAO.getInstance().getListTaskForNotification(acc.getEmail(), roundedDateTime);
+                Log.d("List task for notification: ", listTaskForNotification.toString());
+            }
+        });
+        executorServiceTaskForNotificationCreate.shutdown();
+
+        Runnable runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                // Hàm cần chạy sau 10 giây
+                Intent serviceIntent = new Intent(Home_Activity.this, MyForegroundService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(serviceIntent);
+
+                } else {
+                    startService(serviceIntent);
+                }
+            }
+        };
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(runnableCode, 2000);
+
     }
 
     @Override
@@ -313,6 +360,24 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
 
+
+        executorServiceEventOfTheDayForNotificationStart.execute(new Runnable() {
+            @Override
+            public void run() {
+                listEventOfTheDayForNotification = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDayForNotification(acc.getEmail().toString(), roundedDateTime);
+                Log.d("List event for notification: ", listEventOfTheDayForNotification.toString());
+            }
+        });
+        executorServiceEventOfTheDayForNotificationStart.shutdown();
+
+        executorServiceTaskForNotificationStart.execute(new Runnable() {
+            @Override
+            public void run() {
+                listTaskForNotification = TaskDAO.getInstance().getListTaskForNotification(acc.getEmail().toString(), roundedDateTime);
+                Log.d("List task for notification: ", listTaskForNotification.toString());
+            }
+        });
+       executorServiceTaskForNotificationStart.shutdown();
 
     }
 

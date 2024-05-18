@@ -269,8 +269,6 @@ public class Home_Activity extends AppCompatActivity {
         });
         executorServiceHandleTask.shutdown();
 
-
-
         executorServiceEventOfTheDayForNotificationCreate.execute(new Runnable() {
             @Override
             public void run() {

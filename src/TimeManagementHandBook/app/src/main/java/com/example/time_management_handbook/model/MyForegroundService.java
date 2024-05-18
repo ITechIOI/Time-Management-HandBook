@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -103,11 +104,11 @@ public class MyForegroundService extends Service {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             showNewNotification();
-        }, 2000); // 5 phút = 300000 milliseconds
+        }, 2000);
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             CharSequence name = "Hi guys !";
             String description = "Welcome to my Time Management Handbook";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -134,7 +135,7 @@ public class MyForegroundService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "MY_NOTIFICATION_CHANNEL")
                 .setSmallIcon(res.getIdentifier("ic_notification", "drawable", packageName))
                 .setContentTitle("Hi guys!!!")
-                .setContentText("Welcome to Time_Management_Handbook")
+                .setContentText("Welcome to Time Management Handbook")
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -145,10 +146,10 @@ public class MyForegroundService extends Service {
 
     private void showListEventOfTheDayNotification(int index) {
 
-        Resources res = context.getResources(); // Lấy tài nguyên
-        String packageName = context.getPackageName(); // Lấy tên gói ứng dụng
+        Resources res = context.getResources();
+        String packageName = context.getPackageName();
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "foreground_service_channel")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "MY_NOTIFICATION_CHANNEL")
                 .setSmallIcon(res.getIdentifier("ic_notification", "drawable", packageName))
                 .setContentTitle(listEventOfTheDay.get(index).summary + "\n"
                         + listEventOfTheDay.get(index).description)
@@ -157,6 +158,7 @@ public class MyForegroundService extends Service {
                         + "\n" + listEventOfTheDay.get(index).description)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOngoing(true);
+        Log.d("Show event of the day notification:",  listEventOfTheDay.get(index).summary );
 
         notificationManager.notify(NOTIFICATION_ID_BASE + index + 1, builder.build());
     }
@@ -166,7 +168,7 @@ public class MyForegroundService extends Service {
         Resources res = context.getResources(); // Lấy tài nguyên
         String packageName = context.getPackageName(); // Lấy tên gói ứng dụng
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "foreground_service_channel")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "MY_NOTIFICATION_CHANNEL")
                 .setSmallIcon(res.getIdentifier("ic_notification", "drawable", packageName))
                 .setContentTitle(listProlongedEvent.get(index).summary + "\n"
                         + listProlongedEvent.get(index).description)
@@ -183,7 +185,7 @@ public class MyForegroundService extends Service {
         Resources res = context.getResources(); // Lấy tài nguyên
         String packageName = context.getPackageName(); // Lấy tên gói ứng dụng
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "foreground_service_channel")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "MY_NOTIFICATION_CHANNEL")
                 .setSmallIcon(res.getIdentifier("ic_notification", "drawable", packageName))
                 .setContentTitle(listTask.get(index).name + "\n")
                 .setContentText("Deadline:" + listTask.get(index).getEndTime().toLocalTime() + " "
@@ -201,8 +203,7 @@ public class MyForegroundService extends Service {
         Resources res = context.getResources(); // Lấy tài nguyên
         String packageName = context.getPackageName(); // Lấy tên gói ứng dụng
 
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "foreground_service_channel")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "MY_NOTIFICATION_CHANNEL")
                 .setSmallIcon(res.getIdentifier("ic_notification", "drawable", packageName))
                 .setContentTitle("New Notification After 5 Minutes")
                 .setContentText("This is a new notification shown after 5 minutes.")
@@ -216,8 +217,6 @@ public class MyForegroundService extends Service {
         startForeground(2, builder.build()); // Use a different notification ID for the new notification
 
     }
-
-
 
     @Nullable
     @Override

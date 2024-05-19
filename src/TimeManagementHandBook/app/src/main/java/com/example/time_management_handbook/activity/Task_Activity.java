@@ -134,23 +134,7 @@ public class Task_Activity extends AppCompatActivity {
                 buttonOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String text;
-                        if (day.getValue()>1)
-                            text = day.getValue()+" days ";
-                        else
-                            text = day.getValue() +" day ";
-                        if (hour.getValue()>1)
-                            text = text + hour.getValue()+" hours ";
-                        else
-                            text = text + hour.getValue() +" hour ";
-                        if (minute.getValue()>1)
-                            text = text + minute.getValue()+" minutes ";
-                        else
-                            text = text + minute.getValue() +" minute ";
-                        if (sec.getValue()>1)
-                            text = text + sec.getValue()+" secs ";
-                        else
-                            text = text + sec.getValue() +" sec ";
+                        String text = day.getValue() +"d "+hour.getValue()+"h "+minute.getValue()+"m "+sec.getValue()+"s";
                         notificationT.setText(text);
                         dialog.dismiss();
                     }

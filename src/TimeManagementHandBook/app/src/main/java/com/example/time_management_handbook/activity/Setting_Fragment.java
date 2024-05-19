@@ -28,13 +28,11 @@ public class Setting_Fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     private static String checkNotificationStatusText = "On";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     public Setting_Fragment() {
         // Required empty public constructor
     }
@@ -64,8 +62,6 @@ public class Setting_Fragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
@@ -98,7 +94,7 @@ public class Setting_Fragment extends Fragment {
         notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("On".equals(checkNotificationStatus.getText())) { // Sử dụng equals() thay vì ==
+                if ("On".equals(checkNotificationStatus.getText())) {
                     checkNotificationStatusText = "Off";
                     checkNotificationStatus.setText(checkNotificationStatusText);
                     stopNotifications();
@@ -113,7 +109,6 @@ public class Setting_Fragment extends Fragment {
         return view;
     }
 
-
     // Turn off receiving notification feature
     public void stopNotifications() {
         Intent intent = new Intent("stop_service");
@@ -125,6 +120,4 @@ public class Setting_Fragment extends Fragment {
         Intent intent = new Intent(getActivity(), MyForegroundService.class);
         getActivity().startService(intent);
     }
-
-
 }

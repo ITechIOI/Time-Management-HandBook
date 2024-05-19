@@ -49,7 +49,6 @@ public class Calendar_Fragment extends Fragment {
     private List<Object> lObject = new ArrayList<>();
     private List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
     private List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
-    private List<TaskDTO> listTask = new ArrayList<>();
     public Calendar_Fragment() {
         // Required empty public constructor
     }
@@ -96,7 +95,6 @@ public class Calendar_Fragment extends Fragment {
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
 
-        listTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), roundedDateTime);
         listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), roundedDateTime);
         listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
 
@@ -115,7 +113,6 @@ public class Calendar_Fragment extends Fragment {
                 LocalDateTime localTime = todayDate.atStartOfDay();
                 dateView.setText(todayDate.format(formatter));
 
-                listTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), localTime);
                 listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), localTime);
                 listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), todayDate);
             }
@@ -127,7 +124,6 @@ public class Calendar_Fragment extends Fragment {
         //Lay du lieu theo ngay duoc chon
         lObject.addAll(listEventOfTheDay);
         lObject.addAll(listProlongedEvent);
-        lObject.addAll(listTask);
         notes.setAdapter(new CalendarAdapter(getActivity().getApplicationContext(), lObject));
         notes.setLayoutManager(new LinearLayoutManager(getContext()));
     }

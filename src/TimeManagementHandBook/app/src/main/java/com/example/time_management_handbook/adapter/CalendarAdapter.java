@@ -33,7 +33,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<Object> lData;
     public static final int EVENT_OF_THE_DAY = 0;
     public static final int PROLONGED_EVENT = 1;
-    public static final int TASK = 2;
 
     public CalendarAdapter(Context context, List<Object> lData) {
         this.context = context;
@@ -50,30 +49,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else if (lData.get(position) instanceof Prolonged_Event_DTO) {
             return PROLONGED_EVENT;
         }
-        else if (lData.get(position) instanceof TaskDTO) {
-            return TASK;
-        }
         return -1;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View itemView;
-        switch (viewType) {
-            case EVENT_OF_THE_DAY:
-                itemView = inflater.inflate(R.layout.event_item, parent, false);
-                return new EventViewHolder(itemView);
-            case PROLONGED_EVENT:
-                itemView = inflater.inflate(R.layout.event_item, parent, false);
-                return new EventViewHolder(itemView);
-            case TASK:
-                itemView = inflater.inflate(R.layout.task_item, parent, false);
-                return new TaskDAO.TaskViewHolder(itemView);
-            default:
-                break;
-        }
-        return null;
+        View itemView = inflater.inflate(R.layout.event_item, parent, false);
+        return new EventViewHolder(itemView);
     }
 
     @SuppressLint("SetTextI18n")
@@ -113,31 +96,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     public void onClick(View v) {
                         Intent mit= new Intent(context, Event_Activity.class);
                         mit.putExtra("mytask", (Serializable) prolongedEvent);
-                        Log.d("EXTRA", mit.getExtras().toString());
-                        context.startActivity(mit);
-                    }
-                });
-                break;
-
-            case TASK:
-                TaskDTO task = (TaskDTO) (lData.get(position));
-                TaskDAO.TaskViewHolder taskViewHolder = (TaskDAO.TaskViewHolder) holder;
-
-                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                taskViewHolder.nameTask.setText(task.getName());
-                taskViewHolder.deadlineTask.setText(task.getEndTime().toLocalTime().toString());
-                
-
-                if (task.getFinishedTime()!=null)
-                    taskViewHolder.taskCheckbox.setChecked(true);
-                else taskViewHolder.taskCheckbox.setChecked(false);
-
-                changeLayoutColor(task.getColor(),taskViewHolder.itemView, taskViewHolder.itemLayout);
-                taskViewHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent mit= new Intent(context, Task_Activity.class);
-                        mit.putExtra("mytask", (Serializable) task);
                         Log.d("EXTRA", mit.getExtras().toString());
                         context.startActivity(mit);
                     }

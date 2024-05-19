@@ -17,6 +17,11 @@ import android.widget.TextView;
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.model.TaskDTO;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 public class Task_Activity extends AppCompatActivity {
     private int backStackEntryIndex;
     @Override
@@ -42,9 +47,21 @@ public class Task_Activity extends AppCompatActivity {
         LinearLayout notificationLayout = findViewById(R.id.taNotification_Layout);
         TextView descriptionTextView = findViewById(R.id.taDescription_textInput);
         Button saveButton = findViewById(R.id.taSave_button);
-        nameTextView.setText(task.getName());
-        deadlineTextView.setText(task.getEndTime().toString());
+
+        LocalDateTime taskDeadline = task.getEndTime();
+        LocalDate taskDeadlineDate = taskDeadline.toLocalDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedTaskDeadlineDate = taskDeadlineDate.format(formatter);
+        LocalTime taskDeadlineTime = taskDeadline.toLocalTime();
+
+        Log.d("Deadline for task today: ",formattedTaskDeadlineDate.toString() + " " +
+                taskDeadlineTime);
+
         locationTextView.setText(task.getLocation());
+        nameTextView.setText(task.getName());
+        deadlineTextView.setText(formattedTaskDeadlineDate.toString() + " " +
+                taskDeadlineTime);
+
         switch(task.getColor())
         {
             case 1:

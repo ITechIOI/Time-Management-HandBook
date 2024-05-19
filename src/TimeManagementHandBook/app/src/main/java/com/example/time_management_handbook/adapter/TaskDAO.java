@@ -56,12 +56,11 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         LocalDateTime today = LocalDateTime.now();
         Duration duration = Duration.between(today, task.getEndTime());
         String remainingTime  = "";
-        if (duration.toDays() > 1) {
-            remainingTime =  String.valueOf(duration.toDays()) + "days " +
-                    String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+        if (duration.toDays() == 0) {
+            remainingTime = String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
                     "m " + String.valueOf(duration.getSeconds() % 60) + "s";
         } else {
-            remainingTime = String.valueOf(duration.toDays()) + "day " +
+            remainingTime = String.valueOf(duration.toDays()) + "d " +
                 String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
                 "m " + String.valueOf(duration.getSeconds() % 60) + "s";
         }
@@ -74,7 +73,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                 String.valueOf(year);
 
         holder.nameTask.setText(task.getName());
-        holder.deadlineTask.setText(task.getEndTime().toString());
+        holder.deadlineTask.setText(deadlineString);
         holder.timeleftTask.setText(remainingTime);
         if (task.getFinishedTime()!=null)
             holder.taskCheckbox.setChecked(true);

@@ -43,7 +43,7 @@
             android:name=".activity.AddAccount_Activity"
             android:exported="false"
             android:label="Add account"
-            android:parentActivityName=".activity.Account_Activity"/>
+            android:parentActivityName=".activity.Home_Activity"/>
 
         <meta-data
             android:name="com.google.android.gms.vision"

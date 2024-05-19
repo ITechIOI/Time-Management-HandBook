@@ -19,37 +19,37 @@ public class AddAccount_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        Bundle extras = getIntent().getExtras();
-        if (extras!= null) {
-            backStackEntryIndex = extras.getInt("backStackEntryIndex");
-        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+//        Bundle extras = getIntent().getExtras();
+//        if (extras!= null) {
+//            backStackEntryIndex = extras.getInt("backStackEntryIndex");
+//        }
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
     }
-    @Override
-    public void onBackPressed(){
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
-        {
-            getSupportFragmentManager().popBackStack();
-        }
-        else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed(){
+//        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+//        {
+//            getSupportFragmentManager().popBackStack();
+//        }
+//        else {
+//            super.onBackPressed();
+//        }
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                onBackPressed();
+//                return true;
+//            default:
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }

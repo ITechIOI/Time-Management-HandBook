@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/addimage" />
 
@@ -37,7 +38,7 @@
         android:layout_width="173dp"
         android:layout_height="52dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/custom_button1"
         android:backgroundTint="@null"
         android:drawableRight="@drawable/ic_task"

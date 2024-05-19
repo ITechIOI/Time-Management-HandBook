@@ -87,7 +87,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Prolonged_Event_DTO prolongedEvent = (Prolonged_Event_DTO) (lData.get(position));
                 EventViewHolder prolongedEventViewHolder = (EventViewHolder) holder;
 
-                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 prolongedEventViewHolder.eventTextView.setText(prolongedEvent.getSummary());
                 prolongedEventViewHolder.timeEventTextView.setText(prolongedEvent.getStartDate().format(formatter) + " - " + prolongedEvent.getEndDate().format(formatter));
                 changeLayoutColor(prolongedEvent.getColor(),prolongedEventViewHolder.itemView, prolongedEventViewHolder.itemLayout);

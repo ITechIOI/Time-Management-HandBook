@@ -18,9 +18,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hi, username!"
+<<<<<<< HEAD
             android:layout_marginStart="15dp"
             android:fontFamily="@font/sourceserif4_semibold"
             android:textSize="25sp"
+=======
+            android:fontFamily="@font/inriasans_bold"
+            android:textSize="30sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+>>>>>>> 1e32f3ecee044c5338cbac68ee512e67b52b7d56
             android:gravity="center_vertical"/>
 
         <TextView
@@ -28,9 +35,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="15dp"
+
             android:text="The current date"
+<<<<<<< HEAD
             android:fontFamily="@font/sourceserif4_regular"
+=======
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:fontFamily="@font/inria_sans"
+>>>>>>> 1e32f3ecee044c5338cbac68ee512e67b52b7d56
             android:textSize="22sp"
             android:gravity="center_vertical"/>
 
@@ -39,7 +52,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+
             android:text="Event and tasks today"
             android:fontFamily="@font/sourceserif4_regular"
             android:textSize="23sp"
@@ -52,17 +67,19 @@
                 android:id="@+id/gridView_event"
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center_horizontal"
-                android:scrollbars="none"/>
+                android:scrollbars="none"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="-20dp"/>
 
             <GridView
                 android:id="@+id/gridView_task"
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center_horizontal"
-                android:scrollbars="none"/>
+                android:scrollbars="none" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

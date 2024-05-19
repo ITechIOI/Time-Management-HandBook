@@ -1,5 +1,6 @@
 package com.example.time_management_handbook.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.activity.Home_Activity;
 import com.example.time_management_handbook.activity.Task_Activity;
+import com.example.time_management_handbook.activity.Task_Fragment;
 import com.example.time_management_handbook.model.TaskDTO;
 
 import java.io.Serializable;
@@ -111,6 +115,83 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                 tContext.startActivity(mit);
             }
         });
+        holder.itemLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (ShowItemLongClickDialog(task) == false)
+                    return false;
+                else
+                {
+                    return true;
+                }
+
+            }
+        });
+    }
+
+    private boolean ShowItemLongClickDialog(TaskDTO task) {
+        final boolean[] result = new boolean[1];
+        Dialog item_dialog;
+        Button viewDetailButton, deleteButton;
+        item_dialog = new Dialog(tContext);
+        item_dialog.setContentView(R.layout.itemlongclick_dialog);
+        item_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+        item_dialog.getWindow().setBackgroundDrawable(tContext.getDrawable(R.drawable.custom_itemdialog));
+        item_dialog.setCancelable(false);
+
+        viewDetailButton = item_dialog.findViewById(R.id.itemDetail_button);
+        deleteButton = item_dialog.findViewById(R.id.item_Delete_button);
+        viewDetailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result[0] =false;
+                Intent mit= new Intent(tContext, Task_Activity.class);
+                mit.putExtra("mytask", (Serializable) task);
+                Log.d("EXTRA", mit.getExtras().toString());
+                tContext.startActivity(mit);
+                item_dialog.dismiss();
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result[0]=true;
+                ShowDeleteDialog();
+                item_dialog.dismiss();
+            }
+        });
+        item_dialog.show();
+        return result[0];
+    }
+
+    private boolean ShowDeleteDialog() {
+        final boolean[] result = new boolean[1];
+        Dialog delete_dialog;
+        Button cancelButton, deleteButton;
+        delete_dialog = new Dialog(tContext);
+        delete_dialog.setContentView(R.layout.delete_item_cardview);
+        delete_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+        delete_dialog.getWindow().setBackgroundDrawable(tContext.getDrawable(R.drawable.custom_itemdialog));
+        delete_dialog.setCancelable(false);
+
+        cancelButton = delete_dialog.findViewById(R.id.cancel_button);
+        deleteButton = delete_dialog.findViewById(R.id.ok_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result[0] =false;
+                delete_dialog.dismiss();
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result[0]=true;
+                delete_dialog.dismiss();
+            }
+        });
+        delete_dialog.show();
+        return result[0];
     }
 
     @Override

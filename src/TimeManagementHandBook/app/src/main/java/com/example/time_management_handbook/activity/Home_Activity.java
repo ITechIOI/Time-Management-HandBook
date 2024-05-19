@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -115,6 +116,7 @@ public class Home_Activity extends AppCompatActivity {
     public static List<TaskDTO> listTaskForNotification = new ArrayList<>();
 
 
+
     @SuppressLint("NonConstantResourceId")
 
     @Override
@@ -127,6 +129,7 @@ public class Home_Activity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         FloatingActionButton fab = findViewById(R.id.float_button_add);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

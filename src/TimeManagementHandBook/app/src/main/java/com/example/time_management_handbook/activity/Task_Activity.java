@@ -24,6 +24,7 @@ import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.model.TaskDTO;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -69,7 +70,17 @@ public class Task_Activity extends AppCompatActivity {
         nameTextView.setText(task.getName());
         deadlineTextView.setText(formattedTaskDeadlineDate.toString() + " " +
                 taskDeadlineTime);
-        notificationT.setText(task.getNotification_period().toString());
+        Duration duration = task.getNotification_period();
+        String notification  = "";
+        if (duration.toDays() == 0) {
+            notification = String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                    "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+        } else {
+            notification = String.valueOf(duration.toDays()) + "d " +
+                    String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                    "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+        }
+        notificationT.setText(notification);
 
         switch(task.getColor())
         {

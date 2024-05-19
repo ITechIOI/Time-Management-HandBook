@@ -25,6 +25,8 @@ import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.time.Duration;
+
 public class Event_Activity extends AppCompatActivity {
 
     @Override
@@ -112,7 +114,17 @@ public class Event_Activity extends AppCompatActivity {
             tv_event_dateend.setText(event.getEndTime().toString());
             tv_event_location.setText(event.getLocation());
             tv_event_description.setText(event.getDescription());
-            notificationE.setText(event.getNotification_period().toString());
+            Duration duration = event.getNotification_period();
+            String notification  = "";
+            if (duration.toDays() == 0) {
+                notification = String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                        "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+            } else {
+                notification = String.valueOf(duration.toDays()) + "d " +
+                        String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                        "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+            }
+            notificationE.setText(notification);
             switch(event.getColor())
             {
                 case 1:

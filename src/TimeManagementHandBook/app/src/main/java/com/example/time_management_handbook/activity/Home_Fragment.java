@@ -1,6 +1,8 @@
 package com.example.time_management_handbook.activity;
 
+import static com.example.time_management_handbook.activity.Home_Activity.listEvent;
 import static com.example.time_management_handbook.activity.Home_Activity.listEventOfTheDay;
+import static com.example.time_management_handbook.activity.Home_Activity.listProlongedEvent;
 import static com.example.time_management_handbook.activity.Home_Activity.listTask;
 import static com.example.time_management_handbook.activity.Home_Activity.username;
 
@@ -29,6 +31,7 @@ import com.example.time_management_handbook.model.TaskDTO;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -126,7 +129,10 @@ public class Home_Fragment extends Fragment {
             Log.d("Get today: ", e.getMessage());
         }
 
-        setEventandTaskView(listEventOfTheDay, listTask);
+        listEvent = new ArrayList<>();
+        listEvent.addAll(listEventOfTheDay);
+        listEvent.addAll(listProlongedEvent);
+        setEventandTaskView(listEvent, listTask);
     }
 
     public void setHiTextView(String username)
@@ -139,7 +145,7 @@ public class Home_Fragment extends Fragment {
         currentDate_textview.setText(currentDate);
     }
 
-    public void setEventandTaskView(List<Event_Of_The_Day_DTO> events, List<TaskDTO> tasks){
+    public void setEventandTaskView(List<Object> events, List<TaskDTO> tasks){
         eventView.setAdapter(new HomeEventAdapter(events, getActivity() ) );
         taskView.setAdapter(new HomeTaskAdapter(tasks, getActivity()));
     }

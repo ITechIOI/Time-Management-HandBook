@@ -74,6 +74,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -109,6 +110,7 @@ public class Home_Activity extends AppCompatActivity {
     public static List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
     public static List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
     public static List<TaskDTO> listTask = new ArrayList<>();
+    public static List<Object> listEvent = new ArrayList<>();
 
     private ExecutorService executorServiceEventOfTheDayForNotificationCreate = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceTaskForNotificationCreate = Executors.newSingleThreadExecutor();
@@ -307,6 +309,10 @@ public class Home_Activity extends AppCompatActivity {
         });
        // executorServiceHandleTask.shutdown();
 
+        listEvent = new ArrayList<>();
+        listEvent.addAll(listEventOfTheDay);
+        listEvent.addAll(listProlongedEvent);
+
         executorServiceEventOfTheDayForNotificationCreate.execute(new Runnable() {
             @Override
             public void run() {
@@ -356,7 +362,7 @@ public class Home_Activity extends AppCompatActivity {
         super.onStart();
 
         homeFragment.setHiTextView(username);
-        homeFragment.setEventandTaskView(listEventOfTheDay, listTask);
+        homeFragment.setEventandTaskView(listEvent, listTask);
 
         try {
             if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {

@@ -22,6 +22,7 @@ import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.activity.Event_Activity;
 import com.example.time_management_handbook.activity.Task_Activity;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
+import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
@@ -29,11 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeEventAdapter extends BaseAdapter {
-    private List<Event_Of_The_Day_DTO> lData;
+    private List<Object> lData;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public HomeEventAdapter(List<Event_Of_The_Day_DTO> listData, Context aContext) {
+    public HomeEventAdapter(List<Object> listData, Context aContext) {
         context = aContext;
         lData = listData != null ? listData : new ArrayList<>();
         layoutInflater = LayoutInflater.from(context);
@@ -69,42 +70,84 @@ public class HomeEventAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Event_Of_The_Day_DTO datas = lData.get(position);
-        holder.summaryView.setText(datas.getSummary());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        holder.timeView.setText(datas.getStartTime().format(formatter) + " - " + datas.getEndTime().format(formatter));
-        holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_event,0,0);
-        switch (datas.getColor()) {
-            case 1:
-                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CEEDC7")));
-                break;
-            case 2:
-                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF9494")));
-                break;
-            case 3:
-                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFC8DD")));
-                break;
-            case 4:
-                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D7E3FC")));
-                break;
-            case 5:
-                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFF6BD")));
-                break;
-            case 6:
-                holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD4B2")));
-                break;
+        if (lData.get(position) instanceof Event_Of_The_Day_DTO){
+            Event_Of_The_Day_DTO datas = (Event_Of_The_Day_DTO) lData.get(position);
+            holder.summaryView.setText(datas.getSummary());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            holder.timeView.setText(datas.getStartTime().format(formatter) + " - " + datas.getEndTime().format(formatter));
+            holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_event,0,0);
+            switch (datas.getColor()) {
+                case 1:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CEEDC7")));
+                    break;
+                case 2:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF9494")));
+                    break;
+                case 3:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFC8DD")));
+                    break;
+                case 4:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D7E3FC")));
+                    break;
+                case 5:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFF6BD")));
+                    break;
+                case 6:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD4B2")));
+                    break;
+            }
+
+            holder.eventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mit= new Intent(context, Event_Activity.class);
+                    //gửi dữ liệu
+                    mit.putExtra("myevent", (Serializable) datas);
+                    Log.d("EXTRA", mit.getExtras().toString());
+                    context.startActivity(mit);
+                }
+            });
+        }
+        else if (lData.get(position) instanceof Prolonged_Event_DTO){
+            Prolonged_Event_DTO datas = (Prolonged_Event_DTO) lData.get(position);
+            holder.summaryView.setText(datas.getSummary());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            holder.timeView.setText("Start: " + datas.getStartDate().format(formatter) + "\nEnd: " + datas.getEndDate().format(formatter));
+            holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_event,0,0);
+            switch (datas.getColor()) {
+                case 1:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CEEDC7")));
+                    break;
+                case 2:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF9494")));
+                    break;
+                case 3:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFC8DD")));
+                    break;
+                case 4:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D7E3FC")));
+                    break;
+                case 5:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFF6BD")));
+                    break;
+                case 6:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD4B2")));
+                    break;
+            }
+
+            holder.eventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mit= new Intent(context, Event_Activity.class);
+                    //gửi dữ liệu
+                    mit.putExtra("myevent", (Serializable) datas);
+                    Log.d("EXTRA", mit.getExtras().toString());
+                    context.startActivity(mit);
+                }
+            });
         }
 
-        holder.eventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mit= new Intent(context, Event_Activity.class);
-                //gửi dữ liệu
-                mit.putExtra("myevent", (Serializable) datas);
-                Log.d("EXTRA", mit.getExtras().toString());
-                context.startActivity(mit);
-            }
-        });
+
 
         return convertView;
     }

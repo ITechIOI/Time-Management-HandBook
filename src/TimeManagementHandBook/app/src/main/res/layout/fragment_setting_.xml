@@ -12,120 +12,132 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
+            android:id="@+id/addAccount_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:id="@+id/addAccount_layout">
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add account"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <ImageButton
                 android:id="@+id/addAccountButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_to"
                 android:layout_alignParentEnd="true"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_to" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/notification_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:id="@+id/notification_layout">
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:descendantFocusability="blocksDescendants">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Notification"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="On"
-                android:textSize="20sp"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/notification"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/darkmode_layout">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Darkmode"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Off"
-                android:textSize="20sp"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/darkmode"/>
-        </RelativeLayout>
+                android:clickable="false"
+                android:focusable="false"
+                android:textSize="20sp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/about_layout">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="About ZEIT"
-                android:textSize="20sp"/>
-            <ImageButton
-                android:layout_width="30dp"
-                android:background="@android:color/transparent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_to"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/about"
-                />
-        </RelativeLayout>
+             <TextView
+                 android:id="@+id/checkNotificationStatus"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentEnd="true"
+                 android:clickable="false"
+                 android:focusable="false"
+                 android:text="On"
+                 android:textSize="20sp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/contact_layout">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contact us"
-                android:textSize="20sp"/>
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_to"
-                android:layout_alignParentEnd="true"
-                android:background="@android:color/transparent"/>
-        </RelativeLayout>
+         </RelativeLayout>
 
-    </LinearLayout>
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:layout_marginStart="10dp"
+             android:layout_marginEnd="10dp"
+             android:id="@+id/darkmode_layout">
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Darkmode"
+                 android:textSize="20sp"/>
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Off"
+                 android:textSize="20sp"
+                 android:layout_alignParentEnd="true"
+                 android:id="@+id/darkmode"/>
+         </RelativeLayout>
 
-</FrameLayout>
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:layout_marginStart="10dp"
+             android:layout_marginEnd="10dp"
+             android:id="@+id/about_layout">
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="About ZEIT"
+                 android:textSize="20sp"/>
+             <ImageButton
+                 android:layout_width="30dp"
+                 android:background="@android:color/transparent"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/ic_to"
+                 android:layout_alignParentEnd="true"
+                 android:id="@+id/about"
+                 />
+         </RelativeLayout>
+
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:layout_marginStart="10dp"
+             android:layout_marginEnd="10dp"
+             android:id="@+id/contact_layout">
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Contact us"
+                 android:textSize="20sp"/>
+             <ImageButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/ic_to"
+                 android:layout_alignParentEnd="true"
+                 android:background="@android:color/transparent"/>
+         </RelativeLayout>
+
+     </LinearLayout>
+
+ </FrameLayout>

@@ -5,8 +5,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,8 +41,18 @@ public class MyForegroundService extends Service {
     private List<Prolonged_Event_DTO> listProlongedEvent;
     private List<TaskDTO> listTask;
     private Handler handler;
-
     private static final int NOTIFICATION_ID_BASE = 1;
+
+    private final BroadcastReceiver stopServiceReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if ("stop_service".equals(intent.getAction())) {
+                stopSelf();
+            }
+        }
+    };
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -50,12 +62,12 @@ public class MyForegroundService extends Service {
 
         // Tạo danh sách các thông báo
 
-
         listEventOfTheDay = Home_Activity.listEventOfTheDayForNotification;
         listProlongedEvent = Home_Activity.listProlongedEventForNotification;
         listTask = Home_Activity.listTaskForNotification;
-
         Log.d("List task for notification in my foreground service OK: ", listProlongedEvent.toString());
+
+        registerReceiver(stopServiceReceiver, new IntentFilter("stop_service"));
 
     }
 
@@ -134,12 +146,6 @@ public class MyForegroundService extends Service {
         return START_STICKY;
     }
 
-    private void scheduleShowNewNotificationAfterDelay() {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(() -> {
-            showNewNotification();
-        }, 2000);
-    }
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -194,6 +200,9 @@ public class MyForegroundService extends Service {
                 .setOngoing(true);
         Log.d("Show event of the day notification:",  listEventOfTheDay.get(index).summary );
 
+        // Stop the current foreground service
+        stopForeground(false);
+
         notificationManager.notify(NOTIFICATION_ID_BASE + index + 1, builder.build());
     }
 
@@ -210,6 +219,9 @@ public class MyForegroundService extends Service {
                         "\n" + listProlongedEvent.get(index).description)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOngoing(true);
+
+        // Stop the current foreground service
+        stopForeground(false);
 
         notificationManager.notify(NOTIFICATION_ID_BASE + 2 + index + listEventOfTheDay.size(), builder.build());
     }
@@ -228,34 +240,23 @@ public class MyForegroundService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOngoing(true);
 
-        notificationManager.notify(NOTIFICATION_ID_BASE + 3 + index + listEventOfTheDay.size() + listProlongedEvent.size(), builder.build());
-    }
-
-
-    private void showNewNotification() {
-
-        Resources res = context.getResources(); // Lấy tài nguyên
-        String packageName = context.getPackageName(); // Lấy tên gói ứng dụng
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "MY_NOTIFICATION_CHANNEL")
-                .setSmallIcon(res.getIdentifier("ic_notification", "drawable", packageName))
-                .setContentTitle("New Notification After 5 Minutes")
-                .setContentText("This is a new notification shown after 5 minutes.")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setOngoing(true);
-
         // Stop the current foreground service
         stopForeground(false);
 
-        // Start a new foreground service with the new notification
-        startForeground(2, builder.build()); // Use a different notification ID for the new notification
-
+        notificationManager.notify(NOTIFICATION_ID_BASE + 3 + index + listEventOfTheDay.size() + listProlongedEvent.size(), builder.build());
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        // Hủy đăng ký BroadcastReceiver
+        unregisterReceiver(stopServiceReceiver);
+        super.onDestroy();
     }
 }
 

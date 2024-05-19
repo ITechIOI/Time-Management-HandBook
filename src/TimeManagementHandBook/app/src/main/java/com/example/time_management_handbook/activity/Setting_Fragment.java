@@ -5,14 +5,17 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.model.MyForegroundService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,8 +71,9 @@ public class Setting_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting_, container, false);
-        TextView notification = view.findViewById(R.id.notification);
-        TextView darkmode=view.findViewById(R.id.darkmode);
+        TextView checkNotificationStatus = view.findViewById(R.id.checkNotificationStatus);
+        TextView darkMode = view.findViewById(R.id.darkmode);
+        RelativeLayout notificationLayout = view.findViewById(R.id.notification_layout);
         ImageButton about = view.findViewById(R.id.about);
         ImageButton addAccount = view.findViewById(R.id.addAccountButton);
         about.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +90,33 @@ public class Setting_Fragment extends Fragment {
                 startActivity(mit);
             }
         });
-
-
+        notificationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ("On".equals(checkNotificationStatus.getText())) { // Sử dụng equals() thay vì ==
+                    checkNotificationStatus.setText("Off");
+                    stopNotifications();
+                } else {
+                    checkNotificationStatus.setText("On");
+                    restartNotifications();
+                }
+            }
+        });
 
         return view;
     }
+
+    // Turn off receiving notification feature
+    public void stopNotifications() {
+        Intent intent = new Intent("stop_service");
+        getActivity().sendBroadcast(intent);
+    }
+
+    // Turn on receiving notification feature
+    public void restartNotifications() {
+        Intent intent = new Intent(getActivity(), MyForegroundService.class);
+        getActivity().startService(intent);
+    }
+
+
 }

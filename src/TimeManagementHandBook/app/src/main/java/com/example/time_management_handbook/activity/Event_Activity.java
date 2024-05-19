@@ -26,6 +26,9 @@ import com.example.time_management_handbook.model.TaskDTO;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Event_Activity extends AppCompatActivity {
 
@@ -95,7 +98,13 @@ public class Event_Activity extends AppCompatActivity {
             Log.d("TAG", "Received data: " + event);
             tv_event_name.setText(event.getSummary());
             tv_event_datestart.setText(event.getStartTime().toString());
-            tv_event_dateend.setText(event.getEndTime().toString());
+
+            LocalDate eventDeadlineDate = event.getEndTime().toLocalDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedEventDeadlineDate = eventDeadlineDate.format(formatter);
+            LocalTime eventDeadlineTime = event.getEndTime().toLocalTime();
+
+            tv_event_dateend.setText(formattedEventDeadlineDate + " " + eventDeadlineTime.toString());
             tv_event_location.setText(event.getLocation());
             tv_event_description.setText(event.getDescription());
             Duration duration = event.getNotification_period();

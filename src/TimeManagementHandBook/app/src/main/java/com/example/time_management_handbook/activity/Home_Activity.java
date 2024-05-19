@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
+import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -261,7 +262,9 @@ public class Home_Activity extends AppCompatActivity {
                     });
         } else {
             // Thiết lập hình ảnh mặc định nếu avatar_uri là null
-            avatarButton.setImageResource(R.drawable.ic_user); // Đảm bảo bạn có drawable này
+            VectorDrawable vectorDrawable = (VectorDrawable) ContextCompat.getDrawable(this, R.drawable.user_avatar);
+            avatarButton.setImageDrawable(vectorDrawable);
+            //avatarButton.setImageResource(R.drawable.ic_user); // Đảm bảo bạn có drawable này
         }
 
 

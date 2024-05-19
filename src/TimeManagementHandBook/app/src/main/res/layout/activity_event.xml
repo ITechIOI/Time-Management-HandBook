@@ -12,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -23,20 +24,23 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
-            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:padding="7dp"
+            android:fontFamily="@font/sourceserif4_regular"
             android:id="@+id/eaName_textInput"
             android:background="@drawable/custom_textinputlayout"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start time"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="34dp"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -46,8 +50,9 @@
                     android:id="@+id/eaDateStart_textInput"
                     android:layout_width="295dp"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/sourceserif4_regular"
                     android:background="@drawable/custom_textinputlayout"
-                    android:padding="5dp"/>
+                    android:padding="7dp"/>
                 <ImageView
                     android:id="@+id/eaDateStart_dialog"
                     android:layout_width="30dp"
@@ -60,12 +65,13 @@
             android:layout_height="wrap_content"
             android:text="End time"
             android:layout_marginStart="34dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="10dp"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -74,9 +80,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/eaDateEnd_textInput"
                     android:layout_width="295dp"
+                    android:fontFamily="@font/sourceserif4_regular"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_textinputlayout"
-                    android:padding="5dp" />
+                    android:padding="7dp" />
                 <ImageView
                     android:id="@+id/eaDateEnd_dialog"
                     android:layout_width="30dp"
@@ -93,13 +100,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Location"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="34dp"/>
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
-            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:padding="7dp"
+            android:fontFamily="@font/sourceserif4_regular"
             android:id="@+id/eaLocation_textInput"
             android:background="@drawable/custom_textinputlayout"/>
         <TextView
@@ -107,27 +117,29 @@
             android:layout_height="wrap_content"
             android:text="Color"
             android:layout_marginStart="34dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="10dp"/>
         <include layout="@layout/custom_radiobutton"
             android:id="@+id/eaColor_radio"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="Notification" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
-            android:layout_marginEnd="34dp">
+            android:layout_marginEnd="34dp"
+            android:layout_marginTop="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/eaNotification_textInput"
                 android:layout_width="295dp"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:padding="7dp"
+                android:fontFamily="@font/sourceserif4_regular"
                 android:background="@drawable/custom_textinputlayout"/>
 
             <ImageView
@@ -141,13 +153,15 @@
             android:layout_height="wrap_content"
             android:text="Description"
             android:layout_marginStart="34dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="10dp"/>
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
-            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:padding="7dp"
+            android:fontFamily="@font/sourceserif4_regular"
             android:id="@+id/eaDescription_textInput"
             android:background="@drawable/custom_textinputlayout"/>
 
@@ -156,9 +170,11 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="34dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="34dp"
             android:background="@drawable/custom_button1"
-            android:text="Save" />
+            android:text="Save"
+            android:textSize="19sp"
+            android:fontFamily="@font/sourceserif4_semibold"/>
     </LinearLayout>
 </LinearLayout>

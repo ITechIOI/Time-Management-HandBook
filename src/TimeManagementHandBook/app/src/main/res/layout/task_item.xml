@@ -20,41 +20,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
+            android:padding="5dp"
             android:textSize="17sp"
-            android:fontFamily="@font/inriasans_bold"
+            android:fontFamily="@font/sourceserif4_semibold"
             android:id="@+id/tname_textView"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Deadline: "
                 android:textSize="15sp"
-                android:fontFamily="@font/inriasans_bold"/>
+                android:fontFamily="@font/sourceserif4_semibold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:fontFamily="@font/inria_sans"
+                android:fontFamily="@font/sourceserif4_regular"
                 android:id="@+id/tDeadline_textView"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Remaining time: "
                 android:textSize="15sp"
-                android:fontFamily="@font/inriasans_bold"/>
+                android:fontFamily="@font/sourceserif4_semibold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:fontFamily="@font/inria_sans"
+                android:fontFamily="@font/sourceserif4_regular"
                 android:id="@+id/tTimeleft_textView"/>
         </LinearLayout>
     </LinearLayout>

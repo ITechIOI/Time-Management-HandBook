@@ -53,7 +53,7 @@ public class Account_Activity extends AppCompatActivity {
         if (avatar_uri != null){
             avatar.setImageURI(avatar_uri);
         }
-        else avatar.setImageResource(R.drawable.ic_user);
+        else avatar.setImageResource(R.drawable.user_avatar);
 
         TextView userName = findViewById(R.id.textView_username);
         userName.setText(GoogleSignIn.getLastSignedInAccount(this).getDisplayName());

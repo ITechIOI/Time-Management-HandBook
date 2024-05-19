@@ -86,7 +86,7 @@
             android:layout_marginTop="10dp"
             android:text="Color" />
 
-        <include layout="@layout/custom_radiobutton" android:layout_marginTop="5dp"
+        <include layout="@layout/custom_radiobutton"
             android:id="@+id/taColor_radio"/>
 
         <TextView

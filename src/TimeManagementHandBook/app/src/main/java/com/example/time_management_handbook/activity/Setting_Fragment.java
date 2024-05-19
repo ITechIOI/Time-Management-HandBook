@@ -29,6 +29,8 @@ public class Setting_Fragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static String checkNotificationStatusText = "On";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -76,6 +78,9 @@ public class Setting_Fragment extends Fragment {
         RelativeLayout notificationLayout = view.findViewById(R.id.notification_layout);
         ImageButton about = view.findViewById(R.id.about);
         ImageButton addAccount = view.findViewById(R.id.addAccountButton);
+
+        checkNotificationStatus.setText(checkNotificationStatusText);
+
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,10 +99,12 @@ public class Setting_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if ("On".equals(checkNotificationStatus.getText())) { // Sử dụng equals() thay vì ==
-                    checkNotificationStatus.setText("Off");
+                    checkNotificationStatusText = "Off";
+                    checkNotificationStatus.setText(checkNotificationStatusText);
                     stopNotifications();
                 } else {
-                    checkNotificationStatus.setText("On");
+                    checkNotificationStatusText = "On";
+                    checkNotificationStatus.setText(checkNotificationStatusText);
                     restartNotifications();
                 }
             }
@@ -105,6 +112,7 @@ public class Setting_Fragment extends Fragment {
 
         return view;
     }
+
 
     // Turn off receiving notification feature
     public void stopNotifications() {

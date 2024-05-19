@@ -15,7 +15,7 @@
         <CalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="326dp" />
 
         <TextView
             android:id="@+id/textView_date"
@@ -30,6 +30,6 @@
             android:id="@+id/recyclerView_notes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="15dp" />
     </LinearLayout>
 </FrameLayout>

@@ -52,17 +52,19 @@
                 android:id="@+id/gridView_event"
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center_horizontal"
-                android:scrollbars="none"/>
+                android:scrollbars="none"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="-20dp"/>
 
             <GridView
                 android:id="@+id/gridView_task"
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center_horizontal"
-                android:scrollbars="none"/>
+                android:scrollbars="none" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

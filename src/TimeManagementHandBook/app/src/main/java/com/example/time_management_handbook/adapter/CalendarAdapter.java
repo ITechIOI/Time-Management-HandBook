@@ -76,7 +76,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public void onClick(View v) {
                         Intent mit= new Intent(context, Event_Activity.class);
-                        mit.putExtra("mytask", (Serializable) eventOfTheDay);
+                        mit.putExtra("myevent", (Serializable) eventOfTheDay);
                         Log.d("EXTRA", mit.getExtras().toString());
                         context.startActivity(mit);
                     }
@@ -95,7 +95,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public void onClick(View v) {
                         Intent mit= new Intent(context, Event_Activity.class);
-                        mit.putExtra("mytask", (Serializable) prolongedEvent);
+                        mit.putExtra("myevent", (Serializable) prolongedEvent);
                         Log.d("EXTRA", mit.getExtras().toString());
                         context.startActivity(mit);
                     }

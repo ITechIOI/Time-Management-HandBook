@@ -111,7 +111,7 @@ public class HomeEventAdapter extends BaseAdapter {
         else if (lData.get(position) instanceof Prolonged_Event_DTO){
             Prolonged_Event_DTO datas = (Prolonged_Event_DTO) lData.get(position);
             holder.summaryView.setText(datas.getSummary());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             holder.timeView.setText("Start: " + datas.getStartDate().format(formatter) + "\nEnd: " + datas.getEndDate().format(formatter));
             holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_event,0,0);
             switch (datas.getColor()) {

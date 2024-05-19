@@ -1,6 +1,6 @@
 package com.example.time_management_handbook.activity;
 
-import static com.example.time_management_handbook.activity.Home_Activity.listEvent;
+import static com.example.time_management_handbook.activity.Home_Activity.listAll;
 import static com.example.time_management_handbook.activity.Home_Activity.listEventOfTheDay;
 import static com.example.time_management_handbook.activity.Home_Activity.listProlongedEvent;
 import static com.example.time_management_handbook.activity.Home_Activity.listTask;
@@ -53,7 +53,6 @@ public class Home_Fragment extends Fragment {
     TextView hi_textview;
     TextView currentDate_textview;
     GridView eventView;
-    GridView taskView;
     String formattedDate;
     DayOfWeek dayOfWeek;
 
@@ -95,7 +94,6 @@ public class Home_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
 
         eventView = (GridView) view.findViewById(R.id.gridView_event);
-        taskView = (GridView) view.findViewById(R.id.gridView_task);
 
         LocalDate today =  LocalDate.now();
         String formattedDate = reformatDate(today.toString(), "yyyy-MM-dd", "dd-MM-yyyy");
@@ -129,10 +127,11 @@ public class Home_Fragment extends Fragment {
             Log.d("Get today: ", e.getMessage());
         }
 
-        listEvent = new ArrayList<>();
-        listEvent.addAll(listEventOfTheDay);
-        listEvent.addAll(listProlongedEvent);
-        setEventandTaskView(listEvent, listTask);
+        listAll = new ArrayList<>();
+        listAll.addAll(listEventOfTheDay);
+        listAll.addAll(listProlongedEvent);
+        listAll.addAll(listTask);
+        setEventandTaskView(listAll);
     }
 
     public void setHiTextView(String username)
@@ -145,9 +144,8 @@ public class Home_Fragment extends Fragment {
         currentDate_textview.setText(currentDate);
     }
 
-    public void setEventandTaskView(List<Object> events, List<TaskDTO> tasks){
-        eventView.setAdapter(new HomeEventAdapter(events, getActivity() ) );
-        taskView.setAdapter(new HomeTaskAdapter(tasks, getActivity()));
+    public void setEventandTaskView(List<Object> lData){
+        eventView.setAdapter(new HomeEventAdapter(lData, getActivity()));
     }
 
     public static String reformatDate(String date, String originalFormat, String targetFormat) {

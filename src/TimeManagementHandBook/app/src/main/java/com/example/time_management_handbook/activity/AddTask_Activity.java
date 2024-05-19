@@ -60,8 +60,7 @@ public class AddTask_Activity extends AppCompatActivity {
         TextInputEditText tName = findViewById(R.id.tName_textInput);
         TextInputEditText tDeadline = findViewById(R.id.tDeadline_textInput);
         TextInputEditText tLocation = findViewById(R.id.tLocation_textInput);
-        LinearLayout linearLayout = findViewById(R.id.tColor_radio);
-        RadioGroup customRadioGroup = linearLayout.findViewById(R.id.color_radio);
+        RadioGroup customRadioGroup = findViewById(R.id.tColor_radio);
         TextInputEditText tDescription = findViewById(R.id.tDescription_textInput);
 
         customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -118,7 +117,7 @@ public class AddTask_Activity extends AppCompatActivity {
                     tDeadline.setText("");
                     tLocation.setText("");
                     tDescription.setText("");
-                    linearLayout.clearFocus();
+                    customRadioGroup.clearFocus();
                 }
                 else {
                     Log.d("Insert task","error");

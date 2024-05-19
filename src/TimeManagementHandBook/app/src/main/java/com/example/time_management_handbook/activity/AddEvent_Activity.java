@@ -59,8 +59,7 @@ public class AddEvent_Activity extends AppCompatActivity {
         TextInputEditText eStartTime = findViewById(R.id.eDateStart_textInput);
         TextInputEditText eEndTime = findViewById(R.id.eDateEnd_textInput);
         TextInputEditText eLocation = findViewById(R.id.eLocation_textInput);
-        LinearLayout linearLayout = findViewById(R.id.eColor_radio);
-        RadioGroup customRadioGroup = findViewById(R.id.color_radio);
+        RadioGroup customRadioGroup = findViewById(R.id.eColor_radio);
         TextInputEditText eDescription = findViewById(R.id.eDescription_textInput);
 
         ImageView eStartTimeDialog = findViewById(R.id.eDateStart_dialog);
@@ -160,7 +159,7 @@ public class AddEvent_Activity extends AppCompatActivity {
                     eEndTime.setText("");
                     eLocation.setText("");
                     eDescription.setText("");
-                    linearLayout.clearFocus();
+                    customRadioGroup.clearFocus();
                 }
                 else {
                     Log.d("Insert event","error");

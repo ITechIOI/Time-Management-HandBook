@@ -47,14 +47,16 @@
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"/>
+                android:gravity="center_horizontal"
+                android:scrollbars="none"/>
 
             <GridView
                 android:id="@+id/gridView_task"
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"/>
+                android:gravity="center_horizontal"
+                android:scrollbars="none"/>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

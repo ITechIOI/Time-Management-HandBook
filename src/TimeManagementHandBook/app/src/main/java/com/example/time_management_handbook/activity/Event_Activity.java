@@ -3,14 +3,18 @@ package com.example.time_management_handbook.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -21,12 +25,15 @@ import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.time.Duration;
+
 public class Event_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+        Context context = this;
 
         Toolbar toolbar = findViewById(R.id.eaToolbar);
         setSupportActionBar(toolbar);
@@ -39,7 +46,48 @@ public class Event_Activity extends AppCompatActivity {
         TextInputEditText tv_event_dateend = findViewById(R.id.eaDateEnd_textInput);
         TextInputEditText tv_event_location = findViewById(R.id.eaLocation_textInput);
         TextInputEditText tv_event_description = findViewById(R.id.eaDescription_textInput);
-
+        TextView notificationE = findViewById(R.id.eaNotification_textInput);
+        ImageView notificaltion = findViewById(R.id.eaNotification_dialog);
+        notificaltion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(context);
+                NumberPicker day, hour, minute, sec;
+                Button buttonOk, buttonCancel;
+                dialog.setContentView(R.layout.notification_picker);
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+                dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.custom_itemdialog));
+                day = dialog.findViewById(R.id.day_picker);
+                day.setMinValue(0);
+                day.setMaxValue(50);
+                hour = dialog.findViewById(R.id.hour_picker);
+                hour.setMinValue(0);
+                hour.setMaxValue(23);
+                minute = dialog.findViewById(R.id.minute_picker);
+                minute.setMinValue(0);
+                minute.setMaxValue(59);
+                sec = dialog.findViewById(R.id.sec_picker);
+                sec.setMinValue(0);
+                sec.setMaxValue(59);
+                buttonOk = dialog.findViewById(R.id.buttonOk);
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String text = day.getValue() +"d "+hour.getValue()+"h "+minute.getValue()+"m "+sec.getValue()+"s";
+                        notificationE.setText(text);
+                        dialog.dismiss();
+                    }
+                });
+                buttonCancel = dialog.findViewById(R.id.buttonCancel);
+                buttonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
         //Nhận dữ liệu
         Intent intent = getIntent();
         if (intent.getSerializableExtra("myevent") instanceof Event_Of_The_Day_DTO){
@@ -50,6 +98,17 @@ public class Event_Activity extends AppCompatActivity {
             tv_event_dateend.setText(event.getEndTime().toString());
             tv_event_location.setText(event.getLocation());
             tv_event_description.setText(event.getDescription());
+            Duration duration = event.getNotification_period();
+            String notification  = "";
+            if (duration.toDays() == 0) {
+                notification = String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                        "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+            } else {
+                notification = String.valueOf(duration.toDays()) + "d " +
+                        String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                        "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+            }
+            notificationE.setText(notification);
             switch(event.getColor())
             {
                 case 1:

@@ -1,5 +1,6 @@
 package com.example.time_management_handbook.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -12,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
@@ -45,6 +49,9 @@ public class Task_Fragment extends Fragment {
     RecyclerView rcv;
     SearchView searchView;
     private List<TaskDTO> listTaskByCurrentDate;
+    Dialog delete_dialog;
+    Button cancelButton, deleteButton;
+
 
 
     ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
@@ -72,6 +79,7 @@ public class Task_Fragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +93,7 @@ public class Task_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_task_, container, false);
         rcv = view.findViewById(R.id.task_rcv);
         searchView = view.findViewById(R.id.task_searchview);

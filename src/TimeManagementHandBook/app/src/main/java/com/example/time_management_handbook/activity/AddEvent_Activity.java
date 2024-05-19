@@ -6,19 +6,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.TimePicker;
@@ -48,6 +53,7 @@ public class AddEvent_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Context context = this;
         setContentView(R.layout.activity_add_event);
         Toolbar toolbar = findViewById(R.id.eToolbar);
         setSupportActionBar(toolbar);
@@ -65,6 +71,48 @@ public class AddEvent_Activity extends AppCompatActivity {
         ImageView eStartTimeDialog = findViewById(R.id.eDateStart_dialog);
         ImageView eEndTimeDialog = findViewById(R.id.eDateEnd_dialog);
         Button btnSave = findViewById(R.id.eCreate_button);
+        TextView notificationE = findViewById(R.id.eNotification_textInput);
+        ImageView notificaltion = findViewById(R.id.eNotification_dialog);
+        notificaltion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(context);
+                NumberPicker day, hour, minute, sec;
+                Button buttonOk, buttonCancel;
+                dialog.setContentView(R.layout.notification_picker);
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+                dialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.custom_itemdialog));
+                day = dialog.findViewById(R.id.day_picker);
+                day.setMinValue(0);
+                day.setMaxValue(50);
+                hour = dialog.findViewById(R.id.hour_picker);
+                hour.setMinValue(0);
+                hour.setMaxValue(23);
+                minute = dialog.findViewById(R.id.minute_picker);
+                minute.setMinValue(0);
+                minute.setMaxValue(59);
+                sec = dialog.findViewById(R.id.sec_picker);
+                sec.setMinValue(0);
+                sec.setMaxValue(59);
+                buttonOk = dialog.findViewById(R.id.buttonOk);
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String text = day.getValue() +"d "+hour.getValue()+"h "+minute.getValue()+"m "+sec.getValue()+"s";
+                        notificationE.setText(text);
+                        dialog.dismiss();
+                    }
+                });
+                buttonCancel = dialog.findViewById(R.id.buttonCancel);
+                buttonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
 
         eStartTimeDialog.setOnClickListener(new View.OnClickListener() {
             @Override

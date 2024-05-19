@@ -60,6 +60,8 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -111,8 +113,12 @@ public class Home_Activity extends AppCompatActivity {
     private ExecutorService executorServiceTaskForNotificationCreate = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceEventOfTheDayForNotificationStart = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceTaskForNotificationStart = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceProlongedEventForNotificationStart = Executors.newSingleThreadExecutor();
+    private ExecutorService executorServiceProlongedEventForNotificationCreate = Executors.newSingleThreadExecutor();
     public static List<Event_Of_The_Day_DTO> listEventOfTheDayForNotification = new ArrayList<>();
     public static List<TaskDTO> listTaskForNotification = new ArrayList<>();
+
+    public static List<Prolonged_Event_DTO>  listProlongedEventForNotification = new ArrayList<>();
 
 
     @SuppressLint("NonConstantResourceId")
@@ -315,6 +321,13 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
        // executorServiceTaskForNotificationCreate.shutdown();
+        executorServiceProlongedEventForNotificationCreate.execute(new Runnable() {
+            @Override
+            public void run() {
+                listProlongedEventForNotification = Prolonged_Event_DAO.getInstance().getListProlongedEventForNotification(acc.getEmail(), roundedDateTime.toLocalDate());
+                Log.d("List prolonged event for notification: ", listProlongedEventForNotification.toString());
+            }
+        });
 
         Runnable runnableCode = new Runnable() {
             @Override
@@ -407,7 +420,6 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
         // executorServiceTaskForNotificationStart.shutdown();
-
     }
 
     public void fetchEvents(GoogleSignInAccount acc) {
@@ -456,7 +468,7 @@ public class Home_Activity extends AppCompatActivity {
                         String recurrenceInfo = event.getRecurrence()!= null? event.getRecurrence().toString() : "No recurrence";
                         String location = event.getLocation()!= null? event.getLocation() : "No location";
                         String creatorEmail = event.getCreator().getEmail();
-                        Duration duration = Duration.ofDays(0).ofHours(0).ofMinutes(10).ofSeconds(0);
+                        Duration durationTime = Duration.ofDays(0).ofHours(0).ofMinutes(10).ofSeconds(1);
                         String startTime = event.getStart().getDateTime()!= null? event.getStart().getDateTime().toString() : event.getStart().getDate().toString();
                         String endTime = event.getEnd().getDateTime()!= null? event.getEnd().getDateTime().toString() : event.getEnd().getDate().toString();
                         String description = event.getDescription();
@@ -470,7 +482,7 @@ public class Home_Activity extends AppCompatActivity {
                                 event.getEnd().getDateTime(),
                                 recurrenceInfo,
                                 location,
-                                duration,
+                                durationTime,
                                 creatorEmail
                         );
 
@@ -488,7 +500,7 @@ public class Home_Activity extends AppCompatActivity {
                             Log.d("Calendar Date: ", start.toString() + " " + end.toString());
 
                             Event_Of_The_Day_DTO eventOfTheDay = new Event_Of_The_Day_DTO(null,
-                                    null, summary, location, start, end, duration, description, 1);
+                                    null, summary, location, start, end, durationTime, description, 1);
 
                             Log.d("List Event of the day from google calendar", eventOfTheDay.toString());
                             executeServiceInsertEventOfTheDayFetchData.execute(() -> {
@@ -509,7 +521,7 @@ public class Home_Activity extends AppCompatActivity {
                             LocalDate end = LocalDate.parse(endTime, formatter);
 
                             Prolonged_Event_DTO prolongedEvent = new Prolonged_Event_DTO(null, null,
-                                    summary, location, start, end, duration, description, 2);
+                                    summary, location, start, end, durationTime, description, 2);
                             Log.d("List Prolonged event from google calendar", prolongedEvent.toString());
                             executeServiceInsertProlongedEventFetchData.execute(() -> {
                                 try {

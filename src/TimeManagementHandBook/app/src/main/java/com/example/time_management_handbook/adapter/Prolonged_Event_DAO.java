@@ -64,6 +64,44 @@ public class Prolonged_Event_DAO {
         return listEvents;
     }
 
+    public List<Prolonged_Event_DTO> getListProlongedEventForNotification(String email, LocalDate timeNow) {
+        List<Prolonged_Event_DTO> listEvents = new ArrayList<>();
+        String query = "EXEC USP_GET_PROLONGED_EVENT_BY_EMAIL_FOR_NOTIFICATION '" + email + "','" +
+                timeNow + "'";
+
+        try {
+            ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    String idEvent = resultSet.getString(1);
+                    String idUser = resultSet.getString(2);
+                    String summary = resultSet.getString(3);
+                    String location = resultSet.getString(4);
+
+                    Date startDateSql = resultSet.getDate(5);
+                    LocalDate startDate = startDateSql.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                    Date endDateSql = resultSet.getDate(6);
+                    LocalDate endDate = endDateSql.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                    Duration notification_period = Duration.parse(resultSet.getString(7));
+                    String description = resultSet.getString(8);
+                    int color = resultSet.getInt(9);
+
+                    Prolonged_Event_DTO event = new Prolonged_Event_DTO(idEvent, idUser, summary, location,
+                            startDate, endDate, notification_period, description, color);
+
+                    listEvents.add(event);
+                    Log.d("Each prolonged event: ", event.toString());
+                }
+            }
+        }catch (Exception e) {
+            Log.d("Get prolonged event: ", e.getMessage());
+        }
+
+        return listEvents;
+    }
+
     public int InsertNewProlongedEvent(String email, Prolonged_Event_DTO event) {
         int rowEffect = -1;
 

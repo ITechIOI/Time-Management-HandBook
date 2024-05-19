@@ -254,12 +254,12 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         LocalTime time = timeNow.toLocalTime();
         String dateTimeNow = date.toString() + " " + time.toString();
 
-        String query = "EXEC USP_GET_EVENT_OF_THE_DAY_BY_ID_FOR_NOTIFICATION '" + email + "','" + dateTimeNow + "'";
+        String query = "EXEC USP_GET_TASK_BY_EMAIL_FOR_NOTIFICATION '" + email + "','" + dateTimeNow + "'";
 
         try {
             ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
             if (resultSet != null) {
-                Log.d("ResultSet is: ", "null" );
+                Log.d("ResultSet is : ", "not null" );
                 while (resultSet.next()) {
 
                     String idTask = resultSet.getString(1);
@@ -288,7 +288,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                             notification_period, description, finish, color);
                     listTasksForNotification.add(task);
 
-                    Log.d("Each task: ", task.toString());
+                    Log.d("Each event of the day for notification: ", task.toString());
 
                 }
             }

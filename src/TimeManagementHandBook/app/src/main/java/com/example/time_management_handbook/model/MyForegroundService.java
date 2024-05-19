@@ -21,6 +21,12 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.time_management_handbook.activity.Home_Activity;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +35,6 @@ public class MyForegroundService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private Context context;
     private NotificationManager notificationManager;
-
     private List<Event_Of_The_Day_DTO> listEventOfTheDay;
     private List<Prolonged_Event_DTO> listProlongedEvent;
     private List<TaskDTO> listTask;
@@ -45,13 +50,12 @@ public class MyForegroundService extends Service {
 
         // Tạo danh sách các thông báo
 
-        listEventOfTheDay = new ArrayList<>();
-        listProlongedEvent = new ArrayList<>();
-        listTask = new ArrayList<>();
 
         listEventOfTheDay = Home_Activity.listEventOfTheDayForNotification;
-        listProlongedEvent = Home_Activity.listProlongedEvent;
+        listProlongedEvent = Home_Activity.listProlongedEventForNotification;
         listTask = Home_Activity.listTaskForNotification;
+
+        Log.d("List task for notification in my foreground service OK: ", listProlongedEvent.toString());
 
     }
 
@@ -59,40 +63,54 @@ public class MyForegroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
 
-        // Gọi startForeground ngay lập tức sau khi dịch vụ được khởi tạo
         startForeground(NOTIFICATION_ID, createNotification());
 
-        // Tiếp tục với các tác vụ khác...
         final List<Event_Of_The_Day_DTO> event = listEventOfTheDay;
 
-        for (int i = 0; i < event.size(); i++) {
-            final int index = i;
+        if (!event.isEmpty()) {
+            for (int i = 0; i < event.size(); i++) {
+                final int index = i;
 
-            int days = (int) event.get(i).notification_period.toDays();
-            int hour = (int) event.get(i).notification_period.toHours() % 24;
-            int minutes = (int) event.get(i).notification_period.toMinutes() % 60;
-            int seconds = (int) event.get(i).notification_period.getSeconds() % 60;
+                LocalDateTime today = LocalDateTime.now();
+                Duration durationToStartTime = Duration.between(today,event.get(i).getStartTime());
+                Duration notification = event.get(i).notification_period;
 
-            handler.postDelayed(() -> showListEventOfTheDayNotification(index), (long) (86.400 * days +
-                    3600 * hour + minutes * 60 + seconds) * 1000);
+                Log.d("Duration of event time: ", durationToStartTime.toString() + "   " +
+                        notification.toString());
+
+                Duration remainingTime = durationToStartTime.minus(notification);
+
+                Log.d("Remaining time for event:", String.valueOf(remainingTime.getSeconds()));
+                Log.d("Remaining time for event:", String.valueOf(remainingTime.toString()));
+                if (remainingTime.getSeconds() > 0) {
+                    handler.postDelayed(() -> showListEventOfTheDayNotification(index), (long) (remainingTime.getSeconds()) * 1000);
+                }
+            }
         }
 
-        for (int i = 0; i < listProlongedEvent.size(); i++) {
-            final int index = i;
+        if (!listProlongedEvent.isEmpty()) {
+            for (int i = 0; i < listProlongedEvent.size(); i++) {
+                final int index = i;
 
-            int days = (int) listProlongedEvent.get(i).notification_period.toDays();
-            int hour = (int) listProlongedEvent.get(i).notification_period.toHours() % 24;
-            int minutes = (int) listProlongedEvent.get(i).notification_period.toMinutes() % 60;
-            int seconds = (int) listProlongedEvent.get(i).notification_period.getSeconds() % 60;
+                LocalDateTime startTimeProlongedEvent = listProlongedEvent.get(i).getStartDate().atTime(LocalTime.of(13, 45, 0));
+                LocalDateTime today = LocalDateTime.now();
+                Duration durationToStartTime = Duration.between(today, startTimeProlongedEvent);
+                Duration notification = listProlongedEvent.get(i).notification_period;
+                Duration remainingTime = durationToStartTime.minus(notification);
 
+                Log.d("Remaining time for prolonged event:", String.valueOf(remainingTime.getSeconds()));
+                Log.d("Remaining time for prolonged event:", String.valueOf(remainingTime.toString()));
 
-            handler.postDelayed(() -> showListProlongedEventNotification(index), (long) (86.400 * days +
-                    3600 * hour + minutes * 60 + seconds) * 1000);
+                if (remainingTime.getSeconds() > 0) {
+                    handler.postDelayed(() -> showListProlongedEventNotification(index), (long) (remainingTime.getSeconds()) * 1000);
+                }
+            }
         }
 
-        for (int i = 0; i < listTask.size(); i++) {
-            final int index = i;
-
+       if (!listTask.isEmpty()) {
+           for (int i = 0; i < listTask.size(); i++) {
+               final int index = i;
+/*
             int days = (int) listTask.get(i).notification_period.toDays();
             int hour = (int) listTask.get(i).notification_period.toHours() % 24;
             int minutes = (int) listTask.get(i).notification_period.toMinutes() % 60;
@@ -100,7 +118,18 @@ public class MyForegroundService extends Service {
 
             handler.postDelayed(() -> showListTaskNotification(index), (long) (86.400 * days +
                     3600 * hour + minutes * 60 + seconds) * 1000);
-        }
+*/
+               LocalDateTime today = LocalDateTime.now();
+               Duration durationToEndTime = Duration.between(today, listTask.get(i).getEndTime());
+
+               Duration notification = listTask.get(i).notification_period;
+               Duration remainingTime = durationToEndTime.minus(notification);
+
+               Log.d("Remaining time for task:", String.valueOf(remainingTime.getSeconds()));
+               Log.d("Remaining time for task:", String.valueOf(remainingTime.toString()));
+               handler.postDelayed(() -> showListTaskNotification(index), (long) (remainingTime.getSeconds()) * 1000);
+           }
+       }
 
         return START_STICKY;
     }

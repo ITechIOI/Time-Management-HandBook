@@ -29,7 +29,6 @@
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/sourceserif4_regular"
             android:padding="7dp"
             android:background="@drawable/custom_textinputlayout"/>
 
@@ -53,7 +52,6 @@
                 android:layout_width="295dp"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:fontFamily="@font/sourceserif4_regular"
                 android:background="@drawable/custom_textinputlayout"/>
 
             <ImageView
@@ -78,7 +76,6 @@
             android:layout_marginStart="34dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="34dp"
-            android:fontFamily="@font/sourceserif4_regular"
             android:background="@drawable/custom_textinputlayout"
             android:padding="7dp" />
 
@@ -111,7 +108,6 @@
                 android:layout_width="295dp"
                 android:layout_height="wrap_content"
                 android:padding="7dp"
-                android:fontFamily="@font/sourceserif4_regular"
                 android:background="@drawable/custom_textinputlayout"/>
 
             <ImageView
@@ -135,7 +131,6 @@
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/sourceserif4_regular"
             android:padding="7dp"
             android:background="@drawable/custom_textinputlayout"/>
 
@@ -148,8 +143,7 @@
             android:layout_marginEnd="34dp"
             android:background="@drawable/custom_button1"
             android:text="Save"
-            android:textSize="19sp"
-            android:fontFamily="@font/sourceserif4_semibold"/>
+            android:textSize="19sp"/>
 
     </LinearLayout>
 

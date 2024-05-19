@@ -112,6 +112,7 @@ public class Event_Activity extends AppCompatActivity {
             tv_event_dateend.setText(event.getEndTime().toString());
             tv_event_location.setText(event.getLocation());
             tv_event_description.setText(event.getDescription());
+            notificationE.setText(event.getNotification_period().toString());
             switch(event.getColor())
             {
                 case 1:

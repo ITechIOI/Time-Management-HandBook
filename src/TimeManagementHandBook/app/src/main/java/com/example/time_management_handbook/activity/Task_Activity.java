@@ -69,6 +69,7 @@ public class Task_Activity extends AppCompatActivity {
         nameTextView.setText(task.getName());
         deadlineTextView.setText(formattedTaskDeadlineDate.toString() + " " +
                 taskDeadlineTime);
+        notificationT.setText(task.getNotification_period().toString());
 
         switch(task.getColor())
         {

@@ -4,14 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.time_management_handbook.R;
@@ -83,9 +86,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 EventViewHolder eventOfTheDayViewHolder = (EventViewHolder) holder;
 
                 formatter = DateTimeFormatter.ofPattern("HH:mm");
-                eventOfTheDayViewHolder.eventTextView.setText("Event: " + eventOfTheDay.getSummary() + "\nDuration Time: " + eventOfTheDay.getStartTime().format(formatter) + " - " + eventOfTheDay.getEndTime().format(formatter));
-
-                changeLayoutColor(eventOfTheDay.getColor(), eventOfTheDayViewHolder.itemLayout);
+                eventOfTheDayViewHolder.eventTextView.setText(eventOfTheDay.getSummary()  );
+                eventOfTheDayViewHolder.timeEventTextView.setText(eventOfTheDay.getStartTime().format(formatter) + " - " + eventOfTheDay.getEndTime().format(formatter));
+                changeLayoutColor(eventOfTheDay.getColor(), eventOfTheDayViewHolder.itemView, eventOfTheDayViewHolder.itemLayout);
                 eventOfTheDayViewHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -102,9 +105,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 EventViewHolder prolongedEventViewHolder = (EventViewHolder) holder;
 
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                prolongedEventViewHolder.eventTextView.setText("Event: " + prolongedEvent.getSummary() + "\nStart: " + prolongedEvent.getStartDate().format(formatter) + "\nEnd: " + prolongedEvent.getEndDate().format(formatter));
-
-                changeLayoutColor(prolongedEvent.getColor(), prolongedEventViewHolder.itemLayout);
+                prolongedEventViewHolder.eventTextView.setText(prolongedEvent.getSummary());
+                prolongedEventViewHolder.timeEventTextView.setText(prolongedEvent.getStartDate().format(formatter) + " - " + prolongedEvent.getEndDate().format(formatter));
+                changeLayoutColor(prolongedEvent.getColor(),prolongedEventViewHolder.itemView, prolongedEventViewHolder.itemLayout);
                 prolongedEventViewHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -123,13 +126,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 taskViewHolder.nameTask.setText(task.getName());
                 taskViewHolder.deadlineTask.setText(task.getEndTime().toLocalTime().toString());
-
+                
 
                 if (task.getFinishedTime()!=null)
                     taskViewHolder.taskCheckbox.setChecked(true);
                 else taskViewHolder.taskCheckbox.setChecked(false);
 
-                changeLayoutColor(task.getColor(), taskViewHolder.itemLayout);
+                changeLayoutColor(task.getColor(),taskViewHolder.itemView, taskViewHolder.itemLayout);
                 taskViewHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -150,37 +153,42 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return lData.size();
     }
 
-    public void changeLayoutColor(int color, RelativeLayout itemLayout){
+    public void changeLayoutColor(int color, View itemView,RelativeLayout itemLayout){
+        Drawable itemBackGround = itemView.getResources().getDrawable(R.drawable.background_taskitem);
         switch (color)
         {
             case 1:
-                itemLayout.setBackgroundColor(Color.parseColor("#CEEDC7"));
+                itemBackGround.setTint(Color.parseColor("#CEEDC7"));
                 break;
             case 2:
-                itemLayout.setBackgroundColor(Color.parseColor("#FF9494"));
+                itemBackGround.setTint(Color.parseColor("#FF9494"));
                 break;
             case 3:
-                itemLayout.setBackgroundColor(Color.parseColor("#FFC8DD"));
+                itemBackGround.setTint(Color.parseColor("#FFC8DD"));
                 break;
             case 4:
-                itemLayout.setBackgroundColor(Color.parseColor("#D7E3FC"));
+                itemBackGround.setTint(Color.parseColor("#D7E3FC"));
                 break;
             case 5:
-                itemLayout.setBackgroundColor(Color.parseColor("#FFF6BD"));
+                itemBackGround.setTint(Color.parseColor("#FFF6BD"));
                 break;
             case 6:
-                itemLayout.setBackgroundColor(Color.parseColor("#FFD4B2"));
+                itemBackGround.setTint(Color.parseColor("#FFD4B2"));
                 break;
         }
+        itemLayout.setBackground(itemBackGround);
     }
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout itemLayout;
         public TextView eventTextView;
+        public TextView timeEventTextView;
+
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
             itemLayout = itemView.findViewById(R.id.item_event);
             eventTextView = itemView.findViewById(R.id.textView_event);
+            timeEventTextView = itemView.findViewById(R.id.eventTime_textview);
         }
     }
 }

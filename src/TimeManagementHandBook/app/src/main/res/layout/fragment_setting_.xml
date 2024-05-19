@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.Setting_Fragment"
-    android:id="@+id/fragment_setting">
+    android:id="@+id/fragment_setting"
+    android:background="@color/white">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

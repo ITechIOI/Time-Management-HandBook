@@ -31,7 +31,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
             android:layout_marginTop="5dp"
-            android:padding="7dp"
+            android:padding="8dp"
             android:background="@drawable/custom_textinputlayout"/>
 
         <TextView
@@ -52,7 +52,7 @@
                 android:id="@+id/tDeadline_textInput"
                 android:layout_width="295dp"
                 android:layout_height="wrap_content"
-                android:padding="7dp"
+                android:padding="8dp"
                 android:background="@drawable/custom_textinputlayout"/>
 
             <ImageView
@@ -73,7 +73,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
             android:layout_marginTop="5dp"
-            android:padding="7dp"
+            android:padding="8dp"
             android:id="@+id/tLocation_textInput"
             android:background="@drawable/custom_textinputlayout"/>
         <TextView
@@ -104,8 +104,8 @@
                 android:id="@+id/tNotification_textInput"
                 android:layout_width="295dp"
                 android:layout_height="wrap_content"
-                android:padding="7dp"
-                android:background="@drawable/custom_textinputlayout"/>
+                android:background="@drawable/custom_textinputlayout"
+                android:padding="8dp" />
 
             <ImageView
                 android:id="@+id/tNotification_dialog"
@@ -128,7 +128,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="34dp"
-            android:padding="7dp"
+            android:padding="8dp"
             android:background="@drawable/custom_textinputlayout"/>
 
         <Button
@@ -136,7 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="34dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="34dp"
             android:background="@drawable/custom_button1"
             android:text="Create"

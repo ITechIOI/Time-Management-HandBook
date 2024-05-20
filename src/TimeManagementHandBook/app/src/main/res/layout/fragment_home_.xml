@@ -55,7 +55,7 @@
             android:id="@+id/gridView_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="17dp"
             android:gravity="center_horizontal"
             android:scrollbars="none"
             android:numColumns="2"

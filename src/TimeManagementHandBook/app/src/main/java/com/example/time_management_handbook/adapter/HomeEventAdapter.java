@@ -32,13 +32,12 @@ import java.util.List;
 
 public class HomeEventAdapter extends BaseAdapter {
     private List<Object> lData;
-    private LayoutInflater layoutInflater;
     private Context context;
 
     public HomeEventAdapter(List<Object> listData, Context aContext) {
         context = aContext;
         lData = listData != null ? listData : new ArrayList<>();
-        layoutInflater = LayoutInflater.from(context);
+
     }
 
     @Override
@@ -60,7 +59,7 @@ public class HomeEventAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null){
-            convertView = layoutInflater.inflate(R.layout.layout_home_item, null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_home_item, parent, false);
             holder = new ViewHolder();
             holder.eventButton = convertView.findViewById(R.id.button_note);
             holder.summaryView = convertView.findViewById(R.id.textView_summary);

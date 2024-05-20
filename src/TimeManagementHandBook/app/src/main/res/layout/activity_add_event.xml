@@ -43,22 +43,24 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="34dp"
                     android:orientation="horizontal">
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/eDateStart_textInput"
-                                    android:layout_width="295dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_toStartOf="@+id/eDateStart_dialog"
                                     android:background="@drawable/custom_textinputlayout"
                                     android:padding="8dp"/>
                                 <ImageView
                                     android:id="@+id/eDateStart_dialog"
+                                    android:layout_alignParentRight="true"
                                     android:layout_width="30dp"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/ic_calendar" />
-                        </LinearLayout>
+                        </RelativeLayout>
                 </RelativeLayout>
                 <TextView
                     android:layout_width="wrap_content"
@@ -73,24 +75,26 @@
                     android:layout_marginEnd="34dp"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/eDateEnd_textInput"
-                                    android:layout_width="295dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_toStartOf="@id/eDateEnd_dialog"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/custom_textinputlayout"
                                     android:padding="8dp" />
 
                                 <ImageView
                                     android:id="@+id/eDateEnd_dialog"
+                                    android:layout_alignParentRight="true"
                                     android:layout_width="30dp"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/ic_calendar" />
-                        </LinearLayout>
+                        </RelativeLayout>
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -127,7 +131,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Notification" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="34dp"
@@ -136,17 +140,19 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/eNotification_textInput"
-                            android:layout_width="295dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_toStartOf="@id/eNotification_dialog"
                             android:padding="8dp"
                             android:background="@drawable/custom_textinputlayout"/>
 
                         <ImageView
                             android:id="@+id/eNotification_dialog"
+                            android:layout_alignParentRight="true"
                             android:layout_width="30dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:src="@drawable/ic_notification" />
-                </LinearLayout>
+                </RelativeLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

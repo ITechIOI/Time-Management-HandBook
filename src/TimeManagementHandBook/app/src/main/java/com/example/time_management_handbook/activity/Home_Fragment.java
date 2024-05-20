@@ -6,7 +6,6 @@ import static com.example.time_management_handbook.activity.Home_Activity.listPr
 import static com.example.time_management_handbook.activity.Home_Activity.listTask;
 import static com.example.time_management_handbook.activity.Home_Activity.username;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,16 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
-import com.example.time_management_handbook.adapter.HomeEventAdapter;
-import com.example.time_management_handbook.adapter.HomeTaskAdapter;
-import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
-import com.example.time_management_handbook.model.TaskDTO;
+import com.example.time_management_handbook.adapter.HomeAdapter;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -145,7 +139,7 @@ public class Home_Fragment extends Fragment {
     }
 
     public void setEventandTaskView(List<Object> lData){
-        eventView.setAdapter(new HomeEventAdapter(lData, getActivity()));
+        eventView.setAdapter(new HomeAdapter(lData, getActivity()));
     }
 
     public static String reformatDate(String date, String originalFormat, String targetFormat) {

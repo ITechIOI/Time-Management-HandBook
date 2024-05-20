@@ -1,10 +1,7 @@
 package com.example.time_management_handbook.adapter;
 
 import static android.app.PendingIntent.getActivity;
-import static androidx.core.content.ContextCompat.startActivity;
-import static java.security.AccessController.getContext;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -16,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.activity.Event_Activity;
@@ -30,11 +26,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeEventAdapter extends BaseAdapter {
+public class HomeAdapter extends BaseAdapter {
     private List<Object> lData;
     private Context context;
 
-    public HomeEventAdapter(List<Object> listData, Context aContext) {
+    public HomeAdapter(List<Object> listData, Context aContext) {
         context = aContext;
         lData = listData != null ? listData : new ArrayList<>();
 

@@ -316,7 +316,7 @@ public class Home_Activity extends AppCompatActivity {
         listAll.addAll(listEventOfTheDay);
         listAll.addAll(listProlongedEvent);
         listAll.addAll(listTask);
-        listAll.sort(null);
+        //listAll.sort(null);
 
         executorServiceEventOfTheDayForNotificationCreate.execute(new Runnable() {
             @Override

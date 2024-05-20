@@ -89,6 +89,7 @@ public class Home_Activity extends AppCompatActivity {
     public static LocalDate today;
     GoogleSignInClient mGoogleSignInClient;
     public static GoogleSignInAccount acc;
+    public static GoogleSignInAccount accTemp;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final ExecutorService executorServiceInsertAccount = Executors.newSingleThreadExecutor();
@@ -123,8 +124,6 @@ public class Home_Activity extends AppCompatActivity {
     public static List<TaskDTO> listTaskForNotification = new ArrayList<>();
 
     public static List<Prolonged_Event_DTO>  listProlongedEventForNotification = new ArrayList<>();
-
-
 
     @SuppressLint("NonConstantResourceId")
 
@@ -193,7 +192,11 @@ public class Home_Activity extends AppCompatActivity {
 
         // Get google account
 
-        acc = GoogleSignIn.getLastSignedInAccount(this);
+        if (accTemp == null) {
+            acc = GoogleSignIn.getLastSignedInAccount(this);
+        }
+        accTemp = acc;
+        Log.d("Google sign in account: ", acc.toString());
 
         final String email = acc.getEmail();
         username = acc.getDisplayName();
@@ -237,12 +240,6 @@ public class Home_Activity extends AppCompatActivity {
             String emailLogin = acc.getEmail();
             Toast.makeText(Home_Activity.this, emailLogin, Toast.LENGTH_LONG).show();
         }
-      //  Log.d("Uri of photo: ", avatar_uri.toString());
-
-        /*avatarButton = findViewById(R.id.imageButton_avatar);
-        if (avatar_uri != null){
-            avatarButton.setBackground(Icon.createWithContentUri(avatar_uri).loadDrawable(this));
-        }*/
 
         avatarButton = findViewById(R.id.imageButton_avatar);
 
@@ -261,10 +258,8 @@ public class Home_Activity extends AppCompatActivity {
                         }
                     });
         } else {
-            // Thiết lập hình ảnh mặc định nếu avatar_uri là null
             VectorDrawable vectorDrawable = (VectorDrawable) ContextCompat.getDrawable(this, R.drawable.user_avatar);
             avatarButton.setImageDrawable(vectorDrawable);
-            //avatarButton.setImageResource(R.drawable.ic_user); // Đảm bảo bạn có drawable này
         }
 
 

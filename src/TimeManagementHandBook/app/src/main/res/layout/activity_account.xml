@@ -41,19 +41,18 @@
 
     <Button
         android:id="@+id/button_AddAccount"
-        android:text="Add Account"
         android:layout_width="299dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
         android:background="@drawable/custom_button3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@id/textView_username"
-        android:layout_marginTop="50dp"
         android:fontFamily="sans-serif"
+        android:text="Synchronize"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/black"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_username" />
 
     <Button
         android:id="@+id/button_Logout"

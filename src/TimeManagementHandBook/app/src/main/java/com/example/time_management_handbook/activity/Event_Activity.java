@@ -300,7 +300,7 @@ public class Event_Activity extends AppCompatActivity {
                     int rowsAffected = Event_Of_The_Day_DAO.getInstance().UpdateEventOfTheDay(event);
                     if (rowsAffected > 0) {
                         // Cập nhật thành công
-                        Toast.makeText(getApplicationContext(), "Event updated successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Update event successfully", Toast.LENGTH_SHORT).show();
                         // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
                     } else {
                         // Cập nhật thất bại
@@ -319,7 +319,7 @@ public class Event_Activity extends AppCompatActivity {
                     int rowsAffected = Prolonged_Event_DAO.getInstance().UpdateProlongedEvent(event);
                     if (rowsAffected > 0) {
                         // Cập nhật thành công
-                        Toast.makeText(getApplicationContext(), "Event updated successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Update event successfully", Toast.LENGTH_SHORT).show();
                         // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
                     } else {
                         // Cập nhật thất bại

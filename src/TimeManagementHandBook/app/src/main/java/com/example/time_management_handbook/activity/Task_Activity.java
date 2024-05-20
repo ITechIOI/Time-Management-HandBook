@@ -223,11 +223,11 @@ public class Task_Activity extends AppCompatActivity {
                     int rowsAffected = TaskDAO.getInstance().UpdateTask(task);
                     if (rowsAffected > 0) {
                         // Cập nhật thành công
-                        Toast.makeText(getApplicationContext(), "Event updated successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Update task successfully", Toast.LENGTH_SHORT).show();
                         // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
                     } else {
                         // Cập nhật thất bại
-                        Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Failed to update task", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

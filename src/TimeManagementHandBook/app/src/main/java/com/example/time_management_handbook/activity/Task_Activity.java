@@ -68,7 +68,7 @@ public class Task_Activity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.taSave_button);
 
         LocalDateTime taskDeadline = task.getEndTime();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:MM");
         Context context = this;
         Log.d("Deadline for task today: ",taskDeadline.format(formatter));
 
@@ -78,14 +78,9 @@ public class Task_Activity extends AppCompatActivity {
 
         Duration duration = task.getNotification_period();
         String notification  = "";
-        if (duration.toDays() == 0) {
-            notification = String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
-                    "m " + String.valueOf(duration.getSeconds() % 60) + "s";
-        } else {
-            notification = String.valueOf(duration.toDays()) + "d " +
-                    String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
-                    "m " + String.valueOf(duration.getSeconds() % 60) + "s";
-        }
+        notification = String.valueOf(duration.toDays()) + "d " +
+                String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                "m " + String.valueOf(duration.getSeconds() % 60) + "s";
         notificationT.setText(notification);
         descriptionTextView.setText(task.getDescription());
 
@@ -210,13 +205,16 @@ public class Task_Activity extends AppCompatActivity {
                 }
 
                 LocalDateTime timeEndL = LocalDateTime.parse(timeEnd, formatter);
+                DateTimeFormatter dateTimeFormatterYyyyMmDd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                String timeEndParse = timeEndL.format(dateTimeFormatterYyyyMmDd);
+                LocalDateTime deadline = LocalDateTime.parse(timeEndParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
 
                 // Kiểm tra và cập nhật các thuộc tính của đối tượng sự kiện
                 if (intent.getSerializableExtra("mytask") instanceof TaskDTO) {
                     TaskDTO task = (TaskDTO) intent.getSerializableExtra("mytask");
                     task.setName(taskName);
                     task.setLocation(taskLocation);
-                    task.setEndTime(timeEndL);
+                    task.setEndTime(deadline);
                     task.setNotification_period(duration);
                     task.setDescription(taskDescription);
                     task.setColor(selectedIndex);

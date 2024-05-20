@@ -14,11 +14,9 @@ import java.util.List;
 
 public class DataProvider {
     public static DataProvider instance;
-<<<<<<< HEAD
-    private static final String DATABASE_URL = "jdbc:jtds:sqlserver://192.168.137.1;databaseName=TIME_MANAGEMENT_HANDBOOK;user=Duypham;password=23072004";
-=======
-    private static final String DATABASE_URL = "jdbc:jtds:sqlserver://192.168.1.193;databaseName=TIME_MANAGEMENT_HANDBOOK;user=sa;password=Loantuyetcute123";
->>>>>>> 30c3afd0c263e755b9a2d63a2113b1cee73b9f08
+
+    private static final String DATABASE_URL = "jdbc:jtds:sqlserver://172.20.10.4;databaseName=TIME_MANAGEMENT_HANDBOOK;user=sa;password=Loantuyetcute123";
+
     private DataProvider() {}
     public static DataProvider getInstance() {
         if (instance == null) {

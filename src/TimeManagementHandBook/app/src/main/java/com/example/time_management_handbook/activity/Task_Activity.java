@@ -178,58 +178,85 @@ public class Task_Activity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String taskName = nameTextView.getText().toString();
-                String taskLocation = locationTextView.getText().toString();
-                String taskDescription = descriptionTextView.getText().toString();
-                String notification = notificationT.getText().toString();
-                String timeEnd = deadlineTextView.getText().toString();
+                Dialog updateDialog;
+                Button updateButton, updateCancelButton;
+                updateDialog = new Dialog(context);
+                updateDialog.setContentView(R.layout.update_dialog);
+                updateDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+                updateDialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.custom_itemdialog));
+                updateDialog.setCancelable(false);
 
-                String[] parts = notification.split(" ");
-                int ngay = Integer.parseInt(parts[0].replace("d", ""));
-                int gio = Integer.parseInt(parts[1].replace("h", ""));
-                int phut = Integer.parseInt(parts[2].replace("m", ""));
-                int giay = Integer.parseInt(parts[3].replace("s", ""));
+                updateButton = updateDialog.findViewById(R.id.itemUpdate_button);
+                updateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateDialog.dismiss();
+                        String taskName = nameTextView.getText().toString();
+                        String taskLocation = locationTextView.getText().toString();
+                        String taskDescription = descriptionTextView.getText().toString();
+                        String notification = notificationT.getText().toString();
+                        String timeEnd = deadlineTextView.getText().toString();
 
-                Duration duration;
-                if (ngay != 0){
-                    duration = Duration.ofDays(ngay)
-                            .plusHours(gio)
-                            .plusMinutes(phut)
-                            .plusSeconds(giay);
-                }
-                // Tạo đối tượng Duration
-                else {
-                    duration = Duration.ofHours(gio)
-                            .plusMinutes(phut)
-                            .plusSeconds(giay);
-                }
+                        String[] parts = notification.split(" ");
+                        int ngay = Integer.parseInt(parts[0].replace("d", ""));
+                        int gio = Integer.parseInt(parts[1].replace("h", ""));
+                        int phut = Integer.parseInt(parts[2].replace("m", ""));
+                        int giay = Integer.parseInt(parts[3].replace("s", ""));
 
-                LocalDateTime timeEndL = LocalDateTime.parse(timeEnd, formatter);
-                DateTimeFormatter dateTimeFormatterYyyyMmDd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-                String timeEndParse = timeEndL.format(dateTimeFormatterYyyyMmDd);
-                LocalDateTime deadline = LocalDateTime.parse(timeEndParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+                        Duration duration;
+                        if (ngay != 0){
+                            duration = Duration.ofDays(ngay)
+                                    .plusHours(gio)
+                                    .plusMinutes(phut)
+                                    .plusSeconds(giay);
+                        }
+                        // Tạo đối tượng Duration
+                        else {
+                            duration = Duration.ofHours(gio)
+                                    .plusMinutes(phut)
+                                    .plusSeconds(giay);
+                        }
 
-                // Kiểm tra và cập nhật các thuộc tính của đối tượng sự kiện
-                if (intent.getSerializableExtra("mytask") instanceof TaskDTO) {
-                    TaskDTO task = (TaskDTO) intent.getSerializableExtra("mytask");
-                    task.setName(taskName);
-                    task.setLocation(taskLocation);
-                    task.setEndTime(deadline);
-                    task.setNotification_period(duration);
-                    task.setDescription(taskDescription);
-                    task.setColor(selectedIndex);
+                        LocalDateTime timeEndL = LocalDateTime.parse(timeEnd, formatter);
+                        DateTimeFormatter dateTimeFormatterYyyyMmDd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                        String timeEndParse = timeEndL.format(dateTimeFormatterYyyyMmDd);
+                        LocalDateTime deadline = LocalDateTime.parse(timeEndParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
 
-                    // Gọi hàm cập nhật sự kiện trong cơ sở dữ liệu
-                    int rowsAffected = TaskDAO.getInstance().UpdateTask(task);
-                    if (rowsAffected > 0) {
-                        // Cập nhật thành công
-                        Toast.makeText(getApplicationContext(), "Update task successfully", Toast.LENGTH_SHORT).show();
-                        // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
-                    } else {
-                        // Cập nhật thất bại
-                        Toast.makeText(getApplicationContext(), "Failed to update task", Toast.LENGTH_SHORT).show();
+                        // Kiểm tra và cập nhật các thuộc tính của đối tượng sự kiện
+                        if (intent.getSerializableExtra("mytask") instanceof TaskDTO) {
+                            TaskDTO task = (TaskDTO) intent.getSerializableExtra("mytask");
+                            task.setName(taskName);
+                            task.setLocation(taskLocation);
+                            task.setEndTime(deadline);
+                            task.setNotification_period(duration);
+                            task.setDescription(taskDescription);
+                            task.setColor(selectedIndex);
+
+                            // Gọi hàm cập nhật sự kiện trong cơ sở dữ liệu
+                            int rowsAffected = TaskDAO.getInstance().UpdateTask(task);
+                            if (rowsAffected > 0) {
+                                // Cập nhật thành công
+                                Toast.makeText(getApplicationContext(), "Update task successfully", Toast.LENGTH_SHORT).show();
+                                // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
+                            } else {
+                                // Cập nhật thất bại
+                                Toast.makeText(getApplicationContext(), "Failed to update task", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
                     }
-                }
+                });
+                updateCancelButton = updateDialog.findViewById(R.id.itemCancel_button);
+                updateCancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateDialog.dismiss();
+                    }
+                });
+
+                updateDialog.show();
+
+
             }
         });
     }

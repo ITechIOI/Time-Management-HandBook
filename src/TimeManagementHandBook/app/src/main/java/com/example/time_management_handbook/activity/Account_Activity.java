@@ -4,6 +4,8 @@ import static com.example.time_management_handbook.activity.Home_Activity.avatar
 import static com.google.api.services.calendar.CalendarScopes.CALENDAR_READONLY;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,7 +82,7 @@ public class Account_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-
+        Context context = this;
         Toolbar toolbar = findViewById(R.id.aToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,10 +110,34 @@ public class Account_Activity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mit= new Intent(Account_Activity.this, Login_Activity.class);
-                Home_Activity.acc = null;
-                Home_Activity.accTemp = null;
-                startActivity(mit);
+
+                Dialog logOutDialog;
+                Button logOutButton, logOutCancelButton;
+                logOutDialog = new Dialog(context);
+                logOutDialog.setContentView(R.layout.logout_dialog);
+                logOutDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+                logOutDialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.custom_itemdialog));
+                logOutDialog.setCancelable(false);
+
+                logOutButton = logOutDialog.findViewById(R.id.logOut_button);
+                logOutCancelButton = logOutDialog.findViewById(R.id.logOutCancel_button);
+                logOutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        logOutDialog.dismiss();
+                        Intent mit= new Intent(Account_Activity.this, Login_Activity.class);
+                        Home_Activity.acc = null;
+                        Home_Activity.accTemp = null;
+                        startActivity(mit);
+                    }
+                });
+                logOutCancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        logOutDialog.dismiss();
+                    }
+                });
+                logOutDialog.show();
             }
         });
     }

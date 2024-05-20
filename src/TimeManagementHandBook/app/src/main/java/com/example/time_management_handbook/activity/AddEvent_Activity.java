@@ -200,8 +200,8 @@ public class AddEvent_Activity extends AppCompatActivity {
                 }
                 else if(dateStartLD.isBefore(dateEndLD)) {
                     Prolonged_Event_DTO newEvent = new Prolonged_Event_DTO(
-                            null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
-                            null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
+                            null,
+                            null,
                             eName.getText().toString(),
                             eLocation.getText().toString(),
                             dateStartLD,

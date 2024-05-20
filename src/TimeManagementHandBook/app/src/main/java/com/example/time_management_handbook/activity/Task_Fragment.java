@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,9 +52,6 @@ public class Task_Fragment extends Fragment {
     private List<TaskDTO> listTaskByCurrentDate;
     Dialog delete_dialog;
     Button cancelButton, deleteButton;
-
-
-
     ExecutorService executorServiceHandle = Executors.newSingleThreadExecutor();
     ExecutorService executorServiceGetTask = Executors.newSingleThreadExecutor();
 
@@ -97,6 +95,7 @@ public class Task_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_task_, container, false);
         rcv = view.findViewById(R.id.task_rcv);
         searchView = view.findViewById(R.id.task_searchview);
+
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
         listTaskByCurrentDate = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail(), roundedDateTime);
@@ -104,7 +103,7 @@ public class Task_Fragment extends Fragment {
         rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv.setAdapter(taskAdapter);
         searchView.setQueryHint("Enter name of task...");
-      searchView.clearFocus();
+        searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

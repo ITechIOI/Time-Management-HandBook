@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.activity.Home_Activity;
@@ -75,7 +77,8 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         int dayOfMonth = task.getEndTime().getDayOfMonth();
 
         String deadlineString = String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" +
-                String.valueOf(year);
+                String.valueOf(year) + " " + String.valueOf(task.getEndTime().getHour()) + ":" +
+                String.valueOf(task.getEndTime().getMinute() + ":" + String.valueOf(task.getEndTime().getSecond()));
 
         holder.nameTask.setText(task.getName());
         holder.deadlineTask.setText(deadlineString);
@@ -128,6 +131,24 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
 
             }
         });
+
+        holder.taskCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    String taskSummary = holder.nameTask.getText().toString();
+                    String taskDeadline = holder.deadlineTask.getText().toString();
+                    int rowEffect = CheckTaskFinish(Home_Activity.acc.getEmail().toString(), taskSummary, taskDeadline);
+                }
+            }
+        });
+    }
+
+    private int CheckTaskFinish(String email, String summary, String deadline) {
+        int rowEffect = -1;
+
+
+        return rowEffect;
     }
 
     private boolean ShowItemLongClickDialog(TaskDTO task) {
@@ -225,7 +246,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
             nameTask = itemView.findViewById(R.id.tname_textView);
             deadlineTask = itemView.findViewById(R.id.tDeadline_textView);
             timeleftTask = itemView.findViewById(R.id.tTimeleft_textView);
-            taskCheckbox = itemView.findViewById(R.id.an);
+            taskCheckbox = itemView.findViewById(R.id.checkTaskFinish);
         }
     }
 
@@ -263,10 +284,14 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
 
                     Duration notification_period = Duration.parse(resultSet.getString(7));
                     String description = resultSet.getString(8);
+                    LocalDateTime finish = null;
 
-                    Timestamp finishTime = resultSet.getTimestamp(5);
-                    ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
-                    LocalDateTime finish = zonedDateTimeFinish.toLocalDateTime();
+                    String finishTimeTemp = resultSet.getString(9);
+                    if (finishTimeTemp != null) {
+                        Timestamp finishTime = resultSet.getTimestamp(9);
+                        ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
+                        finish = zonedDateTimeFinish.toLocalDateTime();
+                    }
 
                     int color = resultSet.getInt(10);
 
@@ -317,7 +342,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                     Duration notification_period = Duration.parse(resultSet.getString(7));
                     String description = resultSet.getString(8);
 
-                    Timestamp finishTime = resultSet.getTimestamp(5);
+                    Timestamp finishTime = resultSet.getTimestamp(9);
                     ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
                     LocalDateTime finish = zonedDateTimeFinish.toLocalDateTime();
 
@@ -368,7 +393,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                     Duration notification_period = Duration.parse(resultSet.getString(7));
                     String description = resultSet.getString(8);
 
-                    Timestamp finishTime = resultSet.getTimestamp(5);
+                    Timestamp finishTime = resultSet.getTimestamp(9);
                     ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
                     LocalDateTime finish = zonedDateTimeFinish.toLocalDateTime();
 

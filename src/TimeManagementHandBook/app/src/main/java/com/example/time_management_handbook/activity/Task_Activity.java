@@ -39,17 +39,18 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Task_Activity extends AppCompatActivity {
-    private int backStackEntryIndex;
     public static int selectedIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
+        Context context = this;
+
         Toolbar toolbar = findViewById(R.id.taToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        //toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> finish());
 
 
         TaskDTO task = null;
@@ -69,7 +70,6 @@ public class Task_Activity extends AppCompatActivity {
 
         LocalDateTime taskDeadline = task.getEndTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:MM");
-        Context context = this;
         Log.d("Deadline for task today: ",taskDeadline.format(formatter));
 
         locationTextView.setText(task.getLocation());

@@ -25,16 +25,7 @@ public class AboutZEIT_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        Bundle extras = getIntent().getExtras();
-       /* if (extras!= null) {
-            backStackEntryIndex = extras.getInt("backStackEntryIndex");
-        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });*/
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
     @Override
     public void onBackPressed(){

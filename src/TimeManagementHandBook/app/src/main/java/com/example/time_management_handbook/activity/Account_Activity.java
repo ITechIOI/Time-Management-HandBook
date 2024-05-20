@@ -129,7 +129,9 @@ public class Account_Activity extends AppCompatActivity {
                     executorServiceFetchData.execute(new Runnable() {
                         @Override
                         public void run() {
+
                             fetchEvents(accountSynchronize);
+
                         }
                     });
 
@@ -255,12 +257,12 @@ public class Account_Activity extends AppCompatActivity {
                             Log.d("Calendar Date: ", start.toString() + " " + end.toString());
 
                             Event_Of_The_Day_DTO eventOfTheDay = new Event_Of_The_Day_DTO(null,
-                                    null, summary, location, start, end, durationTime, description, 1);
+                                    null, summary, location, start, end, durationTime, description, 2);
 
                             Log.d("List Event of the day from google calendar", eventOfTheDay.toString());
                             executeServiceInsertEventOfTheDayFetchData.execute(() -> {
                                 try {
-                                    int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEventFromCalendar(acc.getEmail(), eventOfTheDay);
+                                    int rowEffect = Event_Of_The_Day_DAO.getInstance().InsertNewEventFromCalendar(Home_Activity.acc.getEmail(), eventOfTheDay);
                                     if (rowEffect > 0) {
                                         Log.d("Insert event of the day from google calendar", "success");
                                     } else {
@@ -280,7 +282,7 @@ public class Account_Activity extends AppCompatActivity {
                             Log.d("List Prolonged event from google calendar", prolongedEvent.toString());
                             executeServiceInsertProlongedEventFetchData.execute(() -> {
                                 try {
-                                    int rowEffect = Prolonged_Event_DAO.getInstance().InsertNewProlongedEventFromCalendar(acc.getEmail(), prolongedEvent);
+                                    int rowEffect = Prolonged_Event_DAO.getInstance().InsertNewProlongedEventFromCalendar(Home_Activity.acc.getEmail(), prolongedEvent);
                                     if (rowEffect > 0) {
                                         Log.d("Insert prolonged event from google calendar", "success");
                                     } else {
@@ -301,6 +303,7 @@ public class Account_Activity extends AppCompatActivity {
 
                     runOnUiThread(() -> {
                         Log.d("List Event Calendar", eventStrings.toString());
+                        Toast.makeText(Account_Activity.this,"Synchronize successfully", Toast.LENGTH_SHORT).show();
                     });
 
                 } catch (UserRecoverableAuthIOException userRecoverableException) {

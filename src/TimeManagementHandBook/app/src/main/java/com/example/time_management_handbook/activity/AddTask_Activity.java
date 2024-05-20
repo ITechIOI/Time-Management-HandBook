@@ -141,6 +141,26 @@ public class AddTask_Activity extends AppCompatActivity {
                 // Chuyển đổi chuỗi thành LocalDateTime
                 LocalDateTime lDeadline = LocalDateTime.parse(deadline, formatter);
 
+                String[] parts = notificationT.getText().toString().split(" ");
+                int ngay = Integer.parseInt(parts[0].replace("d", ""));
+                int gio = Integer.parseInt(parts[1].replace("h", ""));
+                int phut = Integer.parseInt(parts[2].replace("m", ""));
+                int giay = Integer.parseInt(parts[3].replace("s", ""));
+
+                Duration duration;
+                if (ngay != 0){
+                    duration = Duration.ofDays(ngay)
+                            .plusHours(gio)
+                            .plusMinutes(phut)
+                            .plusSeconds(giay);
+                }
+                // Tạo đối tượng Duration
+                else {
+                    duration = Duration.ofHours(gio)
+                            .plusMinutes(phut)
+                            .plusSeconds(giay);
+                }
+
 
                 TaskDTO newTask = new TaskDTO(
                         null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
@@ -149,7 +169,7 @@ public class AddTask_Activity extends AppCompatActivity {
                         tLocation.getText().toString(),
                         LocalDateTime.now(),
                         lDeadline,
-                        Duration.ofMinutes(15), // Chu kỳ thông báo
+                        duration, // Chu kỳ thông báo
                         tDescription.getText().toString(), // Mô tả
                         null,
                         selectedIndex // Màu sắc (vd: màu mặc định)
@@ -164,6 +184,7 @@ public class AddTask_Activity extends AppCompatActivity {
                     tDeadline.setText("");
                     tLocation.setText("");
                     tDescription.setText("");
+                    notificationT.setText("");
                     customRadioGroup.clearFocus();
                 }
                 else {

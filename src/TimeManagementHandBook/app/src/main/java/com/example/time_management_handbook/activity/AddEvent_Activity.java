@@ -9,6 +9,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -149,26 +150,39 @@ public class AddEvent_Activity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String timeStart = eStartTime.getText().toString();
                 String timeEnd = eEndTime.getText().toString();
 
-                // DateTimeFormatter for parsing date in format "dd/MM/yyyy"
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-                // DateTimeFormatter for parsing time in format "HH:mm"
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:m");
+                LocalDateTime eTimeStartL = LocalDateTime.parse(timeStart, dateTimeFormatter);
+                LocalDateTime eTimeEndL = LocalDateTime.parse(timeEnd, dateTimeFormatter);
 
-                LocalDate dateStartLD = LocalDate.parse(timeStart, dateFormatter);
-                LocalDate dateEndLD = LocalDate.parse(timeEnd, dateFormatter);
-                LocalTime timeStartLT = LocalTime.parse(timeStart, timeFormatter);
-                LocalTime timeEndLT = LocalTime.parse(timeEnd, timeFormatter);
+                LocalDate dateStartLD = eTimeStartL.toLocalDate();
+                LocalDate dateEndLD = eTimeEndL.toLocalDate();
 
-                LocalDateTime eTimeStartL = LocalDateTime.of(dateStartLD, timeStartLT);
-                LocalDateTime eTimeEndL = LocalDateTime.of(dateEndLD, timeEndLT);
+                String[] parts = notificationE.getText().toString().split(" ");
+                int ngay = Integer.parseInt(parts[0].replace("d", ""));
+                int gio = Integer.parseInt(parts[1].replace("h", ""));
+                int phut = Integer.parseInt(parts[2].replace("m", ""));
+                int giay = Integer.parseInt(parts[3].replace("s", ""));
+
+                Duration duration;
+                if (ngay != 0){
+                    duration = Duration.ofDays(ngay)
+                            .plusHours(gio)
+                            .plusMinutes(phut)
+                            .plusSeconds(giay);
+                }
+                // Tạo đối tượng Duration
+                else {
+                    duration = Duration.ofHours(gio)
+                            .plusMinutes(phut)
+                            .plusSeconds(giay);
+                }
 
                 int result = -1;
-                if (dateStartLD == dateEndLD){
+                if (dateStartLD.isEqual(dateEndLD)){
                     Event_Of_The_Day_DTO newEvent = new Event_Of_The_Day_DTO(
                             null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
                             null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
@@ -176,14 +190,15 @@ public class AddEvent_Activity extends AppCompatActivity {
                             eLocation.getText().toString(),
                             eTimeStartL,
                             eTimeEndL,
-                            Duration.ofMinutes(15), // Chu kỳ thông báo
+                            duration, // Chu kỳ thông báo
                             eDescription.getText().toString(), // Mô tả
                             selectedIndex // Màu sắc (vd: màu mặc định)
                     );
-
+                    eStartTime.setTextColor(Color.BLACK);
+                    eEndTime.setTextColor(Color.BLACK);
                     result = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(email, newEvent);
                 }
-                else {
+                else if(dateStartLD.isBefore(dateEndLD)) {
                     Prolonged_Event_DTO newEvent = new Prolonged_Event_DTO(
                             null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
                             null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
@@ -191,12 +206,18 @@ public class AddEvent_Activity extends AppCompatActivity {
                             eLocation.getText().toString(),
                             dateStartLD,
                             dateEndLD,
-                            Duration.ofMinutes(15), // Chu kỳ thông báo
+                            duration, // Chu kỳ thông báo
                             eDescription.getText().toString(), // Mô tả
                             selectedIndex // Màu sắc (vd: màu mặc định)
                     );
-
+                    eStartTime.setTextColor(Color.BLACK);
+                    eEndTime.setTextColor(Color.BLACK);
                     result = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(email, newEvent);
+                }
+                else {
+                    eStartTime.setTextColor(Color.RED);
+                    eEndTime.setTextColor(Color.RED);
+                    Toast.makeText(AddEvent_Activity.this, "Start date is after end date", Toast.LENGTH_SHORT).show();
                 }
                 if (result != -1)
                 {
@@ -207,6 +228,7 @@ public class AddEvent_Activity extends AppCompatActivity {
                     eEndTime.setText("");
                     eLocation.setText("");
                     eDescription.setText("");
+                    notificationE.setText("");
                     customRadioGroup.clearFocus();
                 }
                 else {

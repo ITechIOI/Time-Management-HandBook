@@ -3,7 +3,9 @@ package com.example.time_management_handbook.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,25 +14,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
+import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class Event_Activity extends AppCompatActivity {
+
+    public static int selectedIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +64,21 @@ public class Event_Activity extends AppCompatActivity {
         TextInputEditText tv_event_description = findViewById(R.id.eaDescription_textInput);
         TextView notificationE = findViewById(R.id.eaNotification_textInput);
         ImageView notificaltion = findViewById(R.id.eaNotification_dialog);
+        ImageView eStartTimeDialog = findViewById(R.id.eaDateStart_dialog);
+        ImageView eEndTimeDialog = findViewById(R.id.eaDateEnd_dialog);
+
+        eStartTimeDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDateTimeDialog(R.id.eaDateStart_textInput);
+            }
+        });
+        eEndTimeDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDateTimeDialog(R.id.eaDateEnd_textInput);
+            }
+        });
         notificaltion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,20 +119,16 @@ public class Event_Activity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         //Nhận dữ liệu
         Intent intent = getIntent();
         if (intent.getSerializableExtra("myevent") instanceof Event_Of_The_Day_DTO){
             Event_Of_The_Day_DTO event = (Event_Of_The_Day_DTO) intent.getSerializableExtra("myevent");
             Log.d("TAG", "Received data: " + event);
             tv_event_name.setText(event.getSummary());
-            tv_event_datestart.setText(event.getStartTime().toString());
-
-            LocalDate eventDeadlineDate = event.getEndTime().toLocalDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedEventDeadlineDate = eventDeadlineDate.format(formatter);
-            LocalTime eventDeadlineTime = event.getEndTime().toLocalTime();
-
-            tv_event_dateend.setText(formattedEventDeadlineDate + " " + eventDeadlineTime.toString());
+            tv_event_datestart.setText(event.getStartTime().format(formatter).toString());
+            tv_event_dateend.setText(event.getEndTime().format(formatter).toString());
             tv_event_location.setText(event.getLocation());
             tv_event_description.setText(event.getDescription());
             Duration duration = event.getNotification_period();
@@ -150,8 +174,8 @@ public class Event_Activity extends AppCompatActivity {
             Prolonged_Event_DTO event = (Prolonged_Event_DTO) intent.getSerializableExtra("myevent");
             Log.d("TAG", "Received data: " + event);
             tv_event_name.setText(event.getSummary());
-            tv_event_datestart.setText(event.getStartDate().toString());
-            tv_event_dateend.setText(event.getEndDate().toString());
+            tv_event_datestart.setText(event.getStartDate().format(formatter).toString());
+            tv_event_dateend.setText(event.getEndDate().format(formatter).toString());
             tv_event_location.setText(event.getLocation());
             tv_event_description.setText(event.getDescription());
             switch(event.getColor())
@@ -183,11 +207,103 @@ public class Event_Activity extends AppCompatActivity {
             }
         }
 
+        RadioGroup customRadioGroup = findViewById(R.id.eaColor_radio);
+        customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // Tìm RadioButton được chọn trong RadioGroup
+                RadioButton selectedRadioButton = findViewById(checkedId);
+
+                if (selectedRadioButton != null) {
+                    // Lấy chỉ mục của RadioButton được chọn trong RadioGroup
+                    selectedIndex = customRadioGroup.indexOfChild(selectedRadioButton) + 1;
+
+                    // Log chỉ mục của RadioButton được chọn
+                    Log.d("Selected Index", String.valueOf(selectedIndex));
+                }
+            }
+        });
+
         Button saveButton = findViewById(R.id.eaSave_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String eventName = tv_event_name.getText().toString();
+                String eventLocation = tv_event_location.getText().toString();
+                String eventDescription = tv_event_description.getText().toString();
+                String timeStart = tv_event_datestart.getText().toString();
+                String timeEnd = tv_event_dateend.getText().toString();
+                String notification = notificationE.getText().toString();
 
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+                LocalDateTime timeStartL = LocalDateTime.parse(timeStart, dateTimeFormatter);
+                LocalDateTime timeEndL = LocalDateTime.parse(timeEnd, dateTimeFormatter);
+
+                LocalDate timeStartD = timeStartL.toLocalDate();
+                LocalDate timeEndD = timeEndL.toLocalDate();
+
+                String[] parts = notification.split(" ");
+                int ngay = Integer.parseInt(parts[0].replace("d", ""));
+                int gio = Integer.parseInt(parts[1].replace("h", ""));
+                int phut = Integer.parseInt(parts[2].replace("m", ""));
+                int giay = Integer.parseInt(parts[3].replace("s", ""));
+
+                Duration duration;
+                if (ngay != 0){
+                    duration = Duration.ofDays(ngay)
+                            .plusHours(gio)
+                            .plusMinutes(phut)
+                            .plusSeconds(giay);
+                }
+                // Tạo đối tượng Duration
+                else {
+                    duration = Duration.ofHours(gio)
+                            .plusMinutes(phut)
+                            .plusSeconds(giay);
+                }
+
+                // Kiểm tra và cập nhật các thuộc tính của đối tượng sự kiện
+                if (intent.getSerializableExtra("myevent") instanceof Event_Of_The_Day_DTO) {
+                    Event_Of_The_Day_DTO event = (Event_Of_The_Day_DTO) intent.getSerializableExtra("myevent");
+                    event.setSummary(eventName);
+                    event.setLocation(eventLocation);
+                    event.setStartTime(timeStartL);
+                    event.setEndTime(timeStartL);
+                    event.setNotification_period(duration);
+                    event.setDescription(eventDescription);
+                    event.setColor(selectedIndex);
+
+                    // Gọi hàm cập nhật sự kiện trong cơ sở dữ liệu
+                    int rowsAffected = Event_Of_The_Day_DAO.getInstance().UpdateEventOfTheDay(event);
+                    if (rowsAffected > 0) {
+                        // Cập nhật thành công
+                        Toast.makeText(getApplicationContext(), "Event updated successfully", Toast.LENGTH_SHORT).show();
+                        // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
+                    } else {
+                        // Cập nhật thất bại
+                        Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (intent.getSerializableExtra("myevent") instanceof Prolonged_Event_DTO) {
+                    Prolonged_Event_DTO event = (Prolonged_Event_DTO) intent.getSerializableExtra("myevent");
+                    event.setSummary(eventName);
+                    event.setLocation(eventLocation);
+                    event.setStartDate(timeStartD);
+                    event.setEndDate(timeEndD);
+                    event.setNotification_period(duration);
+                    event.setDescription(eventDescription);
+                    event.setColor(selectedIndex);
+
+                    int rowsAffected = Prolonged_Event_DAO.getInstance().UpdateProlongedEvent(event);
+                    if (rowsAffected > 0) {
+                        // Cập nhật thành công
+                        Toast.makeText(getApplicationContext(), "Event updated successfully", Toast.LENGTH_SHORT).show();
+                        // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
+                    } else {
+                        // Cập nhật thất bại
+                        Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
@@ -202,5 +318,33 @@ public class Event_Activity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openDateTimeDialog(int id)
+    {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(Event_Activity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                        Calendar selectedDateTime = Calendar.getInstance();
+                        selectedDateTime.set(year, month, dayOfMonth, hourOfDay, minute);
+                        String formattedDateTime = sdf.format(selectedDateTime.getTime());
+                        TextInputEditText editText = findViewById(id);
+                        editText.setText(formattedDateTime);
+                    }
+                }, hour, minute, true);
+                timePickerDialog.show();
+            }
+        }, year, month, day);
+        datePickerDialog.show();
     }
 }

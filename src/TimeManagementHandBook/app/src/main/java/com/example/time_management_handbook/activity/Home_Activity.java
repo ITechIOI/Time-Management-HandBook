@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
+import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -110,7 +111,7 @@ public class Home_Activity extends AppCompatActivity {
     public static List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
     public static List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
     public static List<TaskDTO> listTask = new ArrayList<>();
-    public static List<Object> listEvent = new ArrayList<>();
+    public static List<Object> listAll = new ArrayList<>();
 
     private ExecutorService executorServiceEventOfTheDayForNotificationCreate = Executors.newSingleThreadExecutor();
     private ExecutorService executorServiceTaskForNotificationCreate = Executors.newSingleThreadExecutor();
@@ -261,7 +262,9 @@ public class Home_Activity extends AppCompatActivity {
                     });
         } else {
             // Thiết lập hình ảnh mặc định nếu avatar_uri là null
-            avatarButton.setImageResource(R.drawable.ic_user); // Đảm bảo bạn có drawable này
+            VectorDrawable vectorDrawable = (VectorDrawable) ContextCompat.getDrawable(this, R.drawable.user_avatar);
+            avatarButton.setImageDrawable(vectorDrawable);
+            //avatarButton.setImageResource(R.drawable.ic_user); // Đảm bảo bạn có drawable này
         }
 
 
@@ -309,9 +312,11 @@ public class Home_Activity extends AppCompatActivity {
         });
        // executorServiceHandleTask.shutdown();
 
-        listEvent = new ArrayList<>();
-        listEvent.addAll(listEventOfTheDay);
-        listEvent.addAll(listProlongedEvent);
+        listAll = new ArrayList<>();
+        listAll.addAll(listEventOfTheDay);
+        listAll.addAll(listProlongedEvent);
+        listAll.addAll(listTask);
+        //listAll.sort(null);
 
         executorServiceEventOfTheDayForNotificationCreate.execute(new Runnable() {
             @Override
@@ -362,7 +367,7 @@ public class Home_Activity extends AppCompatActivity {
         super.onStart();
 
         homeFragment.setHiTextView(username);
-        homeFragment.setEventandTaskView(listEvent, listTask);
+        homeFragment.setEventandTaskView(listAll);
 
         try {
             if (!executorServiceGetUsername.awaitTermination(1, TimeUnit.SECONDS)) {

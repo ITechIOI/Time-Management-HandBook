@@ -23,6 +23,7 @@ import com.example.time_management_handbook.activity.Event_Activity;
 import com.example.time_management_handbook.activity.Task_Activity;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.Prolonged_Event_DTO;
+import com.example.time_management_handbook.model.TaskDTO;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
@@ -111,7 +112,7 @@ public class HomeEventAdapter extends BaseAdapter {
         else if (lData.get(position) instanceof Prolonged_Event_DTO){
             Prolonged_Event_DTO datas = (Prolonged_Event_DTO) lData.get(position);
             holder.summaryView.setText(datas.getSummary());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             holder.timeView.setText("Start: " + datas.getStartDate().format(formatter) + "\nEnd: " + datas.getEndDate().format(formatter));
             holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_event,0,0);
             switch (datas.getColor()) {
@@ -146,9 +147,44 @@ public class HomeEventAdapter extends BaseAdapter {
                 }
             });
         }
-
-
-
+        else if (lData.get(position) instanceof TaskDTO){
+            TaskDTO datas = (TaskDTO) lData.get(position);
+            holder.summaryView.setText(datas.getName());
+            // Dinh dang thoi gian deadline
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+            holder.timeView.setText("Start: " + datas.getCreatingTime().format(formatter) + "\nEnd: " + datas.getEndTime().format(formatter));
+            holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_task_book,0,0);
+            switch (datas.getColor())
+            {
+                case 1:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CEEDC7")));
+                    break;
+                case 2:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF9494")));
+                    break;
+                case 3:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFC8DD")));
+                    break;
+                case 4:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D7E3FC")));
+                    break;
+                case 5:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFF6BD")));
+                    break;
+                case 6:
+                    holder.eventButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFD4B2")));
+                    break;
+            }
+            holder.eventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mit= new Intent(context, Task_Activity.class);
+                    mit.putExtra("mytask", (Serializable) datas);
+                    Log.d("EXTRA", mit.getExtras().toString());
+                    context.startActivity(mit);
+                }
+            });
+        }
         return convertView;
     }
 

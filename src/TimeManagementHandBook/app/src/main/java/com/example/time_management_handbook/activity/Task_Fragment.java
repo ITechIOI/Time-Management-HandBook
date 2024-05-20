@@ -103,19 +103,21 @@ public class Task_Fragment extends Fragment {
         taskAdapter = new TaskDAO(listTaskByCurrentDate,getActivity());
         rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv.setAdapter(taskAdapter);
-        searchView.clearFocus();
+        searchView.setQueryHint("Enter name of task...");
+      searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 filterTask(newText);
                 return true;
             }
         });
+
+
         return view;
     }
     private void filterTask(String newText) {

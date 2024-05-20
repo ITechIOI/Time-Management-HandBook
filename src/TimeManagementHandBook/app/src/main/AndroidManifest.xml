@@ -33,7 +33,8 @@
         <activity
             android:name=".activity.Event_Activity"
             android:exported="true"
-            android:label="Event" />
+            android:label="Event"
+            android:parentActivityName=".activity.Home_Activity"/>
         <activity
             android:name=".activity.Task_Activity"
             android:exported="false"

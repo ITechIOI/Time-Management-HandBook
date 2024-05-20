@@ -60,8 +60,6 @@ public class MyForegroundService extends Service {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         handler = new Handler(Looper.getMainLooper());
 
-        // Tạo danh sách các thông báo
-
         listEventOfTheDay = Home_Activity.listEventOfTheDayForNotification;
         listProlongedEvent = Home_Activity.listProlongedEventForNotification;
         listTask = Home_Activity.listTaskForNotification;
@@ -186,6 +184,14 @@ public class MyForegroundService extends Service {
 
     private void showListEventOfTheDayNotification(int index) {
 
+        Intent notificationIntent = new Intent(this, Home_Activity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+
         Resources res = context.getResources();
         String packageName = context.getPackageName();
 
@@ -197,16 +203,23 @@ public class MyForegroundService extends Service {
                         + listEventOfTheDay.get(index).endTime.toLocalTime()
                         + "\n" + listEventOfTheDay.get(index).description)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
                 .setOngoing(true);
         Log.d("Show event of the day notification:",  listEventOfTheDay.get(index).summary );
 
         // Stop the current foreground service
         stopForeground(false);
-
-        notificationManager.notify(NOTIFICATION_ID_BASE + index + 1, builder.build());
+        startForeground(NOTIFICATION_ID_BASE + index + 1, builder.build());
     }
 
     private void showListProlongedEventNotification(int index) {
+        Intent notificationIntent = new Intent(this, Home_Activity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
 
         Resources res = context.getResources(); // Lấy tài nguyên
         String packageName = context.getPackageName(); // Lấy tên gói ứng dụng
@@ -218,18 +231,28 @@ public class MyForegroundService extends Service {
                 .setContentText( "Deadline: From " + listProlongedEvent.get(index).startDate + " to " + listProlongedEvent.get(index).endDate +
                         "\n" + listProlongedEvent.get(index).description)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
         // Stop the current foreground service
         stopForeground(false);
 
-        notificationManager.notify(NOTIFICATION_ID_BASE + 2 + index + listEventOfTheDay.size(), builder.build());
+        startForeground(NOTIFICATION_ID_BASE + 2 + index + listEventOfTheDay.size(), builder.build());
+
+        // notificationManager.notify(NOTIFICATION_ID_BASE + 2 + index + listEventOfTheDay.size(), builder.build());
     }
 
     private void showListTaskNotification(int index) {
+        Intent notificationIntent = new Intent(this, Home_Activity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
 
-        Resources res = context.getResources(); // Lấy tài nguyên
-        String packageName = context.getPackageName(); // Lấy tên gói ứng dụng
+        Resources res = context.getResources();
+        String packageName = context.getPackageName();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "MY_NOTIFICATION_CHANNEL")
                 .setSmallIcon(res.getIdentifier("ic_notification", "drawable", packageName))
@@ -238,12 +261,14 @@ public class MyForegroundService extends Service {
                         + listTask.get(index).endTime.toLocalDate() + "\n"
                         + listTask.get(index).description)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
         // Stop the current foreground service
         stopForeground(false);
+        startForeground(NOTIFICATION_ID_BASE + 3 + index + listEventOfTheDay.size() + listProlongedEvent.size(), builder.build());
 
-        notificationManager.notify(NOTIFICATION_ID_BASE + 3 + index + listEventOfTheDay.size() + listProlongedEvent.size(), builder.build());
+        // notificationManager.notify(NOTIFICATION_ID_BASE + 3 + index + listEventOfTheDay.size() + listProlongedEvent.size(), builder.build());
     }
 
     @Nullable
@@ -254,7 +279,6 @@ public class MyForegroundService extends Service {
 
     @Override
     public void onDestroy() {
-        // Hủy đăng ký BroadcastReceiver
         unregisterReceiver(stopServiceReceiver);
         super.onDestroy();
     }

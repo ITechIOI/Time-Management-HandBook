@@ -124,7 +124,7 @@ public class Calendar_Fragment extends Fragment {
         //Lay du lieu theo ngay duoc chon
         lObject.addAll(listEventOfTheDay);
         lObject.addAll(listProlongedEvent);
-        notes.setAdapter(new CalendarAdapter(getActivity().getApplicationContext(), lObject));
+        notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
         notes.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }

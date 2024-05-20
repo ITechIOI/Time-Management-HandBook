@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -141,6 +142,13 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
 
         viewDetailButton = item_dialog.findViewById(R.id.itemDetail_button);
         deleteButton = item_dialog.findViewById(R.id.item_Delete_button);
+        ImageButton closeButton = item_dialog.findViewById(R.id.close_button);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item_dialog.dismiss();
+            }
+        });
         viewDetailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,6 +209,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
 
     public void setFilterList(List<TaskDTO> filterTask) {
         this.list = filterTask;
+        notifyDataSetChanged();
     }
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder{

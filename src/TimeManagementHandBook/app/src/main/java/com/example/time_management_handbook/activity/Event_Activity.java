@@ -42,7 +42,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Event_Activity extends AppCompatActivity {
-
     public static int selectedIndex;
 
     @Override
@@ -231,101 +230,126 @@ public class Event_Activity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String eventName = tv_event_name.getText().toString();
-                String eventLocation = tv_event_location.getText().toString();
-                String eventDescription = tv_event_description.getText().toString();
-                String timeStart = tv_event_datestart.getText().toString();
-                String timeEnd = tv_event_dateend.getText().toString();
-                String notification = notificationE.getText().toString();
+                Dialog updateDialog;
+                Button updateButton, updateCancelButton;
+                updateDialog = new Dialog(context);
+                updateDialog.setContentView(R.layout.update_dialog);
+                updateDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+                updateDialog.getWindow().setBackgroundDrawable(context.getDrawable(R.drawable.custom_itemdialog));
+                updateDialog.setCancelable(false);
 
-                LocalDateTime timeStartParse = LocalDateTime.parse(timeStart, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-                LocalDateTime timeEndParse = LocalDateTime.parse(timeEnd, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                updateButton = updateDialog.findViewById(R.id.itemUpdate_button);
+                updateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateDialog.dismiss();
 
-                String timeStartLParse = timeStartParse.format(dateTimeFormatter);
-                String timeEndLParse  = timeEndParse.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+                        String eventName = tv_event_name.getText().toString();
+                        String eventLocation = tv_event_location.getText().toString();
+                        String eventDescription = tv_event_description.getText().toString();
+                        String timeStart = tv_event_datestart.getText().toString();
+                        String timeEnd = tv_event_dateend.getText().toString();
+                        String notification = notificationE.getText().toString();
 
-                LocalDateTime timeStartL = LocalDateTime.parse(timeStartLParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
-                LocalDateTime timeEndL = LocalDateTime.parse(timeEndLParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+                        LocalDateTime timeStartParse = LocalDateTime.parse(timeStart, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                        LocalDateTime timeEndParse = LocalDateTime.parse(timeEnd, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+
+                        String timeStartLParse = timeStartParse.format(dateTimeFormatter);
+                        String timeEndLParse  = timeEndParse.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+
+                        LocalDateTime timeStartL = LocalDateTime.parse(timeStartLParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+                        LocalDateTime timeEndL = LocalDateTime.parse(timeEndLParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
 
 
-                LocalDate timeStartD = timeStartL.toLocalDate();
-                LocalDate timeEndD = timeEndL.toLocalDate();
+                        LocalDate timeStartD = timeStartL.toLocalDate();
+                        LocalDate timeEndD = timeEndL.toLocalDate();
 
-                String[] parts = notification.split(" ");
-                Duration duration = null;
-                try {
-                    int ngay = Integer.parseInt(parts[0].replace("d", ""));
-                    int gio = Integer.parseInt(parts[1].replace("h", ""));
-                    int phut = Integer.parseInt(parts[2].replace("m", ""));
-                    int giay = Integer.parseInt(parts[3].replace("s", ""));
+                        String[] parts = notification.split(" ");
+                        Duration duration = null;
+                        try {
+                            int ngay = Integer.parseInt(parts[0].replace("d", ""));
+                            int gio = Integer.parseInt(parts[1].replace("h", ""));
+                            int phut = Integer.parseInt(parts[2].replace("m", ""));
+                            int giay = Integer.parseInt(parts[3].replace("s", ""));
 
-                    if (ngay!= 0) {
-                        duration = Duration.ofDays(ngay)
-                                .plusHours(gio)
-                                .plusMinutes(phut)
-                                .plusSeconds(giay);
-                    } else if ( gio != 0) {
-                        duration = Duration.ofHours(gio)
-                                .plusMinutes(phut)
-                                .plusSeconds(giay);
-                    } else if (phut != 0) {
-                        duration = Duration.ofMinutes(phut)
-                                .plusSeconds(giay);
+                            if (ngay!= 0) {
+                                duration = Duration.ofDays(ngay)
+                                        .plusHours(gio)
+                                        .plusMinutes(phut)
+                                        .plusSeconds(giay);
+                            } else if ( gio != 0) {
+                                duration = Duration.ofHours(gio)
+                                        .plusMinutes(phut)
+                                        .plusSeconds(giay);
+                            } else if (phut != 0) {
+                                duration = Duration.ofMinutes(phut)
+                                        .plusSeconds(giay);
+                            }
+                            else {
+                                duration = Duration.ofSeconds(giay);
+                            }
+
+                        } catch (NumberFormatException e) {
+                            Log.d("Error cast to duration - NumberFormatException: ", e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            Log.d("Error cast to duration - IllegalArgumentException: ", e.getMessage());
+                        }
+
+                        Log.d("Hello moi nguoi", duration.toString());
+
+                        // Kiểm tra và cập nhật các thuộc tính của đối tượng sự kiện
+                        if (intent.getSerializableExtra("myevent") instanceof Event_Of_The_Day_DTO) {
+                            Event_Of_The_Day_DTO event = (Event_Of_The_Day_DTO) intent.getSerializableExtra("myevent");
+                            event.setSummary(eventName);
+                            event.setLocation(eventLocation);
+                            event.setStartTime(timeStartL);
+                            event.setEndTime(timeEndL);
+                            event.setNotification_period(duration);
+                            event.setDescription(eventDescription);
+                            event.setColor(selectedIndex);
+
+                            // Gọi hàm cập nhật sự kiện trong cơ sở dữ liệu
+                            int rowsAffected = Event_Of_The_Day_DAO.getInstance().UpdateEventOfTheDay(event);
+                            if (rowsAffected > 0) {
+                                // Cập nhật thành công
+                                Toast.makeText(getApplicationContext(), "Update event successfully", Toast.LENGTH_SHORT).show();
+                                // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
+                            } else {
+                                // Cập nhật thất bại
+                                Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
+                            }
+                        } else if (intent.getSerializableExtra("myevent") instanceof Prolonged_Event_DTO) {
+                            Prolonged_Event_DTO event = (Prolonged_Event_DTO) intent.getSerializableExtra("myevent");
+                            event.setSummary(eventName);
+                            event.setLocation(eventLocation);
+                            event.setStartDate(timeStartD);
+                            event.setEndDate(timeEndD);
+                            event.setNotification_period(duration);
+                            event.setDescription(eventDescription);
+                            event.setColor(selectedIndex);
+
+                            int rowsAffected = Prolonged_Event_DAO.getInstance().UpdateProlongedEvent(event);
+                            if (rowsAffected > 0) {
+                                // Cập nhật thành công
+                                Toast.makeText(getApplicationContext(), "Update event successfully", Toast.LENGTH_SHORT).show();
+                                // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
+                            } else {
+                                // Cập nhật thất bại
+                                Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
-                    else {
-                        duration = Duration.ofSeconds(giay);
+                });
+                updateCancelButton = updateDialog.findViewById(R.id.itemCancel_button);
+                updateCancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateDialog.dismiss();
                     }
+                });
 
-                } catch (NumberFormatException e) {
-                    Log.d("Error cast to duration - NumberFormatException: ", e.getMessage());
-                } catch (IllegalArgumentException e) {
-                    Log.d("Error cast to duration - IllegalArgumentException: ", e.getMessage());
-                }
-
-                Log.d("Hello moi nguoi", duration.toString());
-
-                // Kiểm tra và cập nhật các thuộc tính của đối tượng sự kiện
-                if (intent.getSerializableExtra("myevent") instanceof Event_Of_The_Day_DTO) {
-                    Event_Of_The_Day_DTO event = (Event_Of_The_Day_DTO) intent.getSerializableExtra("myevent");
-                    event.setSummary(eventName);
-                    event.setLocation(eventLocation);
-                    event.setStartTime(timeStartL);
-                    event.setEndTime(timeEndL);
-                    event.setNotification_period(duration);
-                    event.setDescription(eventDescription);
-                    event.setColor(selectedIndex);
-
-                    // Gọi hàm cập nhật sự kiện trong cơ sở dữ liệu
-                    int rowsAffected = Event_Of_The_Day_DAO.getInstance().UpdateEventOfTheDay(event);
-                    if (rowsAffected > 0) {
-                        // Cập nhật thành công
-                        Toast.makeText(getApplicationContext(), "Update event successfully", Toast.LENGTH_SHORT).show();
-                        // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
-                    } else {
-                        // Cập nhật thất bại
-                        Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
-                    }
-                } else if (intent.getSerializableExtra("myevent") instanceof Prolonged_Event_DTO) {
-                    Prolonged_Event_DTO event = (Prolonged_Event_DTO) intent.getSerializableExtra("myevent");
-                    event.setSummary(eventName);
-                    event.setLocation(eventLocation);
-                    event.setStartDate(timeStartD);
-                    event.setEndDate(timeEndD);
-                    event.setNotification_period(duration);
-                    event.setDescription(eventDescription);
-                    event.setColor(selectedIndex);
-
-                    int rowsAffected = Prolonged_Event_DAO.getInstance().UpdateProlongedEvent(event);
-                    if (rowsAffected > 0) {
-                        // Cập nhật thành công
-                        Toast.makeText(getApplicationContext(), "Update event successfully", Toast.LENGTH_SHORT).show();
-                        // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
-                    } else {
-                        // Cập nhật thất bại
-                        Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                updateDialog.show();
             }
         });
     }

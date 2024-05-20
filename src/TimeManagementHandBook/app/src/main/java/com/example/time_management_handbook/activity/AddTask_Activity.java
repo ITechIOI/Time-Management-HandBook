@@ -55,6 +55,8 @@ public class AddTask_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
+
         ImageView imageView = findViewById(R.id.tDeadline_dialog);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

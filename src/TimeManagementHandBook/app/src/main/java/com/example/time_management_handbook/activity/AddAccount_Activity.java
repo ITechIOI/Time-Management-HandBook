@@ -11,6 +11,7 @@ import com.example.time_management_handbook.R;
 
 public class AddAccount_Activity extends AppCompatActivity {
     private int backStackEntryIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,37 +20,6 @@ public class AddAccount_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-//        Bundle extras = getIntent().getExtras();
-//        if (extras!= null) {
-//            backStackEntryIndex = extras.getInt("backStackEntryIndex");
-//        }
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
-//    @Override
-//    public void onBackPressed(){
-//        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
-//        {
-//            getSupportFragmentManager().popBackStack();
-//        }
-//        else {
-//            super.onBackPressed();
-//        }
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                onBackPressed();
-//                return true;
-//            default:
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }

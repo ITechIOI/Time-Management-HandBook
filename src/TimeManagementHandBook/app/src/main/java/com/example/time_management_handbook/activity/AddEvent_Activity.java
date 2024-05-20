@@ -60,6 +60,7 @@ public class AddEvent_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         //Cac thanh phan cua layout
         TextInputEditText eName = findViewById(R.id.eName_textInput);

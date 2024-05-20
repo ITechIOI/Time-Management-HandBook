@@ -84,6 +84,7 @@ public class Account_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         ShapeableImageView avatar = findViewById(R.id.imageView_avatar);
         if (avatar_uri != null){

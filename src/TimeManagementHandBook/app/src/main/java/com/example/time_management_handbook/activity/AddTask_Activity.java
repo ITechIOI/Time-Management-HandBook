@@ -29,7 +29,9 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
 import com.example.time_management_handbook.adapter.TaskDAO;
+import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.textfield.TextInputEditText;
@@ -133,57 +135,81 @@ public class AddTask_Activity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String deadline = tDeadline.getText().toString();
+                String name = tName.getText().toString();
+                String location = tLocation.getText().toString();
+                String durationString = notificationT.getText().toString();
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                LocalDateTime lDeadline = LocalDateTime.parse(deadline, formatter);
-
-                String[] parts = notificationT.getText().toString().split(" ");
-                int ngay = Integer.parseInt(parts[0].replace("d", ""));
-                int gio = Integer.parseInt(parts[1].replace("h", ""));
-                int phut = Integer.parseInt(parts[2].replace("m", ""));
-                int giay = Integer.parseInt(parts[3].replace("s", ""));
+                LocalDateTime lDeadline = deadline.isEmpty() ? null : LocalDateTime.parse(deadline, formatter);
 
                 Duration duration;
-                if (ngay != 0){
-                    duration = Duration.ofDays(ngay)
-                            .plusHours(gio)
-                            .plusMinutes(phut)
-                            .plusSeconds(giay);
-                }
-                else {
-                    duration = Duration.ofHours(gio)
-                            .plusMinutes(phut)
-                            .plusSeconds(giay);
-                }
 
-
-                TaskDTO newTask = new TaskDTO(
-                        null,
-                        null,
-                        tName.getText().toString(),
-                        tLocation.getText().toString(),
-                        LocalDateTime.now(),
-                        lDeadline,
-                        duration,
-                        tDescription.getText().toString(),
-                        LocalDateTime.MAX,
-                        selectedIndex
-                );
-
-                int result = TaskDAO.getInstance().InsertNewTask(email, newTask);
-                if (result != -1)
+                if (durationString.isEmpty())
                 {
-                    Toast.makeText(getApplicationContext(), "Submit thành công", Toast.LENGTH_SHORT).show();
-                    Log.d("Insert task", tName.getText().toString());
-                    tName.setText("");
-                    tDeadline.setText("");
-                    tLocation.setText("");
-                    tDescription.setText("");
-                    notificationT.setText("");
-                    customRadioGroup.clearFocus();
+                    duration= null;
                 }
                 else {
-                    Log.d("Insert task","error");
+                    String[] parts = notificationT.getText().toString().split(" ");
+                    int ngay = Integer.parseInt(parts[0].replace("d", ""));
+                    int gio = Integer.parseInt(parts[1].replace("h", ""));
+                    int phut = Integer.parseInt(parts[2].replace("m", ""));
+                    int giay = Integer.parseInt(parts[3].replace("s", ""));
+
+
+                    if (ngay != 0){
+                        duration = Duration.ofDays(ngay)
+                                .plusHours(gio)
+                                .plusMinutes(phut)
+                                .plusSeconds(giay);
+                    }
+                    else {
+                        duration = Duration.ofHours(gio)
+                                .plusMinutes(phut)
+                                .plusSeconds(giay);
+                    }
+                }
+
+                int result;
+
+                if (name.isEmpty() || deadline.isEmpty() || durationString.isEmpty()){
+                    tName.setBackgroundResource(R.drawable.custom_textinput_error);
+                    tDeadline.setBackgroundResource(R.drawable.custom_textinput_error);
+                    notificationT.setBackgroundResource(R.drawable.custom_textinput_error);
+                    Toast.makeText(AddTask_Activity.this, "Please complete all required fields.", Toast.LENGTH_SHORT).show();
+                } else if (lDeadline.isAfter(LocalDateTime.now())){
+                    TaskDTO newTask = new TaskDTO(
+                            null,
+                            null,
+                            tName.getText().toString(),
+                            tLocation.getText().toString(),
+                            LocalDateTime.now(),
+                            lDeadline,
+                            duration,
+                            tDescription.getText().toString(),
+                            LocalDateTime.MAX,
+                            selectedIndex
+                    );
+                    tName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    tDeadline.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    notificationT.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    result = TaskDAO.getInstance().InsertNewTask(email, newTask);
+                    if (result != -1)
+                    {
+                        Toast.makeText(getApplicationContext(), "Submit thành công", Toast.LENGTH_SHORT).show();
+                        Log.d("Insert task", tName.getText().toString());
+                        tName.setText("");
+                        tDeadline.setText("");
+                        tLocation.setText("");
+                        tDescription.setText("");
+                        notificationT.setText("");
+                        customRadioGroup.clearFocus();
+                    }
+                    else {
+                        Log.d("Insert task","error");
+                    }
+                } else {
+                    tDeadline.setBackgroundResource(R.drawable.custom_textinput_error);
+                    Toast.makeText(AddTask_Activity.this, "Deadline must be after now", Toast.LENGTH_SHORT).show();
                 }
             }
         });

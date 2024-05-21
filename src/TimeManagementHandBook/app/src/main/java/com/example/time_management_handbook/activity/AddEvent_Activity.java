@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -147,52 +148,78 @@ public class AddEvent_Activity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = eName.getText().toString();
+                String location = eLocation.getText().toString();
                 String timeStart = eStartTime.getText().toString();
                 String timeEnd = eEndTime.getText().toString();
 
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-                LocalDateTime eTimeStartL = LocalDateTime.parse(timeStart, dateTimeFormatter);
-                LocalDateTime eTimeEndL = LocalDateTime.parse(timeEnd, dateTimeFormatter);
+                LocalDateTime eTimeStartL,eTimeEndL;
+                LocalDate dateStartLD, dateEndLD;
 
-                LocalDate dateStartLD = eTimeStartL.toLocalDate();
-                LocalDate dateEndLD = eTimeEndL.toLocalDate();
-
-                String[] parts = notificationE.getText().toString().split(" ");
-                int ngay = Integer.parseInt(parts[0].replace("d", ""));
-                int gio = Integer.parseInt(parts[1].replace("h", ""));
-                int phut = Integer.parseInt(parts[2].replace("m", ""));
-                int giay = Integer.parseInt(parts[3].replace("s", ""));
-
-                Duration duration;
-                if (ngay != 0){
-                    duration = Duration.ofDays(ngay)
-                            .plusHours(gio)
-                            .plusMinutes(phut)
-                            .plusSeconds(giay);
+                try {
+                    eTimeStartL = LocalDateTime.parse(timeStart, dateTimeFormatter);
+                    eTimeEndL  = LocalDateTime.parse(timeEnd, dateTimeFormatter);
+                    dateStartLD = eTimeStartL.toLocalDate();
+                    dateEndLD = eTimeEndL.toLocalDate();
+                } catch (Exception e){
+                    eTimeStartL = null;
+                    eTimeEndL = null;
+                    dateStartLD = null;
+                    dateEndLD = null;
                 }
 
+                Duration duration;
+                String durationString = notificationE.getText().toString();
+                if (durationString.isEmpty())
+                {
+                    duration = null;
+                }
                 else {
-                    duration = Duration.ofHours(gio)
-                            .plusMinutes(phut)
-                            .plusSeconds(giay);
+                    String[] parts = durationString.split(" ");
+                    int ngay = Integer.parseInt(parts[0].replace("d", ""));
+                    int gio = Integer.parseInt(parts[1].replace("h", ""));
+                    int phut = Integer.parseInt(parts[2].replace("m", ""));
+                    int giay = Integer.parseInt(parts[3].replace("s", ""));
+
+                    if (ngay != 0){
+                        duration = Duration.ofDays(ngay)
+                                .plusHours(gio)
+                                .plusMinutes(phut)
+                                .plusSeconds(giay);
+                    }
+                    // Tạo đối tượng Duration
+                    else {
+                        duration = Duration.ofHours(gio)
+                                .plusMinutes(phut)
+                                .plusSeconds(giay);
+                    }
                 }
 
                 int result = -1;
-                if (dateStartLD.isEqual(dateEndLD)){
+                if (name.isEmpty() || timeStart.isEmpty() || timeEnd.isEmpty() || durationString.isEmpty()){
+                    eName.setBackgroundResource(R.drawable.custom_textinput_error);
+                    eStartTime.setBackgroundResource(R.drawable.custom_textinput_error);
+                    eEndTime.setBackgroundResource(R.drawable.custom_textinput_error);
+                    notificationE.setBackgroundResource(R.drawable.custom_textinput_error);
+                    Toast.makeText(AddEvent_Activity.this, "Please complete all required fields.", Toast.LENGTH_SHORT).show();
+                } else if (dateStartLD.isEqual(dateEndLD)){
                     Event_Of_The_Day_DTO newEvent = new Event_Of_The_Day_DTO(
-                            null,
-                            null,
-                            eName.getText().toString(),
-                            eLocation.getText().toString(),
+                            null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
+                            null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
+                            name,
+                            location,
                             eTimeStartL,
                             eTimeEndL,
-                            duration,
-                            eDescription.getText().toString(),
-                            selectedIndex
+                            duration, // Chu kỳ thông báo
+                            eDescription.getText().toString(), // Mô tả
+                            selectedIndex // Màu sắc (vd: màu mặc định)
                     );
-                    eStartTime.setTextColor(Color.BLACK);
-                    eEndTime.setTextColor(Color.BLACK);
+                    eName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    eStartTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    eEndTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    notificationE.setBackgroundResource(R.drawable.custom_textinputlayout);
                     result = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(email, newEvent);
                 }
                 else if(dateStartLD.isBefore(dateEndLD)) {
@@ -203,22 +230,24 @@ public class AddEvent_Activity extends AppCompatActivity {
                             eLocation.getText().toString(),
                             dateStartLD,
                             dateEndLD,
-                            duration,
-                            eDescription.getText().toString(),
-                            selectedIndex
+                            duration, // Chu kỳ thông báo
+                            eDescription.getText().toString(), // Mô tả
+                            selectedIndex // Màu sắc (vd: màu mặc định)
                     );
-                    eStartTime.setTextColor(Color.BLACK);
-                    eEndTime.setTextColor(Color.BLACK);
+                    eName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    eStartTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    eEndTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                    notificationE.setBackgroundResource(R.drawable.custom_textinputlayout);
                     result = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(email, newEvent);
                 }
                 else {
-                    eStartTime.setTextColor(Color.RED);
-                    eEndTime.setTextColor(Color.RED);
+                    eStartTime.setBackgroundResource(R.drawable.custom_textinput_error);
+                    eEndTime.setBackgroundResource(R.drawable.custom_textinput_error);
                     Toast.makeText(AddEvent_Activity.this, "Start date is after end date", Toast.LENGTH_SHORT).show();
                 }
                 if (result != -1)
                 {
-                    Toast.makeText(getApplicationContext(), "Add new event successfulle", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Submit thành công", Toast.LENGTH_SHORT).show();
                     Log.d("Insert event", eName.getText().toString());
                     eName.setText("");
                     eStartTime.setText("");
@@ -227,6 +256,10 @@ public class AddEvent_Activity extends AppCompatActivity {
                     eDescription.setText("");
                     notificationE.setText("");
                     customRadioGroup.clearFocus();
+                    eName.setHint("");
+                    eStartTime.setHint("");
+                    eEndTime.setHint("");
+                    notificationE.setHint("");
                 }
                 else {
                     Log.d("Insert event","error");

@@ -436,14 +436,14 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         LocalTime endTime = endRoundedDateTime.toLocalTime();
         String end_String = endDate.toString() + " " + endTime.toString();
 
-        LocalDateTime finishRoundedDateTime = finish.with(LocalTime.from(finish.toLocalTime().withSecond(finish.getSecond()).withNano(0)));
+     /*   LocalDateTime finishRoundedDateTime = finish.with(LocalTime.from(finish.toLocalTime().withSecond(finish.getSecond()).withNano(0)));
         LocalDate finishDate = finishRoundedDateTime.toLocalDate();
         LocalTime finishTime = finishRoundedDateTime.toLocalTime();
-        String finish_String = finishDate.toString() + " " + finishTime.toString();
+        String finish_String = finishDate.toString() + " " + finishTime.toString();*/
 
         String query = "EXEC USP_INSERT_NEW_TASK '" + email + "','" +
                 name + "','" + location + "','" + start_String + "','" + end_String + "','" +
-                duration + "','" + description + "','" + finish_String + "'," + color;
+                duration + "','" + description + "'," + color;
         Log.d("String query: ", query);
 
         try {
@@ -486,19 +486,24 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         LocalDateTime end = task.getEndTime();
         Duration notification = task.getNotification_period();
         String description = task.getDescription();
-        LocalDateTime finish = task.getFinishedTime();
         int color = task.getColor();
 
         LocalDateTime creatingRoundedDateTime = creating.with(LocalTime.from(creating.toLocalTime().withSecond(creating.getSecond()).withNano(0)));
         String startTime = creatingRoundedDateTime.toString().replace("T", " ");
         LocalDateTime endRoundedDateTime = end.with(LocalTime.from(end.toLocalTime().withSecond(end.getSecond()).withNano(0)));
         String endTime = endRoundedDateTime.toString().replace("T", " ");
-        LocalDateTime finishRoundedDateTime = finish.with(LocalTime.from(finish.toLocalTime().withSecond(finish.getSecond()).withNano(0)));
-        String finishTime = finishRoundedDateTime.toString().replace("T", " ");
+
+/*        String finishString = task.getFinishedTime().toString();
+        String finishTime = null;
+        if (finishString != LocalDateTime.MAX.toString()) {
+            LocalDateTime finish = task.getFinishedTime();
+            LocalDateTime finishRoundedDateTime = finish.with(LocalTime.from(finish.toLocalTime().withSecond(finish.getSecond()).withNano(0)));
+            finishTime = finishRoundedDateTime.toString().replace("T", " ");
+        }*/
 
         String query = "EXEC USP_UPDATE_TASK '" + idTask + "','" + name + "','" +
                 location + "','" + startTime + "','" + endTime + "','" + notification + "','" +
-                description + "','" + finishTime + "'," + color;
+                description + "'," + color;
 
         try {
             rowEffect = DataProvider.getInstance().executeNonQuery(query);

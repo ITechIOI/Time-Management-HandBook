@@ -173,7 +173,7 @@ public class AddTask_Activity extends AppCompatActivity {
                         lDeadline,
                         duration, // Chu kỳ thông báo
                         tDescription.getText().toString(), // Mô tả
-                        null,
+                        LocalDateTime.MAX,
                         selectedIndex // Màu sắc (vd: màu mặc định)
                 );
 

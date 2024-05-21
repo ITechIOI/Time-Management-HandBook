@@ -224,12 +224,14 @@ public class Task_Activity extends AppCompatActivity {
 
                         // Kiểm tra và cập nhật các thuộc tính của đối tượng sự kiện
                         if (intent.getSerializableExtra("mytask") instanceof TaskDTO) {
+
                             TaskDTO task = (TaskDTO) intent.getSerializableExtra("mytask");
                             task.setName(taskName);
                             task.setLocation(taskLocation);
                             task.setEndTime(deadline);
                             task.setNotification_period(duration);
                             task.setDescription(taskDescription);
+                            task.setFinishedTime(LocalDateTime.MAX);
                             task.setColor(selectedIndex);
 
                             // Gọi hàm cập nhật sự kiện trong cơ sở dữ liệu
@@ -243,7 +245,6 @@ public class Task_Activity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Failed to update task", Toast.LENGTH_SHORT).show();
                             }
                         }
-
                     }
                 });
                 updateCancelButton = updateDialog.findViewById(R.id.itemCancel_button);

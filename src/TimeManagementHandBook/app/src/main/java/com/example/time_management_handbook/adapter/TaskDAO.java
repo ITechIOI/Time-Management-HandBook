@@ -32,8 +32,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,6 +62,8 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         TaskDTO task = list.get(position);
 
+        Log.d("List task in task fragment: ", task.toString());
+
         LocalDateTime today = LocalDateTime.now();
         Duration duration = Duration.between(today, task.getEndTime());
         String remainingTime  = "";
@@ -76,10 +80,28 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         int month = task.getEndTime().getMonthValue();
         int dayOfMonth = task.getEndTime().getDayOfMonth();
 
-        String deadlineString = String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" +
-                String.valueOf(year) + " " + String.valueOf(task.getEndTime().getHour()) + ":" +
-                String.valueOf(task.getEndTime().getMinute() + ":" + String.valueOf(task.getEndTime().getSecond()));
+         String deadlineString = "";
+        if ((month > 0 && month < 10) && (dayOfMonth > 0 && dayOfMonth < 10)) {
+            deadlineString = "0" + String.valueOf(dayOfMonth) + "/0" + String.valueOf(month) + "/" +
+                    String.valueOf(year) + " " + task.getEndTime().toLocalTime().toString();
+        } else if (month > 0 && month < 10) {
+            deadlineString = String.valueOf(dayOfMonth) + "/0" + String.valueOf(month) + "/" +
+                    String.valueOf(year) + " " + task.getEndTime().toLocalTime().toString();
+        } else if (dayOfMonth > 0 && dayOfMonth < 10) {
+            deadlineString = "0" + String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" +
+                    String.valueOf(year) + " " + task.getEndTime().toLocalTime().toString();
+        } else {
+            deadlineString = String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" +
+                    String.valueOf(year) + " " + task.getEndTime().toLocalTime().toString();
+        }
 
+        /*Log.d("EndTime String: ", task.getEndTime().toString());
+
+        DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(task.getEndTime().toString().replace("T", " "), dmyFormat);
+        String deadlineString = dateTime.format(ymdFormat);
+*/
         holder.nameTask.setText(task.getName());
         holder.deadlineTask.setText(deadlineString);
         holder.timeleftTask.setText(remainingTime);
@@ -135,18 +157,82 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         holder.taskCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                String taskSummary = holder.nameTask.getText().toString();
+                String taskDeadline = holder.deadlineTask.getText().toString();
+
+                DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime dmyTaskDeadline = LocalDateTime.parse(taskDeadline, dmyFormat);
+                String ymdTaskDeadline = dmyTaskDeadline.format(ymdFormat);
+
+                Log.d("Format datetime in deadline: ", ymdTaskDeadline.toString());
+
+                int rowEffect = -1;
+
                 if (isChecked) {
-                    String taskSummary = holder.nameTask.getText().toString();
-                    String taskDeadline = holder.deadlineTask.getText().toString();
-                    int rowEffect = CheckTaskFinish(Home_Activity.acc.getEmail().toString(), taskSummary, taskDeadline);
+
+                    LocalDateTime timeNow = LocalDateTime.now();
+                    LocalDateTime startRoundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+                    String timeNowString = startRoundedDateTime.toString().replace("T", " ");
+
+                    try {
+                        rowEffect = CheckTaskFinish(Home_Activity.acc.getEmail().toString(), taskSummary,
+                                ymdTaskDeadline.replace("T", " "), timeNowString);
+                    } catch (Exception e) {
+                        Log.d("Mark the task as completed error - UI:", e.getMessage());
+                    }
+                    if (rowEffect > 0) {
+                        Toast.makeText(tContext, "Marked the task as completed successfully", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(tContext, "Marked the task as completed failed", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    try {
+                        rowEffect = UnCheckTaskFinish(Home_Activity.acc.getEmail().toString(), taskSummary,
+                                ymdTaskDeadline.toString().replace("T", " "));
+                    } catch (Exception e) {
+                        Log.d("Unmarked the task as completed error - UI:", e.getMessage());
+                    }
+                    if (rowEffect > 0) {
+                        Toast.makeText(tContext, "Unmarked the task as completed successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(tContext, "Unmarked the task as completed failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
     }
 
-    private int CheckTaskFinish(String email, String summary, String deadline) {
+    private int CheckTaskFinish(String email, String summary, String deadline, String finish) {
         int rowEffect = -1;
 
+        String query = "EXEC USP_UPDATE_FINISH_TIME_FOR_TASK '" + email + "', N'"
+                + summary + "', '" + deadline + "','" + finish + "'";
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            Log.d("Check task finish: ", query + "\n" + String.valueOf(rowEffect));
+        } catch (Exception e) {
+            Log.d("Mark the task as completed error - function: ", e.getMessage());
+        }
+        Log.d("Query is used to update finish time for task: ", query + " \n" + String.valueOf(rowEffect));
+
+        return rowEffect;
+    }
+    private int UnCheckTaskFinish(String email, String summary, String deadline) {
+        int rowEffect = -1;
+
+        String query = "EXEC USP_UPDATE_FINISH_TIME_FOR_TASK '" + email + "', N'"
+                + summary + "', '" + deadline + "'," + null + "";
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            Log.d("Check task finish: ", query + "\n" + String.valueOf(rowEffect));
+        } catch (Exception e) {
+            Log.d("Mark the task as completed error - function: ", e.getMessage());
+        }
+        Log.d("Query is used to update finish time for task: ", query + " \n" + String.valueOf(rowEffect));
 
         return rowEffect;
     }
@@ -260,9 +346,12 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         List<TaskDTO> listTasks = new ArrayList<>();
         LocalDate date = timeNow.toLocalDate();
         LocalTime time = timeNow.toLocalTime();
+
         String dateTimeNow = date.toString() + " " + time.toString();
 
         String query = "EXEC USP_GET_TASK_BY_EMAIL '" + email + "','" + dateTimeNow + "'";
+
+        Log.d("list task get", query.toString());
 
         try {
             ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
@@ -282,6 +371,12 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                     ZonedDateTime zonedDateTimeEnd = endTime.toInstant().atZone(ZoneId.systemDefault());
                     LocalDateTime end = zonedDateTimeEnd.toLocalDateTime();
 
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    String endFormatTimeString = end.format(formatter);
+                    LocalDateTime endFormatTime = LocalDateTime.parse(endFormatTimeString, formatter);
+
+                    Log.d("Local time for task:", endFormatTime.toString());
+
                     Duration notification_period = Duration.parse(resultSet.getString(7));
                     String description = resultSet.getString(8);
                     LocalDateTime finish = null;
@@ -295,7 +390,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
 
                     int color = resultSet.getInt(10);
 
-                    TaskDTO task = new TaskDTO(idTask, idUser, name, location, creating, end,
+                    TaskDTO task = new TaskDTO(idTask, idUser, name, location, creating, endFormatTime,
                             notification_period, description, finish, color);
                     listTasks.add(task);
 
@@ -314,7 +409,6 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
     public List<TaskDTO> getListTaskByName(String email, String nameTask, LocalDateTime timeNow) {
         List<TaskDTO> listTask = new ArrayList<>();
 
-        List<TaskDTO> listTasks = new ArrayList<>();
         LocalDate date = timeNow.toLocalDate();
         LocalTime time = timeNow.toLocalTime();
         String dateTimeNow = date.toString() + " " + time.toString();

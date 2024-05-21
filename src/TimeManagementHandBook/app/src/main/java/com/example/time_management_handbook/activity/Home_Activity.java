@@ -274,7 +274,7 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
 
-       // executorServiceHandleProlongedEvent.shutdown();
+        // executorServiceHandleProlongedEvent.shutdown();
 
         // Get Task
 
@@ -285,7 +285,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List task: ", listTask.toString());
             }
         });
-       // executorServiceHandleTask.shutdown();
+        // executorServiceHandleTask.shutdown();
 
         listAll = new ArrayList<>();
         listAll.addAll(listEventOfTheDay);
@@ -300,7 +300,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List event for notification: ", listEventOfTheDayForNotification.toString());
             }
         });
-       // executorServiceEventOfTheDayForNotificationCreate.shutdown();
+        // executorServiceEventOfTheDayForNotificationCreate.shutdown();
 
         executorServiceTaskForNotificationCreate.execute(new Runnable() {
             @Override
@@ -309,7 +309,7 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List task for notification: ", listTaskForNotification.toString());
             }
         });
-       // executorServiceTaskForNotificationCreate.shutdown();
+        // executorServiceTaskForNotificationCreate.shutdown();
         executorServiceProlongedEventForNotificationCreate.execute(new Runnable() {
             @Override
             public void run() {
@@ -600,13 +600,13 @@ public class Home_Activity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (executorService != null) {
-           // executorService.shutdown();
+            // executorService.shutdown();
             try {
                 if (!executorService.awaitTermination(1, TimeUnit.SECONDS)) {
-                   // executorService.shutdownNow();
+                    // executorService.shutdownNow();
                 }
             } catch (InterruptedException e) {
-              //  executorService.shutdownNow();
+                //  executorService.shutdownNow();
             }
         }
     }

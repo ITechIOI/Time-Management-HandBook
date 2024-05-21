@@ -180,9 +180,13 @@ public class Account_Activity extends AppCompatActivity {
                         } else {
                             Log.d("ErrorX", "signInResult: account is null");
                         }
+                        Intent mit= new Intent(Account_Activity.this, Home_Activity.class);
+                        startActivity(mit);
 
                     } else if(flag == 1) {
                         Home_Activity.accTemp = null;
+                        Intent mit= new Intent(Account_Activity.this, Home_Activity.class);
+                        startActivity(mit);
                     }
 
                 } else {

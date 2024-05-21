@@ -250,13 +250,3 @@ public class Event_Of_The_Day_DAO {
         return rowEffect;
     }
 }
-
-   /* String idEvent;
-    String idUser;
-    String summary;
-    String location;
-    LocalDateTime startTime;
-    LocalDateTime endTime;
-    Duration notification_period;
-    String description;
-    int color;*/

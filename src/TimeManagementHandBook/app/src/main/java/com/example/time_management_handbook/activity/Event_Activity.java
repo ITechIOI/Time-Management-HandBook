@@ -132,14 +132,6 @@ public class Event_Activity extends AppCompatActivity {
             tv_event_description.setText(event.getDescription());
             Duration duration = event.getNotification_period();
             String notification  = "";
-            /*if (duration.toDays() == 0) {
-                notification = String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
-                        "m " + String.valueOf(duration.getSeconds() % 60) + "s";
-            } else {
-                notification = String.valueOf(duration.toDays()) + "d " +
-                        String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
-                        "m " + String.valueOf(duration.getSeconds() % 60) + "s";
-            }*/
             notification = String.valueOf(duration.toDays()) + "d " +
                     String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
                     "m " + String.valueOf(duration.getSeconds() % 60) + "s";
@@ -213,14 +205,10 @@ public class Event_Activity extends AppCompatActivity {
         customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // Tìm RadioButton được chọn trong RadioGroup
                 RadioButton selectedRadioButton = findViewById(checkedId);
 
                 if (selectedRadioButton != null) {
-                    // Lấy chỉ mục của RadioButton được chọn trong RadioGroup
                     selectedIndex = customRadioGroup.indexOfChild(selectedRadioButton) + 1;
-
-                    // Log chỉ mục của RadioButton được chọn
                     Log.d("Selected Index", String.valueOf(selectedIndex));
                 }
             }
@@ -309,14 +297,10 @@ public class Event_Activity extends AppCompatActivity {
                             event.setDescription(eventDescription);
                             event.setColor(selectedIndex);
 
-                            // Gọi hàm cập nhật sự kiện trong cơ sở dữ liệu
                             int rowsAffected = Event_Of_The_Day_DAO.getInstance().UpdateEventOfTheDay(event);
                             if (rowsAffected > 0) {
-                                // Cập nhật thành công
                                 Toast.makeText(getApplicationContext(), "Update event successfully", Toast.LENGTH_SHORT).show();
-                                // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
                             } else {
-                                // Cập nhật thất bại
                                 Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
                             }
                         } else if (intent.getSerializableExtra("myevent") instanceof Prolonged_Event_DTO) {
@@ -331,11 +315,8 @@ public class Event_Activity extends AppCompatActivity {
 
                             int rowsAffected = Prolonged_Event_DAO.getInstance().UpdateProlongedEvent(event);
                             if (rowsAffected > 0) {
-                                // Cập nhật thành công
                                 Toast.makeText(getApplicationContext(), "Update event successfully", Toast.LENGTH_SHORT).show();
-                                // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
                             } else {
-                                // Cập nhật thất bại
                                 Toast.makeText(getApplicationContext(), "Failed to update event", Toast.LENGTH_SHORT).show();
                             }
                         }

@@ -31,7 +31,6 @@ public class DataProvider {
 
         Connection connection = null;
         try {
-            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             connection = DriverManager.getConnection(DATABASE_URL);
             Log.e("Connect to database: ","success");
@@ -68,8 +67,6 @@ public class DataProvider {
                 Statement statement = connection.createStatement();
                 resultSet = statement.executeQuery(query);
                 Log.d("ResultSet: ", resultSet.toString());
-                // statement.close();
-                //resultSet.close();
             } catch (SQLException e) {
                 Log.d("Execute query: ", e.getMessage());
             }

@@ -62,7 +62,6 @@ public class AddEvent_Activity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        //Cac thanh phan cua layout
         TextInputEditText eName = findViewById(R.id.eName_textInput);
         TextInputEditText eStartTime = findViewById(R.id.eDateStart_textInput);
         TextInputEditText eEndTime = findViewById(R.id.eDateEnd_textInput);
@@ -136,10 +135,7 @@ public class AddEvent_Activity extends AppCompatActivity {
                 RadioButton selectedRadioButton = findViewById(checkedId);
 
                 if (selectedRadioButton != null) {
-                    // Lấy chỉ mục của RadioButton được chọn trong RadioGroup
                     selectedIndex = customRadioGroup.indexOfChild(selectedRadioButton) + 1;
-
-                    // Log chỉ mục của RadioButton được chọn
                     Log.d("Selected Index", String.valueOf(selectedIndex));
                 }
             }
@@ -175,7 +171,7 @@ public class AddEvent_Activity extends AppCompatActivity {
                             .plusMinutes(phut)
                             .plusSeconds(giay);
                 }
-                // Tạo đối tượng Duration
+
                 else {
                     duration = Duration.ofHours(gio)
                             .plusMinutes(phut)
@@ -185,15 +181,15 @@ public class AddEvent_Activity extends AppCompatActivity {
                 int result = -1;
                 if (dateStartLD.isEqual(dateEndLD)){
                     Event_Of_The_Day_DTO newEvent = new Event_Of_The_Day_DTO(
-                            null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
-                            null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
+                            null,
+                            null,
                             eName.getText().toString(),
                             eLocation.getText().toString(),
                             eTimeStartL,
                             eTimeEndL,
-                            duration, // Chu kỳ thông báo
-                            eDescription.getText().toString(), // Mô tả
-                            selectedIndex // Màu sắc (vd: màu mặc định)
+                            duration,
+                            eDescription.getText().toString(),
+                            selectedIndex
                     );
                     eStartTime.setTextColor(Color.BLACK);
                     eEndTime.setTextColor(Color.BLACK);
@@ -207,9 +203,9 @@ public class AddEvent_Activity extends AppCompatActivity {
                             eLocation.getText().toString(),
                             dateStartLD,
                             dateEndLD,
-                            duration, // Chu kỳ thông báo
-                            eDescription.getText().toString(), // Mô tả
-                            selectedIndex // Màu sắc (vd: màu mặc định)
+                            duration,
+                            eDescription.getText().toString(),
+                            selectedIndex
                     );
                     eStartTime.setTextColor(Color.BLACK);
                     eEndTime.setTextColor(Color.BLACK);

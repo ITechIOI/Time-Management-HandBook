@@ -49,8 +49,6 @@ public class Login_Activity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent = GoogleAccount.getInstance(Login_Activity.this).SignInByGoogleAccount(Login_Activity.this);
-                startActivityForResult(intent, 1000);*/
                 signOutAndChooseAccount();
             }
         });
@@ -120,7 +118,6 @@ public class Login_Activity extends AppCompatActivity {
         startActivity(intent);
     }
     private void signOutAndChooseAccount() {
-        // Xóa thông tin tài khoản hiện tại
         GoogleSignIn.getClient(this, getGoogleSignInOptions()).signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override

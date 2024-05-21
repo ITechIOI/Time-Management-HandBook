@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void welcomeScreen(){
-        int time = 1000; //Thời gian screen welcome xuất hiện
+        int time = 1000;
         new Handler().postDelayed(()->{
             Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
             startActivity(intent);

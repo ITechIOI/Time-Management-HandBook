@@ -11,9 +11,9 @@ public class CalendarEventDTO {
     private DateTime start;
     private DateTime end;
     private String recurrenceInfo;
-    private String location; // Địa điểm
+    private String location;
     private Duration duration;
-    private String creatorEmail; // Email của người tạo sự kiện
+    private String creatorEmail;
 
     public CalendarEventDTO(String id, String summary, String description, DateTime start, DateTime end, String recurrenceInfo, String location, Duration duration, String creatorEmail) {
         this.id = id;

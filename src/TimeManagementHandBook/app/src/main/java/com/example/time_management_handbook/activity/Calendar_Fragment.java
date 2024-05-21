@@ -107,8 +107,6 @@ public class Calendar_Fragment extends Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                // Xử lý sự kiện click vào một ngày
-                Toast.makeText(getContext(), "Ngày được chọn: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
 
                 LocalDate todayDate = LocalDate.of(year, month + 1, dayOfMonth);
                 LocalDateTime localTime = todayDate.atStartOfDay();
@@ -118,7 +116,6 @@ public class Calendar_Fragment extends Fragment {
                 listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), todayDate);
                 lObject = new ArrayList<>();
 
-                //Lay du lieu theo ngay duoc chon
                 lObject.addAll(listEventOfTheDay);
                 lObject.addAll(listProlongedEvent);
                 notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
@@ -126,10 +123,8 @@ public class Calendar_Fragment extends Fragment {
             }
         });
 
-
         lObject = new ArrayList<>();
 
-        //Lay du lieu theo ngay duoc chon
         lObject.addAll(listEventOfTheDay);
         lObject.addAll(listProlongedEvent);
         notes.setAdapter(new CalendarAdapter(getActivity(), lObject));

@@ -173,14 +173,10 @@ public class Task_Activity extends AppCompatActivity {
         customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // Tìm RadioButton được chọn trong RadioGroup
                 RadioButton selectedRadioButton = findViewById(checkedId);
 
                 if (selectedRadioButton != null) {
-                    // Lấy chỉ mục của RadioButton được chọn trong RadioGroup
                     selectedIndex = customRadioGroup.indexOfChild(selectedRadioButton) + 1;
-
-                    // Log chỉ mục của RadioButton được chọn
                     Log.d("Selected Index", String.valueOf(selectedIndex));
                 }
             }
@@ -222,7 +218,6 @@ public class Task_Activity extends AppCompatActivity {
                                     .plusMinutes(phut)
                                     .plusSeconds(giay);
                         }
-                        // Tạo đối tượng Duration
                         else {
                             duration = Duration.ofHours(gio)
                                     .plusMinutes(phut)
@@ -234,7 +229,6 @@ public class Task_Activity extends AppCompatActivity {
                         String timeEndParse = timeEndL.format(dateTimeFormatterYyyyMmDd);
                         LocalDateTime deadline = LocalDateTime.parse(timeEndParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
 
-                        // Kiểm tra và cập nhật các thuộc tính của đối tượng sự kiện
                         if (intent.getSerializableExtra("mytask") instanceof TaskDTO) {
 
                             TaskDTO task = (TaskDTO) intent.getSerializableExtra("mytask");
@@ -246,14 +240,10 @@ public class Task_Activity extends AppCompatActivity {
                             task.setFinishedTime(LocalDateTime.MAX);
                             task.setColor(selectedIndex);
 
-                            // Gọi hàm cập nhật sự kiện trong cơ sở dữ liệu
                             int rowsAffected = TaskDAO.getInstance().UpdateTask(task);
                             if (rowsAffected > 0) {
-                                // Cập nhật thành công
                                 Toast.makeText(getApplicationContext(), "Update task successfully", Toast.LENGTH_SHORT).show();
-                                // Kết thúc Activity hoặc thực hiện các hành động khác sau khi cập nhật thành công
                             } else {
-                                // Cập nhật thất bại
                                 Toast.makeText(getApplicationContext(), "Failed to update task", Toast.LENGTH_SHORT).show();
                             }
                         }

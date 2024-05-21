@@ -224,13 +224,9 @@ public class Account_Activity extends AppCompatActivity {
                             .build();
 
                     LocalDateTime nowLocalDateTime = LocalDateTime.now();
-
-                    // Tính toán thời điểm bắt đầu (timeMin) là một năm trước thời điểm hiện tại
                     LocalDateTime oneYearAgo = nowLocalDateTime.minusYears(1);
-                    // Tính toán thời điểm kết thúc (timeMax) là một năm sau thời điểm hiện tại
                     LocalDateTime oneYearLater = nowLocalDateTime.plusYears(1);
 
-                    // Chuyển đổi LocalDateTime trở lại DateTime
                     DateTime timeMin = new DateTime(oneYearAgo.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
                     DateTime timeMax = new DateTime(oneYearLater.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 

@@ -145,7 +145,6 @@ public class Task_Fragment extends Fragment {
             @Override
             public void run() {
 
-
                 List<TaskDTO> listTaskByName = TaskDAO.getInstance().getListTaskByName(Home_Activity.acc.getEmail().toString(), "tESt Dữ", roundedDateTime);
                 Log.d("List task by name: ", listTaskByName.toString());
 

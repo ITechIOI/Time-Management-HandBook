@@ -95,13 +95,6 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                     String.valueOf(year) + " " + task.getEndTime().toLocalTime().toString();
         }
 
-        /*Log.d("EndTime String: ", task.getEndTime().toString());
-
-        DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(task.getEndTime().toString().replace("T", " "), dmyFormat);
-        String deadlineString = dateTime.format(ymdFormat);
-*/
         holder.nameTask.setText(task.getName());
         holder.deadlineTask.setText(deadlineString);
         holder.timeleftTask.setText(remainingTime);
@@ -179,6 +172,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                     try {
                         rowEffect = CheckTaskFinish(Home_Activity.acc.getEmail().toString(), taskSummary,
                                 ymdTaskDeadline.replace("T", " "), timeNowString);
+                        TaskDAO taskDAO = new TaskDAO();
                     } catch (Exception e) {
                         Log.d("Mark the task as completed error - UI:", e.getMessage());
                     }
@@ -193,6 +187,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                     try {
                         rowEffect = UnCheckTaskFinish(Home_Activity.acc.getEmail().toString(), taskSummary,
                                 ymdTaskDeadline.toString().replace("T", " "));
+                        TaskDAO taskDAO = new TaskDAO();
                     } catch (Exception e) {
                         Log.d("Unmarked the task as completed error - UI:", e.getMessage());
                     }

@@ -115,14 +115,10 @@ public class AddTask_Activity extends AppCompatActivity {
         customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // Tìm RadioButton được chọn trong RadioGroup
                 RadioButton selectedRadioButton = findViewById(checkedId);
 
                 if (selectedRadioButton != null) {
-                    // Lấy chỉ mục của RadioButton được chọn trong RadioGroup
                     selectedIndex = customRadioGroup.indexOfChild(selectedRadioButton) + 1;
-
-                    // Log chỉ mục của RadioButton được chọn
                     Log.d("Selected Index", String.valueOf(selectedIndex));
                 }
             }
@@ -137,10 +133,8 @@ public class AddTask_Activity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String deadline = tDeadline.getText().toString();
-                // Định dạng chuỗi ngày giờ
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-                // Chuyển đổi chuỗi thành LocalDateTime
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 LocalDateTime lDeadline = LocalDateTime.parse(deadline, formatter);
 
                 String[] parts = notificationT.getText().toString().split(" ");
@@ -156,7 +150,6 @@ public class AddTask_Activity extends AppCompatActivity {
                             .plusMinutes(phut)
                             .plusSeconds(giay);
                 }
-                // Tạo đối tượng Duration
                 else {
                     duration = Duration.ofHours(gio)
                             .plusMinutes(phut)
@@ -165,16 +158,16 @@ public class AddTask_Activity extends AppCompatActivity {
 
 
                 TaskDTO newTask = new TaskDTO(
-                        null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
-                        null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
+                        null,
+                        null,
                         tName.getText().toString(),
                         tLocation.getText().toString(),
                         LocalDateTime.now(),
                         lDeadline,
-                        duration, // Chu kỳ thông báo
-                        tDescription.getText().toString(), // Mô tả
+                        duration,
+                        tDescription.getText().toString(),
                         LocalDateTime.MAX,
-                        selectedIndex // Màu sắc (vd: màu mặc định)
+                        selectedIndex
                 );
 
                 int result = TaskDAO.getInstance().InsertNewTask(email, newTask);

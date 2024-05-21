@@ -88,7 +88,6 @@ public class Home_Activity extends AppCompatActivity {
     public static String username;
     public static Uri avatar_uri;
     public static LocalDate today;
-    GoogleSignInClient mGoogleSignInClient;
     public static GoogleSignInAccount acc;
     public static GoogleSignInAccount accTemp;
 
@@ -106,7 +105,6 @@ public class Home_Activity extends AppCompatActivity {
     private final ExecutorService executorServiceFetchData = Executors.newSingleThreadExecutor();
     public List<Event> items = new ArrayList<>();
     public List<CalendarEventDTO> calendarEvents = new ArrayList<>();
-    private TextView hiText;
     private FragmentManager fragmentManager;
     private final Home_Fragment homeFragment = new Home_Fragment();
     private ImageButton avatarButton;
@@ -171,7 +169,6 @@ public class Home_Activity extends AppCompatActivity {
         FrameLayout frameLayout = findViewById(R.id.frame_layout);
         loadFragment(homeFragment);
 
-        /// check code in this method
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -207,23 +204,6 @@ public class Home_Activity extends AppCompatActivity {
             int count_account = AccountDAO.getInstance().InsertNewAccount(email);
             Log.d("Insert new account: ", String.valueOf(count_account));
         });
-        // executorServiceInsertAccount.shutdown();
-
-        /*// Fetch data from google calendar
-
-        if ( ! AccountDAO.getInstance().CheckExistEmail(acc.getEmail().toString())) {
-            // Fetch data from Google Calendar
-             Log.d("Check mail exist ", String.valueOf( AccountDAO.getInstance().CheckExistEmail(acc.getEmail())));
-
-            executorServiceFetchData.execute(new Runnable() {
-                @Override
-                public void run() {
-                    fetchEvents(acc);
-                }
-            });
-
-            // executorServiceFetchData.shutdown();
-        }*/
 
         // Fetch data from calendar
         executorServiceFetchData.execute(new Runnable() {
@@ -283,7 +263,6 @@ public class Home_Activity extends AppCompatActivity {
                 Log.d("List event of the day: ", listEventOfTheDay.toString());
             }
         });
-       // executorServiceHandleEventOfTheDay.shutdown();
 
         // Get Prolonged Event
 
@@ -493,13 +472,9 @@ public class Home_Activity extends AppCompatActivity {
                             .build();
 
                     LocalDateTime nowLocalDateTime = LocalDateTime.now();
-
-                    // Tính toán thời điểm bắt đầu (timeMin) là một năm trước thời điểm hiện tại
                     LocalDateTime oneYearAgo = nowLocalDateTime.minusYears(1);
-                    // Tính toán thời điểm kết thúc (timeMax) là một năm sau thời điểm hiện tại
                     LocalDateTime oneYearLater = nowLocalDateTime.plusYears(1);
 
-                    // Chuyển đổi LocalDateTime trở lại DateTime
                     DateTime timeMin = new DateTime(oneYearAgo.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
                     DateTime timeMax = new DateTime(oneYearLater.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
@@ -508,7 +483,6 @@ public class Home_Activity extends AppCompatActivity {
                             .setMaxResults(10)
                             .setTimeMin(timeMin)
                             .setTimeMax(timeMax)
-                            //.setOrderBy("startTime")
                             .setSingleEvents(true)
                             .execute();
 

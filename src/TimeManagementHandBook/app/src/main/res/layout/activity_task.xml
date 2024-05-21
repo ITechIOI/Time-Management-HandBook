@@ -29,7 +29,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
             android:layout_marginTop="5dp"
-            android:padding="7dp"
+            android:padding="8dp"
             android:background="@drawable/custom_textinputlayout"/>
 
         <TextView
@@ -52,7 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_toStartOf="@+id/taDeadline_dialog"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:padding="8dp"
+                android:enabled="false"
                 android:background="@drawable/custom_textinputlayout"/>
 
             <ImageView
@@ -79,7 +80,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="34dp"
             android:background="@drawable/custom_textinputlayout"
-            android:padding="7dp" />
+            android:padding="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -110,7 +111,8 @@
                 android:layout_width="match_parent"
                 android:layout_toStartOf="@+id/taNotification_dialog"
                 android:layout_height="wrap_content"
-                android:padding="7dp"
+                android:padding="8dp"
+                android:enabled="false"
                 android:background="@drawable/custom_textinputlayout"/>
 
             <ImageView
@@ -119,6 +121,36 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_notification" />
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="10dp"
+            android:text="Finish time" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="34dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/taFinishTime_textInput"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_toStartOf="@+id/taFinished_checkbox"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="@drawable/custom_textinputlayout"/>
+
+            <CheckBox
+                android:id="@+id/taFinished_checkbox"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/custom_checkbox"
+                android:button="@android:color/transparent"/>
         </RelativeLayout>
 
         <TextView
@@ -135,7 +167,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginEnd="34dp"
             android:layout_marginTop="5dp"
-            android:padding="7dp"
+            android:padding="8dp"
             android:background="@drawable/custom_textinputlayout"/>
 
         <Button

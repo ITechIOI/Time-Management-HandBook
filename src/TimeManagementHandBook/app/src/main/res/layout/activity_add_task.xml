@@ -53,6 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:enabled="false"
                 android:layout_toStartOf="@id/tDeadline_dialog"
                 android:background="@drawable/custom_textinputlayout"/>
 
@@ -108,7 +109,8 @@
                 android:layout_toStartOf="@id/tNotification_dialog"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_textinputlayout"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:enabled="false"/>
 
             <ImageView
                 android:id="@+id/tNotification_dialog"

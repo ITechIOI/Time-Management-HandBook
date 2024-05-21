@@ -222,7 +222,7 @@ public class AddEvent_Activity extends AppCompatActivity {
                 }
                 if (result != -1)
                 {
-                    Toast.makeText(getApplicationContext(), "Submit thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Add new event successfulle", Toast.LENGTH_SHORT).show();
                     Log.d("Insert event", eName.getText().toString());
                     eName.setText("");
                     eStartTime.setText("");

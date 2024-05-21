@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -355,6 +356,8 @@ public class Home_Activity extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(runnableCode, 2000);
 
+        Log.d("Hello mn, I'm On Activity Create", "ok");
+
     }
 
     @Override
@@ -429,6 +432,47 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
         // executorServiceTaskForNotificationStart.shutdown();
+
+        Runnable runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                // Hàm cần chạy sau 10 giây
+                Intent serviceIntent = new Intent(Home_Activity.this, MyForegroundService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(serviceIntent);
+
+                } else {
+                    startService(serviceIntent);
+                }
+            }
+        };
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(runnableCode, 2000);
+
+        Log.d("Hello mn, I'm Start", "ok");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Hello mn, I'm On Activity Result", "ok");
+        Runnable runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                // Hàm cần chạy sau 10 giây
+                Intent serviceIntent = new Intent(Home_Activity.this, MyForegroundService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(serviceIntent);
+
+                } else {
+                    startService(serviceIntent);
+                }
+            }
+        };
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(runnableCode, 2000);
     }
 
     public void fetchEvents(GoogleSignInAccount acc) {

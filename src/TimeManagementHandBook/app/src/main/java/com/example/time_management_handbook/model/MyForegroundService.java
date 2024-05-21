@@ -37,9 +37,9 @@ public class MyForegroundService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private Context context;
     private NotificationManager notificationManager;
-    private List<Event_Of_The_Day_DTO> listEventOfTheDay;
-    private List<Prolonged_Event_DTO> listProlongedEvent;
-    private List<TaskDTO> listTask;
+    public static List<Event_Of_The_Day_DTO> listEventOfTheDay;
+    public static List<Prolonged_Event_DTO> listProlongedEvent;
+    public static List<TaskDTO> listTask;
     private Handler handler;
     private static final int NOTIFICATION_ID_BASE = 1;
 
@@ -63,7 +63,7 @@ public class MyForegroundService extends Service {
         listEventOfTheDay = Home_Activity.listEventOfTheDayForNotification;
         listProlongedEvent = Home_Activity.listProlongedEventForNotification;
         listTask = Home_Activity.listTaskForNotification;
-        Log.d("List task for notification in my foreground service OK: ", listProlongedEvent.toString());
+        Log.d("List task for notification in my foreground service OK: ", listEventOfTheDay.toString());
 
         registerReceiver(stopServiceReceiver, new IntentFilter("stop_service"));
 
@@ -74,6 +74,10 @@ public class MyForegroundService extends Service {
         createNotificationChannel();
 
         startForeground(NOTIFICATION_ID, createNotification());
+
+        listEventOfTheDay = Home_Activity.listEventOfTheDayForNotification;
+        listProlongedEvent = Home_Activity.listProlongedEventForNotification;
+        listTask = Home_Activity.listTaskForNotification;
 
         final List<Event_Of_The_Day_DTO> event = listEventOfTheDay;
 

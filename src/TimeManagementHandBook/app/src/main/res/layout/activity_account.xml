@@ -55,19 +55,33 @@
         app:layout_constraintTop_toBottomOf="@id/textView_username" />
 
     <Button
-        android:id="@+id/button_Logout"
-        android:text="Logout"
+        android:id="@+id/button_converseAccount"
         android:layout_width="299dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_button3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@id/button_AddAccount"
         android:layout_marginTop="20dp"
+        android:background="@drawable/custom_button3"
         android:fontFamily="sans-serif"
+        android:text="Switch account"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/black"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_AddAccount" />
+
+    <Button
+        android:id="@+id/button_Logout"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_button3"
+        android:fontFamily="sans-serif"
+        android:text="Logout"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_converseAccount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

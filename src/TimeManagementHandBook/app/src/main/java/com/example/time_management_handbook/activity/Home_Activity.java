@@ -343,6 +343,11 @@ public class Home_Activity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        if (accTemp == null) {
+            acc = GoogleSignIn.getLastSignedInAccount(this);
+        }
+        accTemp = acc;
+
         homeFragment.setHiTextView(username);
         homeFragment.setEventandTaskView(listAll);
 
@@ -428,6 +433,12 @@ public class Home_Activity extends AppCompatActivity {
 
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(runnableCode, 2000);
+
+        listAll = new ArrayList<>();
+        listAll.addAll(listEventOfTheDay);
+        listAll.addAll(listProlongedEvent);
+        listAll.addAll(listTask);
+        //listAll.sort(null);
 
         Log.d("Hello mn, I'm Start", "ok");
     }

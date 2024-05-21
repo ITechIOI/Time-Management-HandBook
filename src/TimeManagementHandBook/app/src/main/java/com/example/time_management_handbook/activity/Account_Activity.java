@@ -75,9 +75,11 @@ public class Account_Activity extends AppCompatActivity {
     private ExecutorService executorServiceFetchData = Executors.newSingleThreadExecutor();
     private GoogleSignInAccount accountSynchronize;
     private Button synchronizeBtn;
+    private Button switchAccount;
     public List<CalendarEventDTO> calendarEvents = new ArrayList<>();
     public List<Event> items = new ArrayList<>();
     private static final int REQUEST_CODE_SIGN_IN = 1000;
+    private int flag = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,12 +99,23 @@ public class Account_Activity extends AppCompatActivity {
 
         TextView userName = findViewById(R.id.textView_username);
         userName.setText(Home_Activity.acc.getDisplayName());
-
         synchronizeBtn = findViewById(R.id.button_AddAccount);
+        switchAccount = findViewById(R.id.button_converseAccount);
+
         synchronizeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                flag = 0;
                 signOutAndChooseAccount();
+            }
+        });
+
+        switchAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag = 1;
+                signOutAndChooseAccount();
+                Home_Activity.accTemp = null;
             }
         });
 
@@ -153,25 +166,28 @@ public class Account_Activity extends AppCompatActivity {
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     accountSynchronize = account;
 
-                    executorServiceFetchData.execute(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            fetchEvents(accountSynchronize);
-
+                    if (flag == 0) {
+                        executorServiceFetchData.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                fetchEvents(accountSynchronize);
+                            }
+                        });
+                        Log.d("Account synchronize: ", accountSynchronize.getEmail().toString());
+                        Home_Activity.acc = Home_Activity.accTemp;
+                        if (account!= null) {
+                            Log.d("Synchronize account: ", accountSynchronize.toString());
+                        } else {
+                            Log.d("ErrorX", "signInResult: account is null");
                         }
-                    });
 
-                    Log.d("Account synchronize: ", accountSynchronize.getEmail().toString());
-                    Home_Activity.acc = Home_Activity.accTemp;
-                    if (account!= null) {
-                        Log.d("Synchronize account: ", accountSynchronize.toString());
-                    } else {
-                        Log.d("ErrorX", "signInResult: account is null");
+                    } else if(flag == 1) {
+                        Home_Activity.accTemp = null;
                     }
+
                 } else {
                     Log.d("ErrorY", "signInResult:failed code=" + ((ApiException) task.getException()).getStatusCode());
-                    Toast.makeText(Account_Activity.this, "Đăng nhập không thành công", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Account_Activity.this, "Login google account failed", Toast.LENGTH_LONG).show();
                 }
             } catch (ApiException e) {
                 Log.d("SignInError", "signInResult:failed code=" + e.getStatusCode());

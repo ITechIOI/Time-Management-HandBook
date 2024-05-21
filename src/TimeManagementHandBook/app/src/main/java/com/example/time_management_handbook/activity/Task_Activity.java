@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -111,6 +112,15 @@ public class Task_Activity extends AppCompatActivity {
                 orange.setChecked(true);
                 break;
         }
+        TextInputEditText finishTime = findViewById(R.id.taFinishTime_textInput);
+        CheckBox isFinished = findViewById(R.id.taFinished_checkbox);
+        if (task.getFinishedTime()!=null)
+        {
+            finishTime.setText(task.getFinishedTime().toString());
+            isFinished.setChecked(true);
+        }
+        else
+            isFinished.setChecked(false);
 
         deadlineImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +185,8 @@ public class Task_Activity extends AppCompatActivity {
                 }
             }
         });
+
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

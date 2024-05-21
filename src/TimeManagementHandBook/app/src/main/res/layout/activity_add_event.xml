@@ -53,7 +53,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_toStartOf="@+id/eDateStart_dialog"
                                     android:background="@drawable/custom_textinputlayout"
-                                    android:padding="8dp"/>
+                                    android:padding="8dp"
+                                    android:enabled="false"/>
                                 <ImageView
                                     android:id="@+id/eDateStart_dialog"
                                     android:layout_alignParentRight="true"
@@ -86,7 +87,8 @@
                                     android:layout_toStartOf="@id/eDateEnd_dialog"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/custom_textinputlayout"
-                                    android:padding="8dp" />
+                                    android:padding="8dp"
+                                    android:enabled="false"/>
 
                                 <ImageView
                                     android:id="@+id/eDateEnd_dialog"
@@ -144,6 +146,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toStartOf="@id/eNotification_dialog"
                             android:padding="8dp"
+                            android:enabled="false"
                             android:background="@drawable/custom_textinputlayout"/>
 
                         <ImageView

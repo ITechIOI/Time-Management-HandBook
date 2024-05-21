@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.activity.AddTask_Activity;
 import com.example.time_management_handbook.activity.Home_Activity;
 import com.example.time_management_handbook.activity.Task_Activity;
 import com.example.time_management_handbook.activity.Task_Fragment;
@@ -154,8 +155,8 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                 String taskSummary = holder.nameTask.getText().toString();
                 String taskDeadline = holder.deadlineTask.getText().toString();
 
-                DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-                DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
                 LocalDateTime dmyTaskDeadline = LocalDateTime.parse(taskDeadline, dmyFormat);
                 String ymdTaskDeadline = dmyTaskDeadline.format(ymdFormat);
 
@@ -266,7 +267,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
             @Override
             public void onClick(View v) {
                 result[0]=true;
-                ShowDeleteDialog();
+                ShowDeleteDialog(task);
                 item_dialog.dismiss();
             }
         });
@@ -274,7 +275,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         return result[0];
     }
 
-    private boolean ShowDeleteDialog() {
+    private boolean ShowDeleteDialog(TaskDTO task) {
         final boolean[] result = new boolean[1];
         Dialog delete_dialog;
         Button cancelButton, deleteButton;
@@ -297,6 +298,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
             @Override
             public void onClick(View v) {
                 result[0]=true;
+                int result = DeleteTask(Home_Activity.acc.getEmail(), task);
                 delete_dialog.dismiss();
             }
         });
@@ -551,8 +553,11 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         String name = task.getName();
         LocalDateTime endTime = task.getEndTime();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedEndTime = endTime.format(formatter);
+
         String query = "EXEC USP_DELETE_TASK '" + email + "','" +
-                name + "','" + endTime + "'";
+                name + "','" + formattedEndTime + "'";
 
         try {
             rowEffect = DataProvider.getInstance().executeNonQuery(query);
@@ -600,6 +605,29 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
             //Log.d("Update event of the day: ", query);
         }catch (Exception e) {
             Log.d("Update task: ", e.getMessage());
+        }
+
+        return rowEffect;
+    }
+
+    public int UpdateFinishTask(String email, TaskDTO task) {
+        int rowEffect = -1;
+        String summary = task.getName();
+        String idTask = task.getIdTask();
+        LocalDateTime deadline = task.getEndTime();
+        LocalDateTime finishTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String deadlineCast = deadline.format(formatter);
+        String finishCast = finishTime.format(formatter);
+
+        String query = "EXEC USP_UPDATE_FINISH_TIME_FOR_TASK '" + email + "','" + summary + "','" + summary + "','" + deadlineCast + "','" + finishCast + "'";
+
+        try {
+            rowEffect = DataProvider.getInstance().executeNonQuery(query);
+            Log.d("Update finish time for task: ", String.valueOf(rowEffect));
+            //Log.d("Update event of the day: ", query);
+        }catch (Exception e) {
+            Log.d("Update finish time for task: ", e.getMessage());
         }
 
         return rowEffect;

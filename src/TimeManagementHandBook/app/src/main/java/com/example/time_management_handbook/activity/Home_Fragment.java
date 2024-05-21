@@ -1,11 +1,5 @@
 package com.example.time_management_handbook.activity;
 
-import static com.example.time_management_handbook.activity.Home_Activity.listAll;
-import static com.example.time_management_handbook.activity.Home_Activity.listEventOfTheDay;
-import static com.example.time_management_handbook.activity.Home_Activity.listProlongedEvent;
-import static com.example.time_management_handbook.activity.Home_Activity.listTask;
-import static com.example.time_management_handbook.activity.Home_Activity.username;
-
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,10 +14,18 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
 import com.example.time_management_handbook.adapter.HomeAdapter;
+import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
+import com.example.time_management_handbook.adapter.TaskDAO;
+import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
+import com.example.time_management_handbook.model.Prolonged_Event_DTO;
+import com.example.time_management_handbook.model.TaskDTO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,11 @@ public class Home_Fragment extends Fragment {
     GridView eventView;
     String formattedDate;
     DayOfWeek dayOfWeek;
+    private String username;
+    private List<Object> listAll = new ArrayList<>();
+    private List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
+    private List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
+    private List<TaskDTO> listTask = new ArrayList<>();
 
     public Home_Fragment() {
         // Required empty public constructor
@@ -90,7 +97,20 @@ public class Home_Fragment extends Fragment {
         eventView = (GridView) view.findViewById(R.id.gridView_event);
 
         LocalDate today =  LocalDate.now();
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
         String formattedDate = reformatDate(today.toString(), "yyyy-MM-dd", "dd-MM-yyyy");
+
+        username = Home_Activity.acc.getDisplayName();
+        listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), roundedDateTime);
+        listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
+        listTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), roundedDateTime);
+
+        listAll = new ArrayList<>();
+        listAll.addAll(listEventOfTheDay);
+        listAll.addAll(listProlongedEvent);
+        listAll.addAll(listTask);
+        setEventandTaskView(listAll);
 
         dayOfWeek = today.getDayOfWeek();
 
@@ -110,7 +130,7 @@ public class Home_Fragment extends Fragment {
         return view;
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
 
@@ -126,7 +146,7 @@ public class Home_Fragment extends Fragment {
         listAll.addAll(listProlongedEvent);
         listAll.addAll(listTask);
         setEventandTaskView(listAll);
-    }
+    }*/
 
     public void setHiTextView(String username)
     {

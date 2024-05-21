@@ -102,6 +102,7 @@ public class Calendar_Fragment extends Fragment {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
         dateView.setText(today.format(formatter));
 
+        RecyclerView notes = view.findViewById(R.id.recyclerView_notes);
         CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -115,10 +116,17 @@ public class Calendar_Fragment extends Fragment {
 
                 listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), localTime);
                 listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), todayDate);
+                lObject = new ArrayList<>();
+
+                //Lay du lieu theo ngay duoc chon
+                lObject.addAll(listEventOfTheDay);
+                lObject.addAll(listProlongedEvent);
+                notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
+                notes.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
 
-        RecyclerView notes = view.findViewById(R.id.recyclerView_notes);
+
         lObject = new ArrayList<>();
 
         //Lay du lieu theo ngay duoc chon

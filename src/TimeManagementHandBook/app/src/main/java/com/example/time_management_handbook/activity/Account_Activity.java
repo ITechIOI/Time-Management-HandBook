@@ -180,13 +180,15 @@ public class Account_Activity extends AppCompatActivity {
                         } else {
                             Log.d("ErrorX", "signInResult: account is null");
                         }
-                        Intent mit= new Intent(Account_Activity.this, Home_Activity.class);
-                        startActivity(mit);
+                        Toast.makeText(Account_Activity.this, "Synchronize successfully", Toast.LENGTH_LONG).show();
+                        /*Intent mit= new Intent(Account_Activity.this, Home_Activity.class);
+                        startActivity(mit);*/
 
                     } else if(flag == 1) {
                         Home_Activity.accTemp = null;
-                        Intent mit= new Intent(Account_Activity.this, Home_Activity.class);
-                        startActivity(mit);
+                        Toast.makeText(Account_Activity.this, "Switch account successfully", Toast.LENGTH_LONG).show();
+                        /*Intent mit= new Intent(Account_Activity.this, Home_Activity.class);
+                        startActivity(mit);*/
                     }
 
                 } else {

@@ -53,7 +53,6 @@ public class Calendar_Fragment extends Fragment {
     private List<Object> lObject = new ArrayList<>();
     private List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
     private List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
-
     private List<LocalDate> listLocalDateByMonth = new ArrayList<>();
     public Calendar_Fragment() {
         // Required empty public constructor
@@ -162,9 +161,47 @@ public class Calendar_Fragment extends Fragment {
         for (int i = 0; i < listLocalDateContainEvent.size(); i++) {
             listLocalDateTemp.add(listLocalDateContainEvent.get(i));
         }
-        
-        Log.d("List unduplicated local date contains event: ", listLocalDateByMonth.toString());
 
+        listLocalDateByMonth = new ArrayList<>(listLocalDateTemp);
+
+    }
+
+    public List<LocalDate> getListDateContainEvent(LocalDate date)
+    {
+
+        LocalDateTime dateTime = LocalDateTime.of(date, LocalTime.of(1,1,1));
+        LocalDateTime roundedDateTime = dateTime.with(LocalTime.from(dateTime.toLocalTime().withSecond(dateTime.getSecond()).withNano(0)));
+
+        List<LocalDate> listLocalDateContainEvent = new ArrayList<>();
+        try {
+            List<LocalDate> listLocalDateContainingEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDayByDayOfMonth(
+                    Home_Activity.acc.getEmail(), roundedDateTime);
+            listLocalDateContainEvent.addAll(listLocalDateContainingEventOfTheDay);
+            Log.d("Get list local date containing event of the day: ", listLocalDateContainingEventOfTheDay.toString());
+        } catch(Exception e) {
+            Log.d("Get list local date containing event of the day: ", "fail");
+        }
+
+        try {
+            List<LocalDate> listLocalDateContainingProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEventByDayOfMonth(
+                    Home_Activity.acc.getEmail(), roundedDateTime.toLocalDate());
+            listLocalDateContainEvent.addAll(listLocalDateContainingProlongedEvent);
+            Log.d("Get list local date contain prolonged event X: ", listLocalDateContainingProlongedEvent.toString());
+        } catch(Exception e) {
+            Log.d("Get list local date contain prolonged event X: ", "fail");
+        }
+
+        // listLocalDate:
+
+        Set<LocalDate> listLocalDateTemp = new HashSet<>();
+        for (int i = 0; i < listLocalDateContainEvent.size(); i++) {
+            listLocalDateTemp.add(listLocalDateContainEvent.get(i));
+        }
+
+        List<LocalDate> listDate = new ArrayList<>(listLocalDateTemp);
+
+        Log.d("List unduplicated local date contains event: ", listDate.toString());
+        return listDate;
     }
 
     @Override
@@ -201,7 +238,9 @@ public class Calendar_Fragment extends Fragment {
             listLocalDateTemp.add(listLocalDateContainEvent.get(i));
         }
 
-        Log.d("List unduplicated local date contains event: ", listLocalDateByMonth.toString());
+        listLocalDateByMonth = new ArrayList<>(listLocalDateTemp);
+
+        Log.d("List unduplicated local date contains event: ", getListDateContainEvent(roundedDateTime.toLocalDate()).toString());
 
     }
 

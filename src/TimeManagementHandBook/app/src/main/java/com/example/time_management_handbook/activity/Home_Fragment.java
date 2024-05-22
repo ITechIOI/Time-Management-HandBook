@@ -130,9 +130,19 @@ public class Home_Fragment extends Fragment {
         return view;
     }
 
-    /*@Override
+    @Override
     public void onStart() {
         super.onStart();
+
+        LocalDate today =  LocalDate.now();
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+        String formattedDate = reformatDate(today.toString(), "yyyy-MM-dd", "dd-MM-yyyy");
+
+        username = Home_Activity.acc.getDisplayName();
+        listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), roundedDateTime);
+        listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
+        listTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), roundedDateTime);
 
         setHiTextView(username);
         try {
@@ -146,7 +156,7 @@ public class Home_Fragment extends Fragment {
         listAll.addAll(listProlongedEvent);
         listAll.addAll(listTask);
         setEventandTaskView(listAll);
-    }*/
+    }
 
     public void setHiTextView(String username)
     {

@@ -155,8 +155,8 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                 String taskSummary = holder.nameTask.getText().toString();
                 String taskDeadline = holder.deadlineTask.getText().toString();
 
-                DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                DateTimeFormatter dmyFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 LocalDateTime dmyTaskDeadline = LocalDateTime.parse(taskDeadline, dmyFormat);
                 String ymdTaskDeadline = dmyTaskDeadline.format(ymdFormat);
 

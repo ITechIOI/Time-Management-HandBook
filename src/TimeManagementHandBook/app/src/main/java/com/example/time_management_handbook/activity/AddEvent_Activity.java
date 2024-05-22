@@ -148,6 +148,7 @@ public class AddEvent_Activity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String name = eName.getText().toString();
                 String location = eLocation.getText().toString();
                 String timeStart = eStartTime.getText().toString();
@@ -198,71 +199,105 @@ public class AddEvent_Activity extends AppCompatActivity {
                 }
 
                 int result = -1;
-                if (name.isEmpty() || timeStart.isEmpty() || timeEnd.isEmpty() || durationString.isEmpty()){
+
+                boolean flag1 = true, flag2 = true, flag3 = true, flag4 = true;
+
+                if (name.isEmpty()) {
                     eName.setBackgroundResource(R.drawable.custom_textinput_error);
+                    flag1 = false;
+                }
+                if (timeStart.isEmpty()) {
                     eStartTime.setBackgroundResource(R.drawable.custom_textinput_error);
+                    flag2 = false;
+                }
+                if (timeEnd.isEmpty()) {
                     eEndTime.setBackgroundResource(R.drawable.custom_textinput_error);
+                    flag3 = false;
+                }
+                if (durationString.isEmpty()) {
                     notificationE.setBackgroundResource(R.drawable.custom_textinput_error);
-                    Toast.makeText(AddEvent_Activity.this, "Please complete all required fields.", Toast.LENGTH_SHORT).show();
-                } else if (dateStartLD.isEqual(dateEndLD)){
-                    Event_Of_The_Day_DTO newEvent = new Event_Of_The_Day_DTO(
-                            null, // EventId sẽ tự động được tạo khi thêm vào cơ sở dữ liệu
-                            null, // UserId được truyền vào khi thực hiện lưu sự kiện (không cần trong constructor)
-                            name,
-                            location,
-                            eTimeStartL,
-                            eTimeEndL,
-                            duration, // Chu kỳ thông báo
-                            eDescription.getText().toString(), // Mô tả
-                            selectedIndex // Màu sắc (vd: màu mặc định)
-                    );
+                    flag4 = false;
+                }
+                if (flag1)  {
+                    eName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                }
+                if (flag2) {
+                    eStartTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                }
+                if (flag3) {
+                    eEndTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                }
+                if (flag4) {
+                    notificationE.setBackgroundResource(R.drawable.custom_textinputlayout);
+                }
+                if (flag2 && flag1 && flag3 && flag4) {
                     eName.setBackgroundResource(R.drawable.custom_textinputlayout);
                     eStartTime.setBackgroundResource(R.drawable.custom_textinputlayout);
                     eEndTime.setBackgroundResource(R.drawable.custom_textinputlayout);
                     notificationE.setBackgroundResource(R.drawable.custom_textinputlayout);
-                    result = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(email, newEvent);
-                }
-                else if(dateStartLD.isBefore(dateEndLD)) {
-                    Prolonged_Event_DTO newEvent = new Prolonged_Event_DTO(
-                            null,
-                            null,
-                            eName.getText().toString(),
-                            eLocation.getText().toString(),
-                            dateStartLD,
-                            dateEndLD,
-                            duration, // Chu kỳ thông báo
-                            eDescription.getText().toString(), // Mô tả
-                            selectedIndex // Màu sắc (vd: màu mặc định)
-                    );
-                    eName.setBackgroundResource(R.drawable.custom_textinputlayout);
-                    eStartTime.setBackgroundResource(R.drawable.custom_textinputlayout);
-                    eEndTime.setBackgroundResource(R.drawable.custom_textinputlayout);
-                    notificationE.setBackgroundResource(R.drawable.custom_textinputlayout);
-                    result = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(email, newEvent);
-                }
-                else {
-                    eStartTime.setBackgroundResource(R.drawable.custom_textinput_error);
-                    eEndTime.setBackgroundResource(R.drawable.custom_textinput_error);
-                    Toast.makeText(AddEvent_Activity.this, "Start date is after end date", Toast.LENGTH_SHORT).show();
-                }
-                if (result != -1)
-                {
-                    Toast.makeText(getApplicationContext(), "Submit thành công", Toast.LENGTH_SHORT).show();
-                    Log.d("Insert event", eName.getText().toString());
-                    eName.setText("");
-                    eStartTime.setText("");
-                    eEndTime.setText("");
-                    eLocation.setText("");
-                    eDescription.setText("");
-                    notificationE.setText("");
-                    customRadioGroup.clearFocus();
-                    eName.setHint("");
-                    eStartTime.setHint("");
-                    eEndTime.setHint("");
-                    notificationE.setHint("");
-                }
-                else {
-                    Log.d("Insert event","error");
+                    if (dateStartLD.isEqual(dateEndLD)){
+                        Event_Of_The_Day_DTO newEvent = new Event_Of_The_Day_DTO(
+                                null,
+                                null,
+                                name,
+                                location,
+                                eTimeStartL,
+                                eTimeEndL,
+                                duration,
+                                eDescription.getText().toString(),
+                                selectedIndex
+                        );
+                        eName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        eStartTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        eEndTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        notificationE.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        result = Event_Of_The_Day_DAO.getInstance().InsertNewEvent(email, newEvent);
+                    }
+                    else if(dateStartLD.isBefore(dateEndLD)) {
+                        Prolonged_Event_DTO newEvent = new Prolonged_Event_DTO(
+                                null,
+                                null,
+                                eName.getText().toString(),
+                                eLocation.getText().toString(),
+                                dateStartLD,
+                                dateEndLD,
+                                duration, // Chu kỳ thông báo
+                                eDescription.getText().toString(), // Mô tả
+                                selectedIndex // Màu sắc (vd: màu mặc định)
+                        );
+                        eName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        eStartTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        eEndTime.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        notificationE.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        result = Prolonged_Event_DAO.getInstance().InsertNewProlongedEvent(email, newEvent);
+                    }
+                    else {
+                        eStartTime.setBackgroundResource(R.drawable.custom_textinput_error);
+                        eEndTime.setBackgroundResource(R.drawable.custom_textinput_error);
+                        Toast.makeText(AddEvent_Activity.this, "Start date is after end date", Toast.LENGTH_SHORT).show();
+                    }
+                    if (result != -1)
+                    {
+                        Toast.makeText(getApplicationContext(), "Add new event sucessfully", Toast.LENGTH_SHORT).show();
+                        Log.d("Insert event", eName.getText().toString());
+                        eName.setText("");
+                        eStartTime.setText("");
+                        eEndTime.setText("");
+                        eLocation.setText("");
+                        eDescription.setText("");
+                        notificationE.setText("");
+                        customRadioGroup.clearFocus();
+                        eName.setHint("");
+                        eStartTime.setHint("");
+                        eEndTime.setHint("");
+                        notificationE.setHint("");
+                    }
+                    else {
+                        Log.d("Insert event","error");
+                    }
+                } else {
+                    Toast.makeText(AddEvent_Activity.this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
         });

@@ -195,7 +195,7 @@ public class AddTask_Activity extends AppCompatActivity {
                     result = TaskDAO.getInstance().InsertNewTask(email, newTask);
                     if (result != -1)
                     {
-                        Toast.makeText(getApplicationContext(), "Submit thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Add new event successfully", Toast.LENGTH_SHORT).show();
                         Log.d("Insert task", tName.getText().toString());
                         tName.setText("");
                         tDeadline.setText("");

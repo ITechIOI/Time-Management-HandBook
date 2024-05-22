@@ -174,9 +174,9 @@ public class Event_Of_The_Day_DAO {
         String end_String = endDate.toString() + " " + endTime.toString();
         Log.d("Time Locate: ", start_String + "       " + end_String);
 
-        String query = "EXEC INSERT_NEW_EVENT_OF_THE_DAY '" + email + "','" +
-                summary + "','" + location + "','" + start_String + "','" + end_String + "','" +
-                duration + "','" + description + "'," + color ;
+        String query = "EXEC INSERT_NEW_EVENT_OF_THE_DAY '" + email + "', N'" +
+                summary + "', N'" + location + "','" + start_String + "','" + end_String + "','" +
+                duration + "', N'" + description + "'," + color ;
         try {
             count = DataProvider.getInstance().executeNonQuery(query);
             Log.d("Insert new event of the day: ", String.valueOf(count));
@@ -234,12 +234,13 @@ public class Event_Of_The_Day_DAO {
         String end_String = end.toString().replace("T", " ");
 
         String query = "EXEC USP_DELETE_EVENT_OF_THE_DAY '" + email +
-                "','" + summary + "','" + start_String + "','" + end_String + "'" ;
+                "',N'" + summary + "','" + start_String + "','" + end_String + "'" ;
 
         try {
             rowEffect = DataProvider.getInstance().executeNonQuery(query);
             //Log.d("Delete event of the day: ", String.valueOf(rowEffect));
             Log.d("Delete event of the day: ", String.valueOf(rowEffect));
+            Log.d("Delete event of the day: ", query);
         }catch (Exception e) {
             Log.d("Delete event of the day: ", e.getMessage());
         }

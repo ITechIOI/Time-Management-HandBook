@@ -73,7 +73,6 @@ public class Setting_Fragment extends Fragment {
         TextView darkMode = view.findViewById(R.id.darkmode);
         RelativeLayout notificationLayout = view.findViewById(R.id.notification_layout);
         ImageButton about = view.findViewById(R.id.about);
-        ImageButton addAccount = view.findViewById(R.id.addAccountButton);
 
         checkNotificationStatus.setText(checkNotificationStatusText);
 
@@ -84,13 +83,7 @@ public class Setting_Fragment extends Fragment {
                 startActivity(mit);
             }
         });
-        addAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mit= new Intent(getActivity(), AddAccount_Activity.class);
-                startActivity(mit);
-            }
-        });
+        
         notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

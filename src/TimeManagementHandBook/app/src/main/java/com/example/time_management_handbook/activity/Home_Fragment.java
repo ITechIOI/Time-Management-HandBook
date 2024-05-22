@@ -49,7 +49,6 @@ public class Home_Fragment extends Fragment {
     TextView hi_textview;
     TextView currentDate_textview;
     GridView eventView;
-    String formattedDate;
     DayOfWeek dayOfWeek;
     private String username;
     private List<Object> listAll = new ArrayList<>();
@@ -102,9 +101,13 @@ public class Home_Fragment extends Fragment {
         String formattedDate = reformatDate(today.toString(), "yyyy-MM-dd", "dd-MM-yyyy");
 
         username = Home_Activity.acc.getDisplayName();
+
+        Log.d("Rounded day: ", roundedDateTime.toString());
         listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), roundedDateTime);
         listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
         listTask = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail().toString(), roundedDateTime);
+
+        Log.d("List event of the day in homeFragment", listEventOfTheDay.toString());
 
         listAll = new ArrayList<>();
         listAll.addAll(listEventOfTheDay);
@@ -127,12 +130,15 @@ public class Home_Fragment extends Fragment {
         transaction.replace(R.id.frame_layout, this);
         transaction.addToBackStack(null);
         transaction.commit();
+
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
+        Log.d("I'm in start view in home fragment", "Yeah");
 
         LocalDate today =  LocalDate.now();
         LocalDateTime timeNow = LocalDateTime.now();
@@ -153,6 +159,7 @@ public class Home_Fragment extends Fragment {
 
         listAll = new ArrayList<>();
         listAll.addAll(listEventOfTheDay);
+        Log.d("Test get data in hime_fragment: ", "ok");
         listAll.addAll(listProlongedEvent);
         listAll.addAll(listTask);
         setEventandTaskView(listAll);

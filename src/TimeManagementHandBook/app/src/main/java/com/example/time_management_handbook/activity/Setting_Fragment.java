@@ -83,7 +83,7 @@ public class Setting_Fragment extends Fragment {
                 startActivity(mit);
             }
         });
-        
+
         notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

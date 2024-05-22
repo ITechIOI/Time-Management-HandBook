@@ -447,9 +447,14 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                     Duration notification_period = Duration.parse(resultSet.getString(7));
                     String description = resultSet.getString(8);
 
-                    Timestamp finishTime = resultSet.getTimestamp(9);
-                    ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
-                    LocalDateTime finish = zonedDateTimeFinish.toLocalDateTime();
+                    LocalDateTime finish = null;
+
+                    String finishTimeTemp = resultSet.getString(9);
+                    if (finishTimeTemp != null) {
+                        Timestamp finishTime = resultSet.getTimestamp(9);
+                        ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
+                        finish = zonedDateTimeFinish.toLocalDateTime();
+                    }
 
                     int color = resultSet.getInt(10);
 
@@ -498,9 +503,14 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                     Duration notification_period = Duration.parse(resultSet.getString(7));
                     String description = resultSet.getString(8);
 
-                    Timestamp finishTime = resultSet.getTimestamp(9);
-                    ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
-                    LocalDateTime finish = zonedDateTimeFinish.toLocalDateTime();
+                    LocalDateTime finish = null;
+
+                    String finishTimeTemp = resultSet.getString(9);
+                    if (finishTimeTemp != null) {
+                        Timestamp finishTime = resultSet.getTimestamp(9);
+                        ZonedDateTime zonedDateTimeFinish = finishTime.toInstant().atZone(ZoneId.systemDefault());
+                        finish = zonedDateTimeFinish.toLocalDateTime();
+                    }
 
                     int color = resultSet.getInt(10);
 

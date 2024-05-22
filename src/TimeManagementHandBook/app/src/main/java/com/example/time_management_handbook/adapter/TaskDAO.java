@@ -615,16 +615,22 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
 
        String finishString = task.getFinishedTime().toString();
         String finishTime = null;
+        String query = null;
+
         if (finishString != LocalDateTime.MAX.toString()) {
             LocalDateTime finish = task.getFinishedTime();
             LocalDateTime finishRoundedDateTime = finish.with(LocalTime.from(finish.toLocalTime().withSecond(finish.getSecond()).withNano(0)));
             finishTime = finishRoundedDateTime.toString().replace("T", " ");
+            query = "EXEC USP_UPDATE_TASK '" + idTask + "',N'" + name + "',N'" +
+                    location + "','" + startTime + "','" + endTime + "','" + notification + "',N'" +
+                    description + "','" + finishTime + "'," + color;
+            Log.d("Time spend on update task: ", startTime.toString() + " " + endTime + " " + finishTime);
+        } else {
+            query = "EXEC USP_UPDATE_TASK '" + idTask + "',N'" + name + "',N'" +
+                    location + "','" + startTime + "','" + endTime + "','" + notification + "',N'" +
+                    description + "'," + null + "," + color;
         }
         Log.d("Finish time for updating task: ", finishTime.toString());
-        
-        String query = "EXEC USP_UPDATE_TASK '" + idTask + "',N'" + name + "',N'" +
-                location + "','" + startTime + "','" + endTime + "','" + notification + "',N'" +
-                description + "','" + finishTime + "'," + color;
 
         try {
             rowEffect = DataProvider.getInstance().executeNonQuery(query);

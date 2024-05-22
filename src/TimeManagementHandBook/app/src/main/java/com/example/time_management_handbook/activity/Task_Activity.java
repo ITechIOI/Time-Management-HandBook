@@ -121,9 +121,11 @@ public class Task_Activity extends AppCompatActivity {
             DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             String finishTimeString = task.getFinishedTime().format(newFormat);
             finishTime.setText(finishTimeString.toString().replace("T", " "));
+
             isFinished.setChecked(true);
         }
-        else { isFinished.setChecked(false); }
+        else { isFinished.setChecked(false);
+        }
 
         final boolean[] flag = {false};
         isFinished.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -136,6 +138,7 @@ public class Task_Activity extends AppCompatActivity {
                     DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                     String finishTimeString = roundedDateTime.format(newFormat);
                     finishTime.setText(finishTimeString.replace("T", " "));
+
                 } else {
                     flag[0] = false;
                     finishTime.setText(null);
@@ -250,7 +253,7 @@ public class Task_Activity extends AppCompatActivity {
                         String timeEndParse = timeEndL.format(dateTimeFormatterYyyyMmDd) + ":01";
                         LocalDateTime deadline = LocalDateTime.parse(timeEndParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
                         if (intent.getSerializableExtra("mytask") instanceof TaskDTO) {
-                            Log.d("End time is set gfor task: ", deadline.toString());
+
                             TaskDTO task = (TaskDTO) intent.getSerializableExtra("mytask");
                             task.setName(taskName);
                             task.setLocation(taskLocation);
@@ -259,9 +262,9 @@ public class Task_Activity extends AppCompatActivity {
                             task.setDescription(taskDescription);
                            // task.setFinishedTime(LocalDateTime.MAX);
                             task.setColor(selectedIndex);
-
-                            if (finishTime.getText() == null) {
+                            if (!isFinished.isChecked()) {
                                 task.setFinishedTime(LocalDateTime.MAX);
+                                Log.d("End time is set gfor task: ", finishTime.getText().toString());
                             } else {
                                 LocalDateTime dateTimeOldFormat = LocalDateTime.parse(finishTime.getText().toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
                                 DateTimeFormatter ymdHMFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");

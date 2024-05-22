@@ -613,22 +613,23 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         LocalDateTime endRoundedDateTime = end.with(LocalTime.from(end.toLocalTime().withSecond(end.getSecond()).withNano(0)));
         String endTime = endRoundedDateTime.toString().replace("T", " ");
 
-/*        String finishString = task.getFinishedTime().toString();
+       String finishString = task.getFinishedTime().toString();
         String finishTime = null;
         if (finishString != LocalDateTime.MAX.toString()) {
             LocalDateTime finish = task.getFinishedTime();
             LocalDateTime finishRoundedDateTime = finish.with(LocalTime.from(finish.toLocalTime().withSecond(finish.getSecond()).withNano(0)));
             finishTime = finishRoundedDateTime.toString().replace("T", " ");
-        }*/
-
-        String query = "EXEC USP_UPDATE_TASK '" + idTask + "','" + name + "','" +
-                location + "','" + startTime + "','" + endTime + "','" + notification + "','" +
-                description + "'," + color;
+        }
+        Log.d("Finish time for updating task: ", finishTime.toString());
+        
+        String query = "EXEC USP_UPDATE_TASK '" + idTask + "',N'" + name + "',N'" +
+                location + "','" + startTime + "','" + endTime + "','" + notification + "',N'" +
+                description + "','" + finishTime + "'," + color;
 
         try {
             rowEffect = DataProvider.getInstance().executeNonQuery(query);
             Log.d("Update task: ", String.valueOf(rowEffect));
-            //Log.d("Update event of the day: ", query);
+            Log.d("Update event of the day: ", query);
         }catch (Exception e) {
             Log.d("Update task: ", e.getMessage());
         }

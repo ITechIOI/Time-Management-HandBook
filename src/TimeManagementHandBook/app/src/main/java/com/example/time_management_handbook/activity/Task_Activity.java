@@ -291,7 +291,6 @@ public class Task_Activity extends AppCompatActivity {
 
                 updateDialog.show();
 
-
             }
         });
     }

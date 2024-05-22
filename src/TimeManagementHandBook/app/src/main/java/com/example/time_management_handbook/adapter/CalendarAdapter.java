@@ -14,12 +14,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.activity.Event_Activity;
+import com.example.time_management_handbook.activity.Home_Activity;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 
@@ -69,14 +71,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Event_Of_The_Day_DTO eventOfTheDay = (Event_Of_The_Day_DTO) (lData.get(position));
                 formatter = DateTimeFormatter.ofPattern("HH:mm");
                 durationTime = eventOfTheDay.getStartTime().format(formatter) + " - " + eventOfTheDay.getEndTime().format(formatter);
-                setViewHolder(viewHolder, viewHolder.itemView, eventOfTheDay, eventOfTheDay.getColor(), eventOfTheDay.getSummary(), durationTime);
+                setViewHolder(viewHolder, viewHolder.itemView, eventOfTheDay, eventOfTheDay.getColor(), eventOfTheDay.getSummary(), durationTime,position);
                 break;
 
             case PROLONGED_EVENT:
                 Prolonged_Event_DTO prolongedEvent = (Prolonged_Event_DTO) (lData.get(position));
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 durationTime = prolongedEvent.getStartDate().format(formatter) + " - " + prolongedEvent.getEndDate().format(formatter);
-                setViewHolder(viewHolder, viewHolder.itemView, prolongedEvent, prolongedEvent.getColor(), prolongedEvent.getSummary(), durationTime);
+                setViewHolder(viewHolder, viewHolder.itemView, prolongedEvent, prolongedEvent.getColor(), prolongedEvent.getSummary(), durationTime, position);
                 break;
             default:
                 break;
@@ -88,7 +90,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return lData.size();
     }
 
-    public void setViewHolder(EventViewHolder viewHolder, View itemView, Object data, int color, String name, String durationTime){
+    public void setViewHolder(EventViewHolder viewHolder, View itemView, Object data, int color, String name, String durationTime, int postion){
         viewHolder.eventTextView.setText(name);
         viewHolder.timeEventTextView.setText(durationTime);
         Drawable itemBackGround = itemView.getResources().getDrawable(R.drawable.background_taskitem);
@@ -125,7 +127,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         viewHolder.itemLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (ShowItemLongClickDialog(data) == false)
+                if (ShowItemLongClickDialog(data, postion) == false)
                     return false;
                 else
                     return true;
@@ -133,7 +135,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         });
     }
 
-    private boolean ShowItemLongClickDialog(Object event) {
+    private boolean ShowItemLongClickDialog(Object event, int position) {
         final boolean[] result = new boolean[1];
         Dialog item_dialog;
         Button viewDetailButton, deleteButton;
@@ -167,7 +169,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View v) {
                 result[0]=true;
-                ShowDeleteDialog();
+                ShowDeleteDialog(event, position);
                 item_dialog.dismiss();
             }
         });
@@ -175,7 +177,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return result[0];
     }
 
-    private boolean ShowDeleteDialog() {
+    private boolean ShowDeleteDialog(Object event, int position) {
         final boolean[] result = new boolean[1];
         Dialog delete_dialog;
         Button cancelButton, deleteButton;
@@ -198,6 +200,27 @@ public class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View v) {
                 result[0]=true;
+                if (event instanceof Event_Of_The_Day_DTO)
+                {
+                    int deleteResult =  Event_Of_The_Day_DAO.getInstance().deleteEventOfTheDay(Home_Activity.acc.getEmail(), (Event_Of_The_Day_DTO) event);
+                    if (deleteResult > 0) {
+                        lData.remove(position);
+                        notifyItemRemoved(position);
+                        Toast.makeText(context, "Delete event success", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Delete event failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if (event instanceof  Prolonged_Event_DTO){
+                    int deleteResult = Prolonged_Event_DAO.getInstance().deleteProlongedEvent(Home_Activity.acc.getEmail(), (Prolonged_Event_DTO) event);
+                    if (deleteResult > 0) {
+                        lData.remove(position);
+                        notifyItemRemoved(position);
+                        Toast.makeText(context, "Delete event success", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Delete event failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 delete_dialog.dismiss();
             }
         });

@@ -44,7 +44,7 @@ public class Event_Of_The_Day_DAO {
         String dateTime = date.toString() + " " + time.toString();
 
         String query = "EXEC USP_GET_EVENT_OF_THE_DAY_BY_ID '" + email + "', '" + dateTime + "'";
-
+        Log.d("Query for get list event of the day: ", query.toString());
         try {
             ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
             if (resultSet != null) {
@@ -69,7 +69,7 @@ public class Event_Of_The_Day_DAO {
                     Event_Of_The_Day_DTO event = new Event_Of_The_Day_DTO(idEvent, idUser, summary, location,
                             start, end, notification_period, description, color);
                     listEvents.add(event);
-                    Log.d("Each event: ", event.toString());
+                    Log.d("Each event of the day: ", event.toString());
                 }
             }
         } catch (SQLException e) {

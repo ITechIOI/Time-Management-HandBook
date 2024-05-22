@@ -254,6 +254,17 @@ public class Home_Activity extends AppCompatActivity {
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
         Log.d("Time now: ", roundedDateTime.toString());
+<<<<<<< HEAD
+=======
+        executorServiceHandleEventOfTheDay.execute(new Runnable() {
+            @Override
+            public void run() {
+                listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(acc.getEmail(), roundedDateTime);
+                Log.d("Time to find event of the day: ", roundedDateTime.toString());
+                Log.d("List event of the day: ", listEventOfTheDay.toString());
+            }
+        });
+>>>>>>> 9602b3d97dec1b27045615ec4b7b82f6ff73c4c7
 
         listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(acc.getEmail(), LocalDate.now());
         Log.d("List prolonged event of the day: ", listProlongedEvent.toString());

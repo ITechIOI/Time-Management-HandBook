@@ -15,6 +15,8 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Prolonged_Event_DAO {
 
@@ -101,6 +103,46 @@ public class Prolonged_Event_DAO {
 
         return listEvents;
     }
+
+    public List<LocalDate> getListProlongedEventByDayOfMonth(String email, LocalDate timeNow) {
+        List<LocalDate> listLocalDate = new ArrayList<>();
+        String query = "EXEC USP_GET_PROLONGED_EVENT_BY_DAY_OF_MONTH '" + email + "','" +
+                timeNow + "'";
+
+        try {
+            ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
+            if (resultSet != null) {
+                while (resultSet.next()) {
+
+                    Date startDateSql = resultSet.getDate(5);
+                    LocalDate startDate = startDateSql.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                    Date endDateSql = resultSet.getDate(6);
+                    LocalDate endDate = endDateSql.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                    List<LocalDate> localDateBetweenTwoLocalDate = generateDates(startDate, endDate);
+                    for(int i = 0; i < localDateBetweenTwoLocalDate.size(); i++) {
+                        if (timeNow.getMonth() == localDateBetweenTwoLocalDate.get(i).getMonth()) {
+                            listLocalDate.add(localDateBetweenTwoLocalDate.get(i));
+                        }
+                    }
+
+                }
+            }
+            Log.d("Get list local date that contains prolonged event: ", listLocalDate.toString());
+        }catch (Exception e) {
+            Log.d("Get prolonged event: ", e.getMessage());
+        }
+
+        return listLocalDate;
+    }
+
+    public static List<LocalDate> generateDates(LocalDate start, LocalDate end) {
+        return IntStream.rangeClosed((int)start.toEpochDay(), (int) end.toEpochDay())
+                .mapToObj(day -> LocalDate.ofEpochDay(day))
+                .collect(Collectors.toList());
+    }
+
 
     public int InsertNewProlongedEvent(String email, Prolonged_Event_DTO event) {
         int rowEffect = -1;

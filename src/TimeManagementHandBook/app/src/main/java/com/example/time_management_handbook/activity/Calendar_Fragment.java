@@ -162,8 +162,7 @@ public class Calendar_Fragment extends Fragment {
         for (int i = 0; i < listLocalDateContainEvent.size(); i++) {
             listLocalDateTemp.add(listLocalDateContainEvent.get(i));
         }
-
-        List<LocalDate> listLocalDateByMonth = listLocalDateTemp.stream().collect(Collectors.toList());
+        
         Log.d("List unduplicated local date contains event: ", listLocalDateByMonth.toString());
 
     }
@@ -202,7 +201,6 @@ public class Calendar_Fragment extends Fragment {
             listLocalDateTemp.add(listLocalDateContainEvent.get(i));
         }
 
-        List<LocalDate> listLocalDateByMonth = listLocalDateTemp.stream().collect(Collectors.toList());
         Log.d("List unduplicated local date contains event: ", listLocalDateByMonth.toString());
 
     }

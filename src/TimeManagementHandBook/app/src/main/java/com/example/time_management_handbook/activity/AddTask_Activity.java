@@ -126,7 +126,7 @@ public class AddTask_Activity extends AppCompatActivity {
             }
         });
 
-        acc = getLastSignedInAccount(this);
+        acc = Home_Activity.acc;
         final String email = acc.getEmail();
 
         Button btnSave = findViewById(R.id.tCreate_button);

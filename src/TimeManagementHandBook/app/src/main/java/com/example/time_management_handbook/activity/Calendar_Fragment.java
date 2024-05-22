@@ -113,7 +113,6 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
         LocalDate today = LocalDate.now();
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
-
         listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), roundedDateTime);
         listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
 
@@ -128,6 +127,7 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
         lObject.addAll(listProlongedEvent);
         notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
         notes.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRCV = view.findViewById(R.id.calendar_rcv);
@@ -154,33 +154,6 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
                 setCalendar(currentdate);
             }
         });
-        List<LocalDate> listLocalDateContainEvent = new ArrayList<>();
-        try {
-            List<LocalDate> listLocalDateContainingEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDayByDayOfMonth(
-                    Home_Activity.acc.getEmail(), roundedDateTime);
-            listLocalDateContainEvent.addAll(listLocalDateContainingEventOfTheDay);
-            Log.d("Get list local date containing event of the day: ", listLocalDateContainingEventOfTheDay.toString());
-        } catch(Exception e) {
-            Log.d("Get list local date containing event of the day: ", "fail");
-        }
-
-        try {
-            List<LocalDate> listLocalDateContainingProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEventByDayOfMonth(
-                    Home_Activity.acc.getEmail(), roundedDateTime.toLocalDate());
-            listLocalDateContainEvent.addAll(listLocalDateContainingProlongedEvent);
-            Log.d("Get list local date contain prolonged event X: ", listLocalDateContainingProlongedEvent.toString());
-        } catch(Exception e) {
-            Log.d("Get list local date contain prolonged event X: ", "fail");
-        }
-
-        // listLocalDate:
-
-        Set<LocalDate> listLocalDateTemp = new HashSet<>();
-        for (int i = 0; i < listLocalDateContainEvent.size(); i++) {
-            listLocalDateTemp.add(listLocalDateContainEvent.get(i));
-        }
-
-        Log.d("List unduplicated local date contains event: ", listLocalDateByMonth.toString());
 
         setCalendar(currentdate);
 
@@ -192,6 +165,13 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
                 setCalendar(currentdate);
             }
         });
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalDate today = LocalDate.now();
+        listLocalDateByMonth = getListDateContainEvent(today);
 
     }
 
@@ -208,6 +188,8 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
         if (list == null)
             list = new ArrayList<>();
         else list.clear();
+
+        listLocalDateByMonth = getListDateContainEvent(currentdate);
         for (int i=1;i<=numDayOfThisMonth+dayOfWeek;i++)
         {
             CalendarModel model = null;
@@ -254,17 +236,15 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
         notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
         notes.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
     }
+    public List<LocalDate> getListDateContainEvent(LocalDate date)
+    {
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        LocalDateTime dateTime = LocalDateTime.of(date, LocalTime.of(1,1,1));
+        LocalDateTime roundedDateTime = dateTime.with(LocalTime.from(dateTime.toLocalTime().withSecond(dateTime.getSecond()).withNano(0)));
 
-        LocalDate today = LocalDate.now();
-        LocalDateTime timeNow = LocalDateTime.now();
-        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
         List<LocalDate> listLocalDateContainEvent = new ArrayList<>();
-
         try {
             List<LocalDate> listLocalDateContainingEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDayByDayOfMonth(
                     Home_Activity.acc.getEmail(), roundedDateTime);
@@ -290,8 +270,11 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
             listLocalDateTemp.add(listLocalDateContainEvent.get(i));
         }
 
-        Log.d("List unduplicated local date contains event: ", listLocalDateByMonth.toString());
+        List<LocalDate> listDate = new ArrayList<>(listLocalDateTemp);
 
+        Log.d("List unduplicated local date contains event: ", listDate.toString());
+        return listDate;
     }
+
 
 }

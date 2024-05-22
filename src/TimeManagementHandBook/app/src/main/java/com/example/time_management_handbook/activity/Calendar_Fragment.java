@@ -1,27 +1,30 @@
 package com.example.time_management_handbook.activity;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.CalendarAdapter;
+import com.example.time_management_handbook.adapter.CalendarModelAdapter;
+import com.example.time_management_handbook.adapter.CalendarSelectedDateChange;
 import com.example.time_management_handbook.adapter.Event_Of_The_Day_DAO;
 import com.example.time_management_handbook.adapter.Prolonged_Event_DAO;
-import com.example.time_management_handbook.adapter.TaskDAO;
+import com.example.time_management_handbook.model.CalendarModel;
 import com.example.time_management_handbook.model.Event_Of_The_Day_DTO;
 import com.example.time_management_handbook.model.Prolonged_Event_DTO;
-import com.example.time_management_handbook.model.TaskDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,7 +38,8 @@ import java.util.List;
  * Use the {@link Calendar_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Calendar_Fragment extends Fragment {
+public class Calendar_Fragment extends Fragment implements CalendarSelectedDateChange {
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,9 +50,20 @@ public class Calendar_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     TextView dateView;
+    List<LocalDate> listEventDate = new ArrayList<>();
     private List<Object> lObject = new ArrayList<>();
     private List<Event_Of_The_Day_DTO> listEventOfTheDay = new ArrayList<>();
     private List<Prolonged_Event_DTO> listProlongedEvent = new ArrayList<>();
+    private RecyclerView notes;
+    private DateTimeFormatter formatter;
+    RecyclerView calendarRCV;
+    LocalDate currentdate;
+    TextView monthYear;
+    ImageView lastMonth, nextMonth;
+    List<CalendarModel> list;
+
+
+
     public Calendar_Fragment() {
         // Required empty public constructor
     }
@@ -84,13 +99,13 @@ public class Calendar_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_calendar_month_, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         LocalDate today = LocalDate.now();
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
@@ -99,34 +114,112 @@ public class Calendar_Fragment extends Fragment {
         listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
 
         dateView = view.findViewById(R.id.textView_date);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
         dateView.setText(today.format(formatter));
 
-        RecyclerView notes = view.findViewById(R.id.recyclerView_notes);
-        CalendarView calendarView = view.findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        notes = view.findViewById(R.id.recyclerView_notes);
+
+        lObject = new ArrayList<>();
+        lObject.addAll(listEventOfTheDay);
+        lObject.addAll(listProlongedEvent);
+        notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
+        notes.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
+        calendarRCV = view.findViewById(R.id.calendar_rcv);
+        calendarRCV.setLayoutManager(layoutManager);
+        calendarRCV.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.top=0;
+                outRect.bottom = 0;
+            }
+        });
+        calendarRCV.setHasFixedSize(true);
 
-                LocalDate todayDate = LocalDate.of(year, month + 1, dayOfMonth);
-                LocalDateTime localTime = todayDate.atStartOfDay();
-                dateView.setText(todayDate.format(formatter));
+        currentdate = LocalDate.now();
 
-                listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), localTime);
-                listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), todayDate);
-                lObject = new ArrayList<>();
+        monthYear = view.findViewById(R.id.monthYear_text);
 
-                lObject.addAll(listEventOfTheDay);
-                lObject.addAll(listProlongedEvent);
-                notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
-                notes.setLayoutManager(new LinearLayoutManager(getContext()));
+        lastMonth = view.findViewById(R.id.lastMonth_button);
+        lastMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentdate = currentdate.minusMonths(1);
+                setCalendar(currentdate);
             }
         });
 
+        setCalendar(currentdate);
+
+        nextMonth = view.findViewById(R.id.nextMonth_button);
+        nextMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentdate = currentdate.plusMonths(1);
+                setCalendar(currentdate);
+            }
+        });
+
+    }
+
+
+    private void setCalendar(LocalDate currentdate) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+        monthYear.setText(currentdate.format(dateTimeFormatter));
+        LocalDate date = currentdate;
+        int numDayOfThisMonth = LocalDate.of(currentdate.getYear(), currentdate.getMonth().plus(1), 1).minusDays(1).getDayOfMonth();
+        date = LocalDate.of(date.getYear(), date.getMonth(),1);
+        int dayOfWeek = date.getDayOfWeek().getValue();
+        if (dayOfWeek==7)
+            dayOfWeek=0;
+        if (list == null)
+            list = new ArrayList<>();
+        else list.clear();
+        for (int i=1;i<=numDayOfThisMonth+dayOfWeek;i++)
+        {
+            CalendarModel model = null;
+            if (i<=dayOfWeek)
+            {
+                model = new CalendarModel(0,null,-1);
+            }
+            else
+            {
+                LocalDate tmp = LocalDate.of(currentdate.getYear(), currentdate.getMonthValue(), i-dayOfWeek);
+                if (tmp.isEqual(LocalDate.now()) )
+                {
+                    model = new CalendarModel(i-dayOfWeek, tmp, 1);
+                }
+                else if (listEventDate.contains(tmp))
+                {
+                    model = new CalendarModel(i-dayOfWeek, tmp, 0);
+                }
+                else
+                {
+                    model = new CalendarModel(i-dayOfWeek, tmp, 2);
+                }
+            }
+            list.add(model);
+        }
+        calendarRCV.setAdapter(new CalendarModelAdapter(list, getActivity(), this));
+    }
+
+    @Override
+    public void selectedDateChange(LocalDate date) {
+        formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        LocalDateTime localTime = date.atStartOfDay();
+        dateView = getView().findViewById(R.id.textView_date);
+        dateView.setText(date.format(formatter));
+
+        listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), localTime);
+        listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), date);
         lObject = new ArrayList<>();
 
         lObject.addAll(listEventOfTheDay);
         lObject.addAll(listProlongedEvent);
+        notes = getView().findViewById(R.id.recyclerView_notes);
+
         notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
         notes.setLayoutManager(new LinearLayoutManager(getContext()));
     }

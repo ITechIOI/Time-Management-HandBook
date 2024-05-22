@@ -170,46 +170,68 @@ public class AddTask_Activity extends AppCompatActivity {
                 }
 
                 int result;
+                boolean flag1 = true, flag2 = true, flag3 = true;
 
-                if (name.isEmpty() || deadline.isEmpty() || durationString.isEmpty()){
+                if (name.isEmpty()) {
                     tName.setBackgroundResource(R.drawable.custom_textinput_error);
+                    flag1 = false;
+                }
+                if (deadline.isEmpty()) {
                     tDeadline.setBackgroundResource(R.drawable.custom_textinput_error);
+                    flag2 = false;
+                }
+                if (durationString.isEmpty()) {
                     notificationT.setBackgroundResource(R.drawable.custom_textinput_error);
-                    Toast.makeText(AddTask_Activity.this, "Please complete all required fields.", Toast.LENGTH_SHORT).show();
-                } else if (lDeadline.isAfter(LocalDateTime.now())){
-                    TaskDTO newTask = new TaskDTO(
-                            null,
-                            null,
-                            tName.getText().toString(),
-                            tLocation.getText().toString(),
-                            LocalDateTime.now(),
-                            lDeadline,
-                            duration,
-                            tDescription.getText().toString(),
-                            LocalDateTime.MAX,
-                            selectedIndex
-                    );
+                    flag3 = false;
+                }
+                if (flag1) {
                     tName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                }
+                if (flag2) {
                     tDeadline.setBackgroundResource(R.drawable.custom_textinputlayout);
-                    notificationT.setBackgroundResource(R.drawable.custom_textinputlayout);
-                    result = TaskDAO.getInstance().InsertNewTask(email, newTask);
-                    if (result != -1)
-                    {
-                        Toast.makeText(getApplicationContext(), "Add new event successfully", Toast.LENGTH_SHORT).show();
-                        Log.d("Insert task", tName.getText().toString());
-                        tName.setText("");
-                        tDeadline.setText("");
-                        tLocation.setText("");
-                        tDescription.setText("");
-                        notificationT.setText("");
-                        customRadioGroup.clearFocus();
-                    }
-                    else {
-                        Log.d("Insert task","error");
+                }
+                if (flag3) {
+                    tName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                }
+
+                if (flag3 && flag1 && flag2){
+                    if (lDeadline.isAfter(LocalDateTime.now())) {
+                        TaskDTO newTask = new TaskDTO(
+                                null,
+                                null,
+                                tName.getText().toString(),
+                                tLocation.getText().toString(),
+                                LocalDateTime.now(),
+                                lDeadline,
+                                duration,
+                                tDescription.getText().toString(),
+                                LocalDateTime.MAX,
+                                selectedIndex
+                        );
+                        tName.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        tDeadline.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        notificationT.setBackgroundResource(R.drawable.custom_textinputlayout);
+                        result = TaskDAO.getInstance().InsertNewTask(email, newTask);
+                        if (result != -1)
+                        {
+                            Toast.makeText(getApplicationContext(), "Add new event successfully", Toast.LENGTH_SHORT).show();
+                            Log.d("Insert task", tName.getText().toString());
+                            tName.setText("");
+                            tDeadline.setText("");
+                            tLocation.setText("");
+                            tDescription.setText("");
+                            notificationT.setText("");
+                            customRadioGroup.clearFocus();
+                        }
+                        else {
+                            Log.d("Insert task","error");
+                        }
+                    } else {
+                        Toast.makeText(AddTask_Activity.this, "Deadline must be after now", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     tDeadline.setBackgroundResource(R.drawable.custom_textinput_error);
-                    Toast.makeText(AddTask_Activity.this, "Deadline must be after now", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddTask_Activity.this, "Please fill in required fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });

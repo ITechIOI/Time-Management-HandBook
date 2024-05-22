@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -112,15 +113,35 @@ public class Task_Activity extends AppCompatActivity {
                 orange.setChecked(true);
                 break;
         }
+
         TextInputEditText finishTime = findViewById(R.id.taFinishTime_textInput);
         CheckBox isFinished = findViewById(R.id.taFinished_checkbox);
-        if (task.getFinishedTime()!=null)
+       if (task.getFinishedTime()!=null)
         {
-            finishTime.setText(task.getFinishedTime().toString());
+            DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String finishTimeString = task.getFinishedTime().format(newFormat);
+            finishTime.setText(finishTimeString.toString().replace("T", " "));
             isFinished.setChecked(true);
         }
-        else
-            isFinished.setChecked(false);
+        else { isFinished.setChecked(false); }
+
+        final boolean[] flag = {false};
+        isFinished.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    flag[0] = true;
+                    LocalDateTime timeNow = LocalDateTime.now();
+                    LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+                    DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                    String finishTimeString = roundedDateTime.format(newFormat);
+                    finishTime.setText(finishTimeString.replace("T", " "));
+                } else {
+                    flag[0] = false;
+                    finishTime.setText(null);
+                }
+            }
+        });
 
         deadlineImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,21 +245,32 @@ public class Task_Activity extends AppCompatActivity {
                                     .plusSeconds(giay);
                         }
 
-                        LocalDateTime timeEndL = LocalDateTime.parse(timeEnd, formatter);
+                        LocalDateTime timeEndL = LocalDateTime.parse(timeEnd,  DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
                         DateTimeFormatter dateTimeFormatterYyyyMmDd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-                        String timeEndParse = timeEndL.format(dateTimeFormatterYyyyMmDd);
-                        LocalDateTime deadline = LocalDateTime.parse(timeEndParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
-
+                        String timeEndParse = timeEndL.format(dateTimeFormatterYyyyMmDd) + ":01";
+                        LocalDateTime deadline = LocalDateTime.parse(timeEndParse, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
                         if (intent.getSerializableExtra("mytask") instanceof TaskDTO) {
-
+                            Log.d("End time is set gfor task: ", deadline.toString());
                             TaskDTO task = (TaskDTO) intent.getSerializableExtra("mytask");
                             task.setName(taskName);
                             task.setLocation(taskLocation);
                             task.setEndTime(deadline);
                             task.setNotification_period(duration);
                             task.setDescription(taskDescription);
-                            task.setFinishedTime(LocalDateTime.MAX);
+                           // task.setFinishedTime(LocalDateTime.MAX);
                             task.setColor(selectedIndex);
+
+                            if (finishTime.getText() == null) {
+                                task.setFinishedTime(LocalDateTime.MAX);
+                            } else {
+                                LocalDateTime dateTimeOldFormat = LocalDateTime.parse(finishTime.getText().toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                                DateTimeFormatter ymdHMFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                                DateTimeFormatter ymdHMSFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                                String finishTimeString = dateTimeOldFormat.format(ymdHMFormat) + ":01";
+                                LocalDateTime finalFinishTime = LocalDateTime.parse(finishTimeString, ymdHMSFormat);
+                                Log.d("End time is set gfor task: ", finalFinishTime.toString());
+                                task.setFinishedTime(finalFinishTime);
+                            }
 
                             int rowsAffected = TaskDAO.getInstance().UpdateTask(task);
                             if (rowsAffected > 0) {
@@ -282,7 +314,7 @@ public class Task_Activity extends AppCompatActivity {
                         Calendar selectedDateTime = Calendar.getInstance();
                         selectedDateTime.set(year, month, dayOfMonth, hourOfDay, minute);
                         String formattedDateTime = sdf.format(selectedDateTime.getTime());
-                        TextInputEditText editText = findViewById(R.id.tDeadline_textInput);
+                        TextInputEditText editText = findViewById(R.id.taDeadline_textInput);
                         editText.setText(formattedDateTime);
                     }
                 }, hour, minute, true);

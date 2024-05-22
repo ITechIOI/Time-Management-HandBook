@@ -159,7 +159,6 @@ public class Home_Fragment extends Fragment {
 
         listAll = new ArrayList<>();
         listAll.addAll(listEventOfTheDay);
-        Log.d("Test get data in hime_fragment: ", "ok");
         listAll.addAll(listProlongedEvent);
         listAll.addAll(listTask);
         setEventandTaskView(listAll);

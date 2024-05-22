@@ -79,6 +79,36 @@ public class Event_Of_The_Day_DAO {
         return listEvents;
     }
 
+    public List<LocalDate> getListEventOfTheDayByDayOfMonth(String email, LocalDateTime timeNow) {
+        List<LocalDate> localDateList = new ArrayList<>();
+
+        LocalDate date = timeNow.toLocalDate();
+        LocalTime time = timeNow.toLocalTime();
+        String dateTime = date.toString() + " " + time.toString();
+
+        String query = "EXEC USP_GET_EVENT_OF_THE_DAY_BY_DAY_OF_MONTH '" + email + "', '" + dateTime + "'";
+
+        try {
+            ResultSet resultSet = DataProvider.getInstance().executeQuery(query);
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    Timestamp startTime = resultSet.getTimestamp(5);
+                    ZonedDateTime zonedDateTimeStart = startTime.toInstant().atZone(ZoneId.systemDefault());
+                    LocalDateTime start = zonedDateTimeStart.toLocalDateTime();
+
+                    localDateList.add(start.toLocalDate());
+
+                }
+            }
+            Log.d("Get list local date that contains prolonged event: ", localDateList.toString());
+        } catch (SQLException e) {
+            Log.d("Get list event of the day: ", e.getMessage());
+        };
+
+        return localDateList;
+    }
+
+
     public List<Event_Of_The_Day_DTO> getListEventOfTheDayForNotification(String email, LocalDateTime timeNow) {
         List<Event_Of_The_Day_DTO> listEventsForNotification = new ArrayList<>();
 

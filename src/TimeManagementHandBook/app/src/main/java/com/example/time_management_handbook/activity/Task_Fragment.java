@@ -24,12 +24,16 @@ import com.example.time_management_handbook.R;
 import com.example.time_management_handbook.adapter.TaskDAO;
 import com.example.time_management_handbook.model.TaskDTO;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,6 +103,28 @@ public class Task_Fragment extends Fragment {
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
         listTaskByCurrentDate = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail(), roundedDateTime);
+        Collections.sort(listTaskByCurrentDate, new Comparator<TaskDTO>() {
+            @Override
+            public int compare(TaskDTO o1, TaskDTO o2) {
+                if (o1.getFinishedTime()!=null && o2.getFinishedTime()==null)
+                {
+                    return -1;
+                }
+                else if (o1.getFinishedTime()==null && o2.getFinishedTime()!=null)
+                {
+                    return 1;
+                }
+                else if (o1.getFinishedTime()==null &&o2.getFinishedTime()==null)
+                {
+                    Duration duration1 = Duration.between(LocalDateTime.now(), o1.getEndTime());
+                    Duration duration2 = Duration.between(LocalDateTime.now(), o2.getEndTime());
+                    return duration2.compareTo(duration1);
+                }
+                return 0;
+            }
+        });
+        Collections.reverse(listTaskByCurrentDate);
+
         taskAdapter = new TaskDAO(listTaskByCurrentDate,getActivity());
         rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv.setAdapter(taskAdapter);
@@ -130,6 +156,27 @@ public class Task_Fragment extends Fragment {
             Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
         }
         else {
+            Collections.sort(listTaskByCurrentDate, new Comparator<TaskDTO>() {
+                @Override
+                public int compare(TaskDTO o1, TaskDTO o2) {
+                    if (o1.getFinishedTime()!=null && o2.getFinishedTime()==null)
+                    {
+                        return -1;
+                    }
+                    else if (o1.getFinishedTime()==null && o2.getFinishedTime()!=null)
+                    {
+                        return 1;
+                    }
+                    else if (o1.getFinishedTime()==null &&o2.getFinishedTime()==null)
+                    {
+                        Duration duration1 = Duration.between(LocalDateTime.now(), o1.getEndTime());
+                        Duration duration2 = Duration.between(LocalDateTime.now(), o2.getEndTime());
+                        return duration2.compareTo(duration1);
+                    }
+                    return 0;
+                }
+            });
+            Collections.reverse(filterTask);
             taskAdapter.setFilterList(filterTask);
         }
     }
@@ -157,6 +204,27 @@ public class Task_Fragment extends Fragment {
             @Override
             public void run() {
                 listTaskByCurrentDate = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail(), roundedDateTime);
+                Collections.sort(listTaskByCurrentDate, new Comparator<TaskDTO>() {
+                    @Override
+                    public int compare(TaskDTO o1, TaskDTO o2) {
+                        if (o1.getFinishedTime()!=null && o2.getFinishedTime()==null)
+                        {
+                            return -1;
+                        }
+                        else if (o1.getFinishedTime()==null && o2.getFinishedTime()!=null)
+                        {
+                            return 1;
+                        }
+                        else if (o1.getFinishedTime()==null &&o2.getFinishedTime()==null)
+                        {
+                            Duration duration1 = Duration.between(LocalDateTime.now(), o1.getEndTime());
+                            Duration duration2 = Duration.between(LocalDateTime.now(), o2.getEndTime());
+                            return duration2.compareTo(duration1);
+                        }
+                        return 0;
+                    }
+                });
+                Collections.reverse(listTaskByCurrentDate);
                 Log.d("List task: ", listTaskByCurrentDate.toString());
             }
         });

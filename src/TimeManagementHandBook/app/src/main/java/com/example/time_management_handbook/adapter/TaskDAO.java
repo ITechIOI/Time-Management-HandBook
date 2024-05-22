@@ -146,7 +146,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         holder.itemLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (ShowItemLongClickDialog(task) == false)
+                if (ShowItemLongClickDialog(task,position) == false)
                     return false;
                 else
                 {
@@ -241,7 +241,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         return rowEffect;
     }
 
-    private boolean ShowItemLongClickDialog(TaskDTO task) {
+    private boolean ShowItemLongClickDialog(TaskDTO task, int position) {
         final boolean[] result = new boolean[1];
         Dialog item_dialog;
         Button viewDetailButton, deleteButton;
@@ -275,7 +275,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
             @Override
             public void onClick(View v) {
                 result[0]=true;
-                ShowDeleteDialog(task);
+                ShowDeleteDialog(task, position);
                 item_dialog.dismiss();
             }
         });
@@ -283,7 +283,7 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
         return result[0];
     }
 
-    private boolean ShowDeleteDialog(TaskDTO task) {
+    private boolean ShowDeleteDialog(TaskDTO task, int position) {
         final boolean[] result = new boolean[1];
         Dialog delete_dialog;
         Button cancelButton, deleteButton;
@@ -308,6 +308,8 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
                 result[0]=true;
                 int result = DeleteTask(Home_Activity.acc.getEmail(), task);
                 if (result > 0) {
+                    list.remove(position);
+                    notifyItemRemoved(position);
                     Toast.makeText(tContext, "Delete task successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(tContext, "Delete task failed", Toast.LENGTH_SHORT).show();

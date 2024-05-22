@@ -260,6 +260,7 @@ public class Home_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(acc.getEmail(), roundedDateTime);
+                Log.d("Time to find event of the day: ", roundedDateTime.toString());
                 Log.d("List event of the day: ", listEventOfTheDay.toString());
             }
         });

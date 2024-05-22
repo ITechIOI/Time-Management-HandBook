@@ -236,7 +236,6 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
         notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
         notes.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
     }
     public List<LocalDate> getListDateContainEvent(LocalDate date)
     {
@@ -275,6 +274,5 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
         Log.d("List unduplicated local date contains event: ", listDate.toString());
         return listDate;
     }
-
 
 }

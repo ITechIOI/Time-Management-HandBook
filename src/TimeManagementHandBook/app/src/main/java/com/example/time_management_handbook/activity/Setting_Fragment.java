@@ -1,5 +1,6 @@
 package com.example.time_management_handbook.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,13 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.time_management_handbook.R;
+import com.example.time_management_handbook.adapter.RatingDAO;
 import com.example.time_management_handbook.model.MyForegroundService;
+import com.example.time_management_handbook.model.RatingDTO;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +33,7 @@ public class Setting_Fragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private float rate;
     private static String checkNotificationStatusText = "On";
 
     // TODO: Rename and change types of parameters
@@ -70,8 +76,9 @@ public class Setting_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting_, container, false);
         TextView checkNotificationStatus = view.findViewById(R.id.checkNotificationStatus);
-        TextView darkMode = view.findViewById(R.id.darkmode);
         RelativeLayout notificationLayout = view.findViewById(R.id.notification_layout);
+        RelativeLayout ratingLayout = view.findViewById(R.id.ratingLayout);
+        ImageButton nextToRatingBtn = view.findViewById(R.id.nextToRatingBtn);
         ImageButton about = view.findViewById(R.id.about);
 
         checkNotificationStatus.setText(checkNotificationStatusText);
@@ -96,6 +103,80 @@ public class Setting_Fragment extends Fragment {
                     checkNotificationStatus.setText(checkNotificationStatusText);
                     restartNotifications();
                 }
+            }
+        });
+
+        ratingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog ratingDialog = new Dialog(getActivity());
+                RatingBar ratingBar;
+                Button buttonOk, buttonCancel;
+                ratingDialog.setContentView(R.layout.rating_dialog);
+                ratingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+                ratingDialog.getWindow().setBackgroundDrawable(getActivity().getDrawable(R.drawable.custom_itemdialog));
+                ratingBar = ratingDialog.findViewById(R.id.ratingbar);
+                buttonCancel = ratingDialog.findViewById(R.id.ratingCancel_button);
+
+                Log.d("Click image button", "yeah");
+                buttonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ratingDialog.dismiss();
+                    }
+                });
+                buttonOk = ratingDialog.findViewById(R.id.ratingSend_button);
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rate = ratingBar.getRating();
+                        int rowEffectInsertNewRating = RatingDAO.getInstance().InsertNewRating( (int)rate);
+                        if (rowEffectInsertNewRating > 0) {
+                            Toast.makeText(getContext(), "Great feedback!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.d("Feedback: ", "failed");
+                        }
+                        ratingDialog.dismiss();
+                    }
+                });
+                ratingDialog.show();
+            }
+        });
+
+        nextToRatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog ratingDialog = new Dialog(getActivity());
+                RatingBar ratingBar;
+                Button buttonOk, buttonCancel;
+                ratingDialog.setContentView(R.layout.rating_dialog);
+                ratingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+                ratingDialog.getWindow().setBackgroundDrawable(getActivity().getDrawable(R.drawable.custom_itemdialog));
+                ratingBar = ratingDialog.findViewById(R.id.ratingbar);
+                buttonCancel = ratingDialog.findViewById(R.id.ratingCancel_button);
+
+                Log.d("Click image button", "yeah");
+                buttonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ratingDialog.dismiss();
+                    }
+                });
+                buttonOk = ratingDialog.findViewById(R.id.ratingSend_button);
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rate = ratingBar.getRating();
+                        int rowEffectInsertNewRating = RatingDAO.getInstance().InsertNewRating( (int)rate);
+                        if (rowEffectInsertNewRating > 0) {
+                            Toast.makeText(getContext(), "Great feedback!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.d("Feedback: ", "failed");
+                        }
+                        ratingDialog.dismiss();
+                    }
+                });
+                ratingDialog.show();
             }
         });
 

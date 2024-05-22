@@ -1,12 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.AboutZEIT_Activity"
     android:background="@color/white">
-    <include layout="@layout/toolbarlayout"
-        android:id="@+id/aToolbar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/toolbarlayout"
+            android:id="@+id/aToolbar"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ImageView_Icon"
+            app:srcCompat="@drawable/big_icon"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/aToolbar"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/textView_ZEIT"
+            android:text="ZEIT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImageView_Icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textSize="30sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:padding="7dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/textView_ZEIT"
+            android:id="@+id/textView_name">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:fontFamily="@font/inriasans_bold"
+                android:text="Application name: " />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:text="ZEIT" />
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:padding="7dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/textView_name"
+            android:id="@+id/textView_version">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:fontFamily="@font/inriasans_bold"
+                android:text="Version: " />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:text="1.0.0" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:padding="7dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="5dp"
+            android:text="ZEIT is an application that helps you manage personal schedule effectively. This application has some typical features such as:"
+            android:layout_below="@id/textView_version"
+            android:id="@+id/textView_introduce"/>
+
+        <TextView
+            android:id="@+id/textView_feature1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_introduce"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="15dp"
+            android:text="You can log in to the system with just one Google account and without registration"
+            android:textSize="17sp" />
+        <TextView
+            android:id="@+id/textView_feature2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_feature1"
+            android:layout_marginTop="7dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="15dp"
+            android:text="This application supports you in adding a new event or task. You can receive reminders from the system about events and tasks"
+            android:textSize="17sp" />
+        <TextView
+            android:id="@+id/textView_feature3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_feature2"
+            android:layout_marginTop="7dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="15dp"
+            android:text="You can synchronize schedules from one or more of your Google accounts into events on this app"
+            android:textSize="17sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:padding="7dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="5dp"
+            android:text="Contact for support:"
+            android:fontFamily="@font/inriasans_bold"
+            android:layout_below="@id/textView_feature3"
+            android:id="@+id/textView_contact"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="\t\tEmail: @developer123@gm.uit.edu\n\t\tPhone: +02333324245"
+            android:layout_below="@id/textView_contact"/>
+
+
+    </RelativeLayout>
+</ScrollView>

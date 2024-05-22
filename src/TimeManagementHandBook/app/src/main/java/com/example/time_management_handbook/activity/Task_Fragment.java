@@ -77,7 +77,6 @@ public class Task_Fragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +98,7 @@ public class Task_Fragment extends Fragment {
         LocalDateTime timeNow = LocalDateTime.now();
         LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
         listTaskByCurrentDate = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail(), roundedDateTime);
-        taskAdapter = new TaskDAO(listTaskByCurrentDate,getActivity());
+        taskAdapter = new TaskDAO(listTaskByCurrentDate,getActivity(), this);
         rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         rcv.setAdapter(taskAdapter);
         searchView.setQueryHint("Enter name of task...");
@@ -160,6 +159,13 @@ public class Task_Fragment extends Fragment {
                 Log.d("List task: ", listTaskByCurrentDate.toString());
             }
         });
+    }
 
+    public  void ShowListTask()  {
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+        listTaskByCurrentDate = TaskDAO.getInstance().getListTask(Home_Activity.acc.getEmail(), roundedDateTime);
+        taskAdapter = new TaskDAO(listTaskByCurrentDate,getActivity(), this);
+        rcv.setAdapter(taskAdapter);
     }
 }

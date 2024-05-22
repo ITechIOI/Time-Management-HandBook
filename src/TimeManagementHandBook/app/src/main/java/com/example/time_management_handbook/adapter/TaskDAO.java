@@ -45,12 +45,20 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
     public static TaskDAO instance;
     private List<TaskDTO> list;
     private Context tContext;
+    private Task_Fragment taskFragment;
     public TaskDAO(List<TaskDTO> task, Context context)
     {
         this.list=task;
         this.tContext = context;
+
     }
     public TaskDAO() {}
+
+    public TaskDAO(List<TaskDTO> list, Context tContext, Task_Fragment taskFragment) {
+        this.list = list;
+        this.tContext = tContext;
+        this.taskFragment = taskFragment;
+    }
 
     @NonNull
     @Override
@@ -299,6 +307,12 @@ public class TaskDAO extends RecyclerView.Adapter<TaskDAO.TaskViewHolder> {
             public void onClick(View v) {
                 result[0]=true;
                 int result = DeleteTask(Home_Activity.acc.getEmail(), task);
+                if (result > 0) {
+                    Toast.makeText(tContext, "Delete task successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(tContext, "Delete task failed", Toast.LENGTH_SHORT).show();
+                }
+                taskFragment.ShowListTask();
                 delete_dialog.dismiss();
             }
         });

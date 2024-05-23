@@ -244,6 +244,8 @@ public class Task_Fragment extends Fragment {
                 Log.d("List task: ", listTaskByCurrentDate.toString());
             }
         });
+
+        ShowListTask();
     }
 
     public  void ShowListTask()  {

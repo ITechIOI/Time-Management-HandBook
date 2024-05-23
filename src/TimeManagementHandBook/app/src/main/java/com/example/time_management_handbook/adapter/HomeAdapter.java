@@ -22,6 +22,8 @@ import com.example.time_management_handbook.model.Prolonged_Event_DTO;
 import com.example.time_management_handbook.model.TaskDTO;
 
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,12 +144,23 @@ public class HomeAdapter extends BaseAdapter {
                 }
             });
         }
+
         else if (lData.get(position) instanceof TaskDTO){
             TaskDTO datas = (TaskDTO) lData.get(position);
             holder.summaryView.setText(datas.getName());
             // Dinh dang thoi gian deadline
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-            holder.timeView.setText("Start: " + datas.getCreatingTime().format(formatter) + "\nEnd: " + datas.getEndTime().format(formatter));
+            Duration duration = Duration.between(LocalDateTime.now(), datas.getEndTime());
+            String remainingTime  = "";
+            if (duration.toDays() == 0) {
+                remainingTime = String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                        "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+            } else {
+                remainingTime = String.valueOf(duration.toDays()) + "d " +
+                        String.valueOf(duration.toHours() % 24) + "h " + String.valueOf(duration.toMinutes() % 60) +
+                        "m " + String.valueOf(duration.getSeconds() % 60) + "s";
+            }
+            holder.timeView.setText("Deadline: " + datas.getEndTime().format(formatter) + "\nRemaining time: " +remainingTime);
             holder.eventButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_task_book,0,0);
             switch (datas.getColor())
             {

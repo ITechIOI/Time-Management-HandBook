@@ -173,6 +173,17 @@ public class Calendar_Fragment extends Fragment implements CalendarSelectedDateC
         LocalDate today = LocalDate.now();
         listLocalDateByMonth = getListDateContainEvent(today);
 
+        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime roundedDateTime = timeNow.with(LocalTime.from(timeNow.toLocalTime().withSecond(timeNow.getSecond()).withNano(0)));
+        listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(Home_Activity.acc.getEmail().toString(), roundedDateTime);
+        listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(Home_Activity.acc.getEmail().toString(), today);
+
+        lObject = new ArrayList<>();
+        lObject.addAll(listEventOfTheDay);
+        lObject.addAll(listProlongedEvent);
+        notes.setAdapter(new CalendarAdapter(getActivity(), lObject));
+        notes.setLayoutManager(new LinearLayoutManager(getContext()));
+
     }
 
 

@@ -233,8 +233,12 @@ public class AddTask_Activity extends AppCompatActivity {
                     tDeadline.setBackgroundResource(R.drawable.custom_textinput_error);
                     Toast.makeText(AddTask_Activity.this, "Please fill in required fields", Toast.LENGTH_SHORT).show();
                 }
+
+
+
             }
         });
+
 
 
     }

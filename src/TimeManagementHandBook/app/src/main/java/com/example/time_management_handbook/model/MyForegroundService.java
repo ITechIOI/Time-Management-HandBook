@@ -52,7 +52,6 @@ public class MyForegroundService extends Service {
         }
     };
 
-
     @Override
     public void onCreate() {
         super.onCreate();

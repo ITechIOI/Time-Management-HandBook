@@ -119,10 +119,11 @@ public class Event_Activity extends AppCompatActivity {
             }
         });
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formatter ;
         //Nhận dữ liệu
         Intent intent = getIntent();
         if (intent.getSerializableExtra("myevent") instanceof Event_Of_The_Day_DTO){
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             Event_Of_The_Day_DTO event = (Event_Of_The_Day_DTO) intent.getSerializableExtra("myevent");
             Log.d("TAG", "Received data: " + event);
             tv_event_name.setText(event.getSummary());
@@ -166,6 +167,7 @@ public class Event_Activity extends AppCompatActivity {
         }
         else if (intent.getSerializableExtra("myevent") instanceof Prolonged_Event_DTO){
             Prolonged_Event_DTO event = (Prolonged_Event_DTO) intent.getSerializableExtra("myevent");
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             Log.d("TAG", "Received data: " + event);
             tv_event_name.setText(event.getSummary());
             tv_event_datestart.setText(event.getStartDate().format(formatter).toString());

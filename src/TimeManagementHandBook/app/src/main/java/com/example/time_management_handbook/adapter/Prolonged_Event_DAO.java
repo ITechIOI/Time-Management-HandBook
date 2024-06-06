@@ -56,11 +56,11 @@ public class Prolonged_Event_DAO {
                             startDate, endDate, notification_period, description, color);
 
                     listEvents.add(event);
-                    Log.d("Each prolonged event: ", event.toString());
+                  //  Log.d("Each prolonged event: ", event.toString());
                 }
             }
         }catch (Exception e) {
-            Log.d("Get prolonged event: ", e.getMessage());
+           // Log.d("Get prolonged event: ", e.getMessage());
         }
 
         return listEvents;

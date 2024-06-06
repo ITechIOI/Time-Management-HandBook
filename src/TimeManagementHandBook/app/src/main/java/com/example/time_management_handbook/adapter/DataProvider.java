@@ -11,12 +11,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DataProvider {
     public static DataProvider instance;
 
-    private static final String DATABASE_URL = "jdbc:jtds:sqlserver://192.168.1.194;databaseName=TIME_MANAGEMENT_HANDBOOK;user=sa;password=Loantuyetcute123";
-
+   // private static final String DATABASE_URL = "jdbc:jtds:sqlserver://itechioitimemanagement.database.windows.net;databaseName=ITechIOI;user=ITechIOI;password=Loantuyetcute123;protocol=TLSv1.2";
+   private static final String DATABASE_URL = "jdbc:sqlserver://itechioitimemanagement.database.windows.net:1433;database=ITechIOI;user=ITechIOI@itechioitimemanagement;password=Loantuyetcute123;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30";
+   private Connection connection;
     private DataProvider() {}
     public static DataProvider getInstance() {
         if (instance == null) {
@@ -26,19 +29,21 @@ public class DataProvider {
     }
 
     public Connection getConnection() {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+       StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        Connection connection = null;
+         connection = null;
         try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(DATABASE_URL);
-            Log.e("Connect to database: ","success");
+            //Log.d("Connect to database: ","success " + "    " + connection.toString());
+           Log.d("In get connection method: ", "success");
         } catch (ClassNotFoundException | SQLException e) {
             Log.e("Connect to database: ","success" + e.getMessage());
         }
         return connection;
     }
+
 
     public List<String> getListUser()  {
 
@@ -47,20 +52,41 @@ public class DataProvider {
                 Connection connection = DataProvider.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM _USER")) {
-
+            Log.d("Connection String: ", connection.toString());
             while (resultSet.next()) {
                 teachers.add(resultSet.getString("FULLNAME"));
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.d("Get list user error: ", e.getMessage());
         };
         return teachers;
     }
 
+    /*public ResultSet executeQuery(String query) {
+        ResultSet resultSet = null;
+
+        ExecutorService executorConnection = Executors.newSingleThreadExecutor();
+        executorConnection
+
+        Connection connection = DataProvider.getInstance().getConnection();
+
+        if (connection!= null) {
+            try {
+                Statement statement = connection.createStatement();
+                resultSet = statement.executeQuery(query);
+                Log.d("ResultSet: ", resultSet.toString());
+            } catch (SQLException e) {
+                Log.d("Execute query: ", e.getMessage());
+            }
+        } else {
+            Log.d("Connection: ", "is null");
+        }
+
+        return resultSet;
+    }*/
+
     public ResultSet executeQuery(String query) {
         ResultSet resultSet = null;
-        Connection connection = DataProvider.getInstance().getConnection();
 
         if (connection!= null) {
             try {
@@ -79,8 +105,9 @@ public class DataProvider {
 
     public int executeNonQuery(String sql) {
         int rowsAffected = -1;
-        try (Connection connection = DataProvider.getInstance().getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (
+             PreparedStatement pstmt = connection.prepareStatement(sql)
+        ) {
 
             rowsAffected = pstmt.executeUpdate();
         } catch (SQLException e) {

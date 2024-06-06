@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.time_management_handbook"
-        minSdk = 31
+        minSdk = 30
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation(files("libs/connectToSSMS.jar"))
+   // implementation(files("libs/connectToSSMS.jar"))
 
     implementation ("com.google.oauth-client:google-oauth-client-jetty:1.36.0")
     implementation ("com.google.apis:google-api-services-calendar:v3-rev20220715-2.0.0")
@@ -71,5 +71,9 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.11.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.11.0")
+
+    implementation ("com.microsoft.sqlserver:mssql-jdbc:12.6.2.jre8")
+    // implementation("com.microsoft.azure:azure-storage-android:1.6.1")
+    // implementation("com.microsoft.sqlserver', name: 'mssql-jdbc', version: '12.4.0.jre8")
 
 }

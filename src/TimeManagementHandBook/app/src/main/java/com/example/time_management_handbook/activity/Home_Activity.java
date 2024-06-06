@@ -266,7 +266,7 @@ public class Home_Activity extends AppCompatActivity {
 
 
         listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(acc.getEmail(), LocalDate.now());
-        Log.d("List prolonged event of the day: ", listProlongedEvent.toString());
+       // Log.d("List prolonged event of the day: ", listProlongedEvent.toString());
         listEventOfTheDay = Event_Of_The_Day_DAO.getInstance().getListEventOfTheDay(acc.getEmail(), roundedDateTime);
         Log.d("List event of the day: ", listEventOfTheDay.toString());
         listTask = TaskDAO.getInstance().getListTask(acc.getEmail(), roundedDateTime);
@@ -298,10 +298,10 @@ public class Home_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 listProlongedEventForNotification = Prolonged_Event_DAO.getInstance().getListProlongedEventForNotification(acc.getEmail(), roundedDateTime.toLocalDate());
-                Log.d("List prolonged event for notification: ", listProlongedEventForNotification.toString());
+               // Log.d("List prolonged event for notification: ", listProlongedEventForNotification.toString());
             }
         });
-
+/*
         Runnable runnableCode = new Runnable() {
             @Override
             public void run() {
@@ -317,7 +317,7 @@ public class Home_Activity extends AppCompatActivity {
         };
 
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(runnableCode, 2000);
+        handler.postDelayed(runnableCode, 2000);*/
 
         Log.d("Hello mn, I'm On Activity Create", "ok");
 
@@ -366,7 +366,7 @@ public class Home_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 listProlongedEvent = Prolonged_Event_DAO.getInstance().getListProlongedEvent(acc.getEmail(), today);
-                Log.d("List prolonged event of the day: ", listProlongedEvent.toString());
+               // Log.d("List prolonged event of the day: ", listProlongedEvent.toString());
             }
         });
 
@@ -400,7 +400,7 @@ public class Home_Activity extends AppCompatActivity {
             }
         });
         // executorServiceTaskForNotificationStart.shutdown();
-
+/*
         Runnable runnableCode = new Runnable() {
             @Override
             public void run() {
@@ -408,7 +408,6 @@ public class Home_Activity extends AppCompatActivity {
                 Intent serviceIntent = new Intent(Home_Activity.this, MyForegroundService.class);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(serviceIntent);
-
                 } else {
                     startService(serviceIntent);
                 }
@@ -416,7 +415,7 @@ public class Home_Activity extends AppCompatActivity {
         };
 
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(runnableCode, 2000);
+        handler.postDelayed(runnableCode, 2000);*/
 
         listAll = new ArrayList<>();
         listAll.addAll(listEventOfTheDay);
@@ -433,7 +432,7 @@ public class Home_Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("Hello mn, I'm On Activity Result", "ok");
-        Runnable runnableCode = new Runnable() {
+    /*    Runnable runnableCode = new Runnable() {
             @Override
             public void run() {
                 // Hàm cần chạy sau 10 giây
@@ -448,7 +447,7 @@ public class Home_Activity extends AppCompatActivity {
         };
 
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(runnableCode, 2000);
+        handler.postDelayed(runnableCode, 2000);*/
     }
 
     public void fetchEvents(GoogleSignInAccount acc) {

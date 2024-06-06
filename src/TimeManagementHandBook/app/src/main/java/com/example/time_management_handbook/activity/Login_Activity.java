@@ -29,10 +29,17 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 public class Login_Activity extends AppCompatActivity {
     private Button loginButton;
@@ -53,7 +60,7 @@ public class Login_Activity extends AppCompatActivity {
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (ContextCompat.checkSelfPermission(Login_Activity.this,
                     Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(Login_Activity.this,
@@ -75,7 +82,24 @@ public class Login_Activity extends AppCompatActivity {
             }
         });
 
-       // executorService.shutdown();
+        /*ExecutorService handleTLS = Executors.newSingleThreadExecutor();
+        handleTLS.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+                    SSLSocket socket = (SSLSocket) factory.createSocket();
+                    socket.connect(new InetSocketAddress("localhost", 1433));
+                   Log.d("TLS Version Allow: ", socket.getSession().getProtocol());
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d("TLS Version error: ", e.getMessage());
+                }
+            }
+        });*/
+
+        // executorService.shutdown();
     }
 
     @Override
